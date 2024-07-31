@@ -32,16 +32,23 @@ public:
 };
 
 
+void log_heap_alloc(){
+    std::clog << "Total (heap) allocation size: "<< t_alloc_size << " bytes" << std::endl;
+    std::clog << "Total (heap) allocation count: "<< t_alloc_count << " bytes" << std::endl;
+}
+
+_BENCHMARK_END
+
 void* operator new(size_t size) noexcept{
     // std::cout << "Allocated " << size << " bytes of memory" << std::endl;
-    t_alloc_size += size;
-    t_alloc_count += 1;
+    benchmark::t_alloc_size += size;
+    benchmark::t_alloc_count += 1;
     return malloc(size);
 }
 
 void* operator new[](size_t size) noexcept{
-    t_alloc_size += size;
-    t_alloc_count += 1;
+    benchmark::t_alloc_size += size;
+    benchmark::t_alloc_count += 1;
     return malloc(size);
 }
 
@@ -54,11 +61,4 @@ void operator delete[](void* memory) noexcept {
     // std::cout << "Freed " << sizeof(memory) << " bytes" << std::endl;
     free(memory);
 }
-
-void log_heap_alloc(){
-    std::clog << "Total (heap) allocation size: "<< t_alloc_size << " bytes" << std::endl;
-    std::clog << "Total (heap) allocation count: "<< t_alloc_count << " bytes" << std::endl;
-}
-
-_BENCHMARK_END
 #endif
