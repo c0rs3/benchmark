@@ -1,8 +1,19 @@
 #ifndef BENCHMARK_TIMER
 #define BENCHMARK_TIMER
+
 #include <iostream>
 #include <chrono>
+#include <ctime>
+#include <time.h>
+#include <sstream>
+#include <iomanip>
+
 namespace benchtools {
+    using duration = std::chrono::duration<double>;
+
+    /******************************************************************************
+    * @brief Enum for setting the time unit for benchtools::Timer
+    ******************************************************************************/
     enum timeunits {
         nanosecond = 0x3B9ACA00,
         microsecond = 0x000003E8,
@@ -13,9 +24,15 @@ namespace benchtools {
         hour = 0x00000E10,
     };
 
-    // After each scope use this variable to get the duration of that scope
+    /******************************************************************************
+    * @brief Stores the duration from the last constructor called
+     ******************************************************************************/
     static std::chrono::duration<double> last_duration;
 
+    /******************************************************************************
+    * @brief Timer class
+    * @note define EXPLICIT_TIMER to explicit the destructor and manually call the destructor
+     ******************************************************************************/
     class Timer {
     private:
         std::chrono::duration<double> mDuration;
@@ -25,8 +42,21 @@ namespace benchtools {
         Timer();
 
         Timer(timeunits unit);
-
+#ifndef EXPLICIT_TIMER
+        /******************************************************************************
+        * @brief Destructor of the timer class
+        * @note define EXPLICIT_TIMER to explicit the destructor and manually call the destructor
+         ******************************************************************************/
         ~Timer();
+#else
+        /******************************************************************************
+        * @brief Explicit destructor of the timer class
+        * @note undefine EXPLICIT_TIMER to implicit the destructor
+         ******************************************************************************/
+        ~Timer();
+#endif
     };
 }
+
+std::string return_current_time_and_date();
 #endif
