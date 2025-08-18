@@ -11,14 +11,14 @@ add_compile_options(-Wall -Wextra -pedantic)
 
 message("Compiler options setup...")
 
-file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.cpp")
-file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/headers/*.h")
+file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/benchtools/src/*.cpp")
+file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/benchtools/headers/*.h")
 
 message("GLOB done.")
 
 add_executable(benchmarktools main.cpp ${SRC_FILES})
 
-target_include_directories(benchmarktools PRIVATE "${CMAKE_SOURCE_DIR}/headers")
+target_include_directories(benchmarktools PRIVATE "${CMAKE_SOURCE_DIR}/benchtools/headers")
 
 target_link_directories(benchmarktools PRIVATE)
 target_link_libraries(benchmarktools PRIVATE)
