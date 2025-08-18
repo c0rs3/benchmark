@@ -8,11 +8,11 @@ int main() {
     {
         Timer timer1;
         for (size_t i = 0; i < 1000; i++) {
-            std::cout << " LOG " << std::flush;
+            std::cout << " LOG \n" << std::flush;
         }
     }
     logger.log("Ran successfully!");
     std::clog << LAST_DURATION.count() << std::endl;
-    logger.log(LAST_DURATION.count());
+    logger.log(durationCast(LAST_DURATION, timeunit::nanosecond).count());
     return 0;
 }
