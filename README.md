@@ -1,6 +1,6 @@
 # benchmark.h
 
-- A simple benchmarker for code in C++
+- Simple code benchmarking tools for C++
 
 ## Features
 
