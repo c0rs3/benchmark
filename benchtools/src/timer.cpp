@@ -1,4 +1,5 @@
 #include <timer.h>
+
 namespace benchtools {
     Timer::Timer() {
         mStart = std::chrono::steady_clock::now();
@@ -13,6 +14,7 @@ namespace benchtools {
         std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
         mDuration = end - mStart;
         LAST_DURATION = std::chrono::duration_cast<std::chrono::milliseconds>(mDuration);
+#ifndef EXPLICIT_LOG
         switch (mUnit) {
         case timeunit::nanosecond:
             std::clog << "Duration(ns): " << std::chrono::duration_cast<std::chrono::nanoseconds>(mDuration).count() << "ns" << std::endl;
@@ -39,6 +41,7 @@ namespace benchtools {
         default:
             break;
         }
+#endif
     }
 #else
     explicit Timer::~Timer() {
@@ -75,6 +78,31 @@ namespace benchtools {
 #endif
     void Timer::SetUnit(const timeunit& unit) {
         mUnit = unit;
+    };
+
+    std::chrono::duration<double> durationCast(std::chrono::duration<double>& otherDuration, timeunit unit) {
+        if (unit == nanosecond) {
+            return std::chrono::duration_cast<std::chrono::nanoseconds>(otherDuration);
+        }
+        else if (unit == nanosecond) {
+            return std::chrono::duration_cast<std::chrono::microseconds>(otherDuration);
+        }
+        else if (unit == nanosecond) {
+            return std::chrono::duration_cast<std::chrono::milliseconds>(otherDuration);
+        }
+        else if (unit == nanosecond) {
+            return std::chrono::duration_cast<std::chrono::seconds>(otherDuration);
+        }
+        else if (unit == nanosecond) {
+            return std::chrono::duration_cast<std::chrono::minutes>(otherDuration);
+        }
+        else if (unit == nanosecond) {
+            return std::chrono::duration_cast<std::chrono::hours>(otherDuration);
+        }
+        else {
+            return std::chrono::duration_cast<std::chrono::milliseconds>(otherDuration);
+        }
+        return std::chrono::duration_cast<std::chrono::milliseconds>(otherDuration);
     };
 }
 
