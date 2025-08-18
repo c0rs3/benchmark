@@ -16,7 +16,7 @@ file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/benchtools
 
 message("GLOB done.")
 
-add_executable(benchmarktools main.cpp ${SRC_FILES})
+add_executable(benchmarktools example.cpp ${SRC_FILES})
 
 target_include_directories(benchmarktools PRIVATE "${CMAKE_SOURCE_DIR}/benchtools/headers")
 
