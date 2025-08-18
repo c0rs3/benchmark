@@ -15,7 +15,8 @@ Logger::Logger(std::string file_name, std::ios::openmode fileMode = std::ios::ap
         throw std::runtime_error(exceptionMessage.c_str());
     }
     std::clog << "File open mode: " << fileMode << std::endl;
-    stream << "Log start at: " << return_current_time_and_date() << "\n";
+    stream << "Log start at: " << return_current_time_and_date() << "\n" << std::flush;
+
 }
 
 
@@ -23,17 +24,15 @@ Logger::Logger(std::string file_name, std::ios::openmode fileMode = std::ios::ap
 * @brief Destructor for the logger object which logs the log end time to the file
  ******************************************************************************/
 Logger::~Logger() {
-    stream << "Log end at: " << return_current_time_and_date() << "\n\n" << std::flush;;
+    stream << "Log end at: " << return_current_time_and_date() << "\n\n" << std::flush;
 }
 
 void Logger::log(const double& arg) {
-    stream << arg << "\n";
-    stream.flush();
+    stream << arg << "\n" << std::flush;
 }
 
 void Logger::log(const std::string& arg) {
-    stream << arg << "\n";
-    stream.flush();
+    stream << arg << "\n" << std::flush;
 }
 
 /******************************************************************************
@@ -43,4 +42,5 @@ void Logger::log(const std::string& arg) {
 void Logger::clear() {
     stream.close();
     stream.open(file_name, std::ios::trunc);
+    stream.flush();
 }
