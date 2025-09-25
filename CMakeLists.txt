@@ -6,8 +6,16 @@ set(CMAKE_BUILD_PARALLEL_LEVEL 12)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-# Extra warnings
-add_compile_options(-Wall -Wextra -pedantic)
+
+# gcc, clang
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+endif()
+
+# MSVC
+if (MSVC)
+    add_compile_options(/W4 /WX)
+endif()
 
 message("Compiler options setup...")
 
