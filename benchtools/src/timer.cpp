@@ -115,9 +115,10 @@ std::string return_current_time_and_date() {
     auto in_time_t = std::chrono::system_clock::to_time_t(now);
 
     struct tm time_info;
-#if defined(__GNUC__)
+#if defined(__GNUG__)
 #define COMPILER_GCC
-    localtime_r(&in_time_t, &time_info);
+    // localtime_r(&in_time_t, &time_info); WTF
+    localtime_s(&time_info, &in_time_t);
 #elif defined(_MSC_VER)
     localtime_s(&time_info, &in_time_t);
 #endif
