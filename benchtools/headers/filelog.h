@@ -13,7 +13,7 @@ public:
 	~Logger();
 
 	void log(const std::string& arg);
-	
+
 	void log(const double& arg);
 
 	void clear();
