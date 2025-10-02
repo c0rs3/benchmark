@@ -48,7 +48,7 @@ namespace benchtools {
         Timer();
 
         Timer(const timeunit& unit);
-#ifndef EXPLICIT_TIMER
+#if !EXPLICIT_TIMER
         /******************************************************************************
         * @brief Destructor of the timer class
         * @note define EXPLICIT_TIMER to explicit the destructor and manually call the destructor
