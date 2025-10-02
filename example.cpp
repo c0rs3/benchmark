@@ -1,3 +1,6 @@
+#define EXPLICIT_TIMER 0
+#define EXPLICIT_LOG 0
+
 #include <benchmark.h>
 
 using namespace benchtools;
