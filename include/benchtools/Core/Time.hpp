@@ -114,6 +114,6 @@ struct Duration {
 };
 
 [[nodiscard]] Duration durationCast(const std::chrono::duration<double>& duration,
-                                    time_unit unit);
+                                    time_unit unit) noexcept;
 
 }  // namespace benchtools

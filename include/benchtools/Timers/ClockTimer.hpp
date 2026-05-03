@@ -18,19 +18,19 @@ class ClockTimer : public BaseTimer {
      * @brief
      *
      */
-    void start() override;
+    void start() noexcept override;
 
     /**
      * @brief
      *
      */
-    void stop() override;
+    void stop() noexcept override;
 
     /**
      * @brief
      *
      */
-    void reset(bool) override;
+    void reset(bool) noexcept override;
 
     /**
      * @brief

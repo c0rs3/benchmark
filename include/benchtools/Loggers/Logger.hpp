@@ -8,33 +8,33 @@
 
 namespace benchtools {
 
-#define TRACE(...) benchtools::g_Logger.getLogger()->trace(__VA_ARGS__)
-#define INFO(...) benchtools::g_Logger.getLogger()->info(__VA_ARGS__)
-#define WARN(...) benchtools::g_Logger.getLogger()->warn(__VA_ARGS__)
-#define ERR(...) benchtools::g_Logger.getLogger()->error(__VA_ARGS__)
-#define CRITICAL(...) benchtools::g_Logger.getLogger()->critical(__VA_ARGS__)
+#define TRACE(...) benchtools::Logger::getInstance().getLogger()->trace(__VA_ARGS__)
+#define INFO(...) benchtools::Logger::getInstance().getLogger()->info(__VA_ARGS__)
+#define WARN(...) benchtools::Logger::getInstance().getLogger()->warn(__VA_ARGS__)
+#define ERR(...) benchtools::Logger::getInstance().getLogger()->error(__VA_ARGS__)
+#define CRITICAL(...) benchtools::Logger::getInstance().getLogger()->critical(__VA_ARGS__)
 
-/**
- * @brief spdlogger wrapper
- *
- */
 class Logger {
   public:
-    Logger() {
-        m_Logger = spdlog::stdout_color_mt("GLOBAL");
-        m_Logger->set_level(spdlog::level::trace);
+    Logger(const Logger&) = delete;
+    Logger& operator=(const Logger&) = delete;
+    Logger(Logger&&) = delete;
+    Logger& operator=(Logger&&) = delete;
+
+    static Logger& getInstance() {
+        static Logger instance;
+        return instance;
     }
 
     std::shared_ptr<spdlog::logger>& getLogger() { return m_Logger; }
 
   private:
+    Logger() {
+        m_Logger = spdlog::stdout_color_mt("GLOBAL");
+        m_Logger->set_level(spdlog::level::trace);
+    }
+
     std::shared_ptr<spdlog::logger> m_Logger;
 };
-
-/**
- * @brief Global logger object
- *
- */
-inline Logger g_Logger{};
 
 }  // namespace benchtools

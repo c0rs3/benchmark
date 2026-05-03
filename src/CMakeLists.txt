@@ -36,7 +36,7 @@ target_link_libraries(Loggers PUBLIC
 add_library(Timers
     Timers/BaseTimer.cpp
     Timers/ClockTimer.cpp
-    Timers/LoggerTimer.cpp
+    Timers/LoggingTimer.cpp
     Timers/ScopedTimer.cpp
     Timers/WallTimer.cpp
 )

@@ -14,13 +14,12 @@
 ## TODO
 
 - [x] File logging
-- [ ] File logging timer
-  - [x] CSV parser/writer
-  - [ ] A system to add logging timers so that it includes which lines/timers took what {time}
+- [x] File logging timer
+  - [x] CSV writer
+  - [x] A system to add logging timers so that it includes which lines/timers took what {time}
+  - [x] A system to see which timer took what time, store the line it started at display the duration of the timer in which line it was started?
+- [ ] A benchmarking system/task runner whatever
 - [ ] Proper documentation for each timer + README
-
-- [x] ScopedTimer should wrap a watchtimer just like how scoped_lock wraps a mutex
-~~- [ ] Port ClockTimer from clock() to std::chrono::process_clock~~ std::chrono::process_clock is not standard
 
 ---
 

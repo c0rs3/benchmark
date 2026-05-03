@@ -5,6 +5,7 @@
 
 #include <benchtools/Timers/FileTimer.hpp>
 #include <iostream>
+#include <thread>
 
 using namespace benchtools;
 using enum time_unit;
@@ -12,7 +13,7 @@ using enum time_unit;
 using namespace std::string_literals;
 
 int main() {
-#if 0
+#if 1
     WallTimer timer{};
     {
         ScopedTimer scop(timer);
@@ -52,7 +53,7 @@ int main() {
     CSVStream<3> stream{"text.csv", "id", "name", "email"};
     // stream.write("1", "tuna", "example@gmail.com");
     stream.write(a);
-#endif
+#elif 0
     WallTimer timer;
     FileTimer<WallTimer> tim{timer, "ig.txt"};
     {
@@ -60,4 +61,20 @@ int main() {
         std::cin.get();
         tim.stop();
     }
+    {
+        tim.start();
+        std::cin.get();
+        tim.stop();
+    }
+    {
+        tim.start();
+        std::cin.get();
+        tim.stop();
+    }
+    {
+        tim.start();
+        std::cin.get();
+        tim.stop();
+    }
+#endif
 }

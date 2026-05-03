@@ -3,16 +3,16 @@
 
 namespace benchtools {
 
-void ClockTimer::start() {
+void ClockTimer::start() noexcept{
     mStart = std::clock();
     mRunning = true;
 }
-void ClockTimer::stop() {
+void ClockTimer::stop() noexcept{
     mEnd = std::clock();
     mRunning = false;
 }
 
-void ClockTimer::reset(bool) {
+void ClockTimer::reset(bool) noexcept{
     mStart = 0;
     mEnd = 0;
 }

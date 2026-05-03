@@ -8,7 +8,8 @@
 
 namespace benchtools {
 
-Duration durationCast(const std::chrono::duration<double>& duration, time_unit unit) {
+Duration durationCast(const std::chrono::duration<double>& duration,
+                      time_unit unit) noexcept {
     switch (unit) {
     case time_unit::nanoseconds:
         return Duration{std::chrono::duration_cast<std::chrono::nanoseconds>(duration)};
@@ -108,8 +109,10 @@ std::string format(Duration dur) {
 time_date() noexcept {
     std::chrono::zoned_time zoned_time{std::chrono::current_zone(),
                                        std::chrono::system_clock::now()};
+
     zoned_time = {std::chrono::current_zone(),
                   floor<std::chrono::seconds>(zoned_time.get_local_time())};
+
     return zoned_time;
 };
 

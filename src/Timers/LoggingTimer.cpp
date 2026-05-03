@@ -1,8 +1,5 @@
-#include "benchtools/Core/Time.hpp"
 #include <benchtools/Loggers/Logger.hpp>
-#include <benchtools/Timers/LoggerTimer.hpp>
-
-#include <string>
+#include <benchtools/Timers/LoggingTimer.hpp>
 
 namespace benchtools {
 

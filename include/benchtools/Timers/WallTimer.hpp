@@ -23,32 +23,32 @@ class WallTimer : public BaseTimer {
      * @brief Construct a new Wall Timer object
      *
      */
-    WallTimer() = default;
+    explicit WallTimer() noexcept = default;
 
     /**
      * @brief Destroy the Wall Timer object
      *
      */
-    virtual ~WallTimer() override;
+    virtual ~WallTimer() noexcept override = default;
 
     /**
      * @brief
      *
      */
 
-    virtual void start() override;
+    virtual void start() noexcept override;
     /**
      * @brief
      *
      */
-    virtual void stop() override;
+    virtual void stop() noexcept override;
 
     /**
      * @brief
      *
      * @param reset
      */
-    virtual void reset(bool reset = 0) override;
+    virtual void reset(bool reset = 0) noexcept override;
 
     /**
      * @brief

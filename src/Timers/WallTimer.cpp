@@ -3,21 +3,19 @@
 
 namespace benchtools {
 
-WallTimer::~WallTimer() {}
-
-void WallTimer::start() {
+void WallTimer::start() noexcept {
     m_Start = std::chrono::high_resolution_clock::now();
     m_Running = true;
 }
 
-void WallTimer::stop() {
+void WallTimer::stop() noexcept {
     if (m_Running) {
         m_ElapsedTime += std::chrono::high_resolution_clock::now() - m_Start;
         m_Running = false;
     }
 }
 
-void WallTimer::reset(bool reset) {
+void WallTimer::reset(bool reset) noexcept {
     if (reset) m_ElapsedTime = default_duration;
     m_Running = false;
 }

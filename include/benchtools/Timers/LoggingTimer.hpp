@@ -22,7 +22,7 @@ class LoggingTimer {
      * @param timer
      * @param unit
      */
-    explicit LoggingTimer(BaseTimer& timer, time_unit unit = time_unit::seconds)
+    explicit LoggingTimer(BaseTimer& timer, time_unit unit = time_unit::seconds) noexcept
         : m_Timer(&timer), m_Unit(unit) {
         m_Timer->start();
     };
@@ -48,7 +48,7 @@ class LoggingTimer {
     void setUnit(time_unit unit) noexcept;
 
   private:
-    BaseTimer* m_Timer;
+    BaseTimer* m_Timer{};
     time_unit m_Unit{time_unit::seconds};
     std::atomic<bool> m_IsStopped{0};
 };

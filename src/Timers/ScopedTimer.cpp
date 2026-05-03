@@ -6,7 +6,7 @@
 
 namespace benchtools {
 
-ScopedTimer::ScopedTimer(BaseTimer& timer) : m_Timer(&timer) {
+ScopedTimer::ScopedTimer(BaseTimer& timer) noexcept : m_Timer(&timer) {
     this->getTimer().reset(true);
     this->getTimer().start();
 }

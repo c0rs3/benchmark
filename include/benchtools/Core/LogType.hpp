@@ -17,17 +17,17 @@ enum class LogType : uint8_t {
     switch (type) {
         using enum benchtools::LogType;
     case TIMER:
-        return " [TIMER] ";
+        return "[TIME] ";
     case INFO:
-        return " [INFO] ";
+        return "[INFO] ";
     case TRACE:
-        return " [TRACE] ";
+        return "[TRCE] ";
     case WARNING:
-        return " [WARNING] ";
+        return "[WARN] ";
     case ERROR:
-        return " [ERROR] ";
+        return "[ERRO] ";
     default:
-        return " [UNKNOWN ENUM] ";
+        return "[UNKN] ";
     }
 }
 };  // namespace benchtools
