@@ -119,7 +119,7 @@ int main() {
 #elif 1
 
     Task<void()> task{example};
-    Benchmark<void(), Policies::System> bench{task};
+    Benchmark<void(), Policies::CPU> bench{task};
     bench.run(5);
     std::clog << bench.avgDuration(time_unit::seconds);
 #elif 0

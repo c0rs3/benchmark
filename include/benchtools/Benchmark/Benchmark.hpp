@@ -3,9 +3,9 @@
 #include <benchtools/Core/Concepts.hpp>
 #include <benchtools/Core/Time.hpp>
 
-#include "benchtools/Timers/ScopedTimer.hpp"
 #include <benchtools/Timers/BaseTimer.hpp>
 #include <benchtools/Timers/ClockTimer.hpp>
+#include <benchtools/Timers/ScopedTimer.hpp>
 #include <benchtools/Timers/WallTimer.hpp>
 
 #include <benchtools/Benchmark/Policy.hpp>
@@ -17,16 +17,18 @@
 #include <type_traits>
 
 namespace benchtools {
-template <typename Task_Signature, typename Policy>
-    requires(is_policy<Policy>)
+template <typename Signature_t, typename Policy_t>
+    requires(is_policy<Policy_t>)
 class Benchmark {
   public:
     explicit Benchmark() noexcept = delete;
 
-    explicit Benchmark(Task<Task_Signature>& task) noexcept : m_BenchTask(task) {
-        if constexpr (std::is_same_v<Policy, WallTimer>) {
+    ~Benchmark() noexcept { delete m_Timer; }
+
+    explicit Benchmark(Task<Signature_t>& task) noexcept : m_BenchTask(task) {
+        if constexpr (std::is_same_v<Policy_t, WallTimer>) {
             m_Timer = new WallTimer{};
-        } else if constexpr (std::is_same_v<Policy, ClockTimer>) {
+        } else if constexpr (std::is_same_v<Policy_t, ClockTimer>) {
             m_Timer = new ClockTimer{};
         }
     }
@@ -50,12 +52,13 @@ class Benchmark {
     }
 
     [[nodiscard]] float avgDuration(time_unit unit = time_unit::seconds) const noexcept {
-        return m_AvgDuration.count();  // TODO: somehow make out the time unit of this
+        // TODO: somehow make out the time unit of this
+        return m_AvgDuration.count();
     }
 
   private:
-    Task<Task_Signature> m_BenchTask;
+    Task<Signature_t> m_BenchTask;
     std::chrono::duration<double> m_AvgDuration;
-    Policy* m_Timer;
+    Policy_t* m_Timer{};
 };
 }  // namespace benchtools

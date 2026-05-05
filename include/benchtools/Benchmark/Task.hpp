@@ -6,11 +6,11 @@
 
 namespace benchtools {
 
-template <typename Signature>
+template <typename Signature_t>
 struct Task {
-    Task(std::function<Signature> func) noexcept : m_Task(func) {}
+    explicit Task(std::function<Signature_t> func) noexcept : m_Task(func) {}
 
-    std::function<Signature> m_Task;
+    std::function<Signature_t> m_Task;
 };
 
 }  // namespace benchtools

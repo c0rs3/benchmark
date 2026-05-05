@@ -50,6 +50,11 @@ IndentAccessModifiers: false
 IncludeBlocks: Preserve
 SortIncludes: true
 
+# Templates
+AlwaysBreakTemplateDeclarations: Yes
+
+#namespaces 
+NamespaceIndentation: Inner
 # Language
 Language: Cpp
 Standard: c++20

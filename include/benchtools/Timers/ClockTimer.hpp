@@ -38,9 +38,9 @@ class ClockTimer : public BaseTimer {
      * @param durationType
      * @return Duration
      */
-    [[nodiscard]] Duration duration(time_unit durationType = time_unit::seconds) const noexcept override;
+    [[nodiscard]] Duration
+    duration(time_unit durationType = time_unit::seconds) const noexcept override;
 
-  private:
     /**
      * @brief
      *
