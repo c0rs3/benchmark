@@ -38,7 +38,7 @@ class ClockTimer : public BaseTimer {
      * @param durationType
      * @return Duration
      */
-    [[nodiscard]] Duration duration(time_unit durationType = time_unit::seconds) noexcept override;
+    [[nodiscard]] Duration duration(time_unit durationType = time_unit::seconds) const noexcept override;
 
   private:
     /**
@@ -46,7 +46,7 @@ class ClockTimer : public BaseTimer {
      *
      * @return std::chrono::duration<double>
      */
-    [[nodiscard]] std::chrono::duration<double> currentElapsed() noexcept override;
+    [[nodiscard]] std::chrono::duration<double> currentElapsed() const noexcept override;
 
   private:
     std::clock_t mStart{0};

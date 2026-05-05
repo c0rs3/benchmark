@@ -8,8 +8,8 @@
 
 namespace benchtools {
 
-Duration durationCast(const std::chrono::duration<double>& duration,
-                      time_unit unit) noexcept {
+Duration getDuration(const std::chrono::duration<double>& duration,
+                     time_unit unit) noexcept {
     switch (unit) {
     case time_unit::nanoseconds:
         return Duration{std::chrono::duration_cast<std::chrono::nanoseconds>(duration)};
@@ -35,6 +35,34 @@ Duration durationCast(const std::chrono::duration<double>& duration,
         return Duration{std::chrono::duration_cast<std::chrono::seconds>(duration)};
     }
 }
+
+std::chrono::duration<double> durationCast(const std::chrono::duration<double>& duration,
+                                           time_unit unit) noexcept {
+    switch (unit) {
+    case time_unit::nanoseconds:
+        return std::chrono::duration_cast<std::chrono::nanoseconds>(duration);
+    case time_unit::microseconds:
+        return std::chrono::duration_cast<std::chrono::microseconds>(duration);
+    case time_unit::milliseconds:
+        return std::chrono::duration_cast<std::chrono::milliseconds>(duration);
+    case time_unit::seconds:
+        return std::chrono::duration_cast<std::chrono::seconds>(duration);
+    case time_unit::minutes:
+        return std::chrono::duration_cast<std::chrono::minutes>(duration);
+    case time_unit::hours:
+        return std::chrono::duration_cast<std::chrono::hours>(duration);
+    case time_unit::days:
+        return std::chrono::duration_cast<std::chrono::days>(duration);
+    case time_unit::weeks:
+        return std::chrono::duration_cast<std::chrono::weeks>(duration);
+    case time_unit::months:
+        return std::chrono::duration_cast<std::chrono::months>(duration);
+    case time_unit::years:
+        return std::chrono::duration_cast<std::chrono::years>(duration);
+    default:
+        return std::chrono::duration_cast<std::chrono::seconds>(duration);
+    }
+};
 
 std::string format(benchtools::time_unit unit) {
     switch (unit) {

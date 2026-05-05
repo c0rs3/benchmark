@@ -28,7 +28,7 @@ class FileLogger {
             ss << contents;
         }
         ss << "\n";
-        
+
         m_Stream.append(ss.str());
         ss.flush();
     }

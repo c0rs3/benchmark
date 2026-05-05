@@ -20,11 +20,11 @@ void WallTimer::reset(bool reset) noexcept {
     m_Running = false;
 }
 
-Duration WallTimer::duration(time_unit durationType) noexcept {
-    return durationCast(m_ElapsedTime, durationType);
+Duration WallTimer::duration(time_unit durationType) const noexcept {
+    return getDuration(m_ElapsedTime, durationType);
 }
 
-std::chrono::duration<double> WallTimer::currentElapsed() noexcept {
+std::chrono::duration<double> WallTimer::currentElapsed() const noexcept {
     return std::chrono::high_resolution_clock::now() - m_Start;
 }
 

@@ -19,7 +19,7 @@ class FileStream {
     void clear() noexcept;
 
   private:
-    std::fstream m_Stream;
+    std::ofstream m_Stream;
     File m_File;
 };
 }  // namespace benchtools

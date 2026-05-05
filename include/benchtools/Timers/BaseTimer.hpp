@@ -6,10 +6,6 @@
 
 namespace benchtools {
 
-class WallTimer;
-
-using Timer = WallTimer;
-
 /**
  * @brief Base class for timers, used as a blueprint for what a timer should do
  */
@@ -32,7 +28,7 @@ class BaseTimer {
     /**
      * @brief Resets the timer duration
      */
-    virtual void reset(bool) = 0;
+    virtual void reset(bool val = true) = 0;
 
     /**
      * @brief Gets the duration in the respective timeunit
@@ -41,8 +37,8 @@ class BaseTimer {
      * @return Duration
      */
     [[nodiscard]] virtual Duration
-    duration(time_unit durationType = time_unit::seconds) noexcept {
-        return durationCast(default_duration, time_unit::seconds);
+    duration(time_unit durationType = time_unit::seconds) const noexcept {
+        return getDuration(default_duration, durationType);
     };
 
   private:
@@ -51,7 +47,7 @@ class BaseTimer {
      *
      * @return std::chrono::duration<double>
      */
-    virtual std::chrono::duration<double> currentElapsed() noexcept = 0;
+    virtual std::chrono::duration<double> currentElapsed() const noexcept = 0;
 };
 
 }  // namespace benchtools

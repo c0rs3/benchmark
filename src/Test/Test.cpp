@@ -1,25 +1,42 @@
-#include "benchtools/Timers/WallTimer.hpp"
+#include "benchtools/Benchmark/Task.hpp"
+#include <benchtools/Benchmark/Benchmark.hpp>
+
+#include "benchtools/Core/Time.hpp"
 #include <benchtools/Core/CSVStream.hpp>
+
 #include <benchtools/Loggers/FileLogger.hpp>
+
 #include <benchtools/Timers.hpp>
 
-#include <benchtools/Timers/FileTimer.hpp>
 #include <iostream>
-#include <thread>
 
 using namespace benchtools;
+using namespace std::string_literals;
+using namespace std::chrono_literals;
 using enum time_unit;
 
-using namespace std::string_literals;
+void example() {
+    std::clog << "Test\n";
+    std::cin.get();
+}
 
 int main() {
-#if 1
+#if 0
     WallTimer timer{};
     {
         ScopedTimer scop(timer);
         std::cin.get();
     }
+    std::clog << timer.duration(nanoseconds).str() << std::endl;
+    std::clog << timer.duration(microseconds).str() << std::endl;
+    std::clog << timer.duration(milliseconds).str() << std::endl;
     std::clog << timer.duration(seconds).str() << std::endl;
+    std::clog << timer.duration(minutes).str() << std::endl;
+    std::clog << timer.duration(hours).str() << std::endl;
+    std::clog << timer.duration(days).str() << std::endl;
+    std::clog << timer.duration(weeks).str() << std::endl;
+    std::clog << timer.duration(months).str() << std::endl;
+    std::clog << timer.duration(years).str() << std::endl;
     {
         ScopedTimer scop(timer);
         std::cin.get();
@@ -30,22 +47,41 @@ int main() {
         std::cin.get();
     }
     std::clog << timer.duration(seconds).str() << std::endl;
-    timer.reset();
 #elif 0
     ClockTimer timer{};
     {
-        LoggingTimer login{timer, nanoseconds};
+        ScopedTimer tim{timer};
         std::cin.get();
     }
+    std::clog << timer.duration(nanoseconds).str() << std::endl;
+    std::clog << timer.duration(microseconds).str() << std::endl;
+    std::clog << timer.duration(milliseconds).str() << std::endl;
+    std::clog << timer.duration(seconds).str() << std::endl;
+    std::clog << timer.duration(minutes).str() << std::endl;
+    std::clog << timer.duration(hours).str() << std::endl;
+    std::clog << timer.duration(days).str() << std::endl;
+    std::clog << timer.duration(weeks).str() << std::endl;
+    std::clog << timer.duration(months).str() << std::endl;
+    std::clog << timer.duration(years).str() << std::endl;
     {
-        LoggingTimer login{timer, nanoseconds};
+        ScopedTimer tim{timer};
         std::cin.get();
-        login.stop();
     }
+    std::clog << timer.duration(nanoseconds).str() << std::endl;
+    std::clog << timer.duration(microseconds).str() << std::endl;
+    std::clog << timer.duration(milliseconds).str() << std::endl;
+    std::clog << timer.duration(seconds).str() << std::endl;
+    std::clog << timer.duration(minutes).str() << std::endl;
+    std::clog << timer.duration(hours).str() << std::endl;
+    std::clog << timer.duration(days).str() << std::endl;
+    std::clog << timer.duration(weeks).str() << std::endl;
+    std::clog << timer.duration(months).str() << std::endl;
+    std::clog << timer.duration(years).str() << std::endl;
 #elif 0
+
     FileLogger a{"ig.txt"};
     for (auto x{0}; x < 25; x++) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
         a.Log("Something", LogType(x % 5));
     }
 #elif 0
@@ -55,7 +91,11 @@ int main() {
     stream.write(a);
 #elif 0
     WallTimer timer;
-    FileTimer<WallTimer> tim{timer, "ig.txt"};
+    /**
+     * @brief Retarded time unit setting does not work at all
+     *
+     */
+    FileTimer<WallTimer> tim{timer, "ig.txt", time_unit::seconds};
     {
         tim.start();
         std::cin.get();
@@ -76,5 +116,12 @@ int main() {
         std::cin.get();
         tim.stop();
     }
+#elif 1
+
+    Task<void()> task{example};
+    Benchmark<void(), Policies::System> bench{task};
+    bench.run(5);
+    std::clog << bench.avgDuration(time_unit::seconds);
+#elif 0
 #endif
 }

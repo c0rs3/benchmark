@@ -1,5 +1,7 @@
 #pragma once
 
+#include "benchtools/Core/Time.hpp"
+#include "benchtools/Timers/BaseTimer.hpp"
 #include <benchtools/Core/Concepts.hpp>
 #include <benchtools/Core/LogType.hpp>
 #include <benchtools/Loggers/FileLogger.hpp>
@@ -20,7 +22,8 @@ class FileTimer {
   public:
     explicit FileTimer() = delete;
 
-    explicit FileTimer(timer_t& timer, std::string_view path) noexcept
+    explicit FileTimer(timer_t& timer, std::string_view path,
+                       time_unit unit = time_unit::seconds) noexcept
         : m_Timer(&timer), m_Logger(path) {}
 
     void start(std::source_location loc = std::source_location::current()) noexcept {
@@ -42,14 +45,17 @@ class FileTimer {
         std::stringstream ss;
         ss << loc.file_name() << ":" << loc.line() << " "
            << "Timer started at: " << m_ID.line() << ":" << m_ID.column()
-           << ", resulted with:" << " " << m_Timer->duration().str();
+           << ", resulted with:" << " " << m_Timer->duration(m_Unit).str();
 
         m_Logger.Log(ss.str(), LogType::TIMER);
     }
 
+    void setUnit(time_unit unit) noexcept { m_Unit = unit; }
+
   private:
     std::source_location m_ID;
     FileLogger m_Logger;
-    timer_t* m_Timer{};
+    time_unit m_Unit;
+    BaseTimer* m_Timer{};
 };
 };  // namespace benchtools
