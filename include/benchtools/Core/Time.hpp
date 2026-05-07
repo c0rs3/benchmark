@@ -33,6 +33,55 @@ enum class time_unit : uint8_t {
 };
 
 /**
+ * @brief type interface for time_unit -> chrono
+ *
+ * @tparam Unit
+ */
+template <time_unit Unit>
+struct chrono_duration_type;
+
+template <>
+struct chrono_duration_type<time_unit::nanoseconds> {
+    using type = std::chrono::nanoseconds;
+};
+template <>
+struct chrono_duration_type<time_unit::microseconds> {
+    using type = std::chrono::microseconds;
+};
+template <>
+struct chrono_duration_type<time_unit::milliseconds> {
+    using type = std::chrono::milliseconds;
+};
+template <>
+struct chrono_duration_type<time_unit::seconds> {
+    using type = std::chrono::seconds;
+};
+template <>
+struct chrono_duration_type<time_unit::minutes> {
+    using type = std::chrono::minutes;
+};
+template <>
+struct chrono_duration_type<time_unit::hours> {
+    using type = std::chrono::hours;
+};
+template <>
+struct chrono_duration_type<time_unit::days> {
+    using type = std::chrono::days;
+};
+template <>
+struct chrono_duration_type<time_unit::weeks> {
+    using type = std::chrono::weeks;
+};
+template <>
+struct chrono_duration_type<time_unit::months> {
+    using type = std::chrono::months;
+};
+template <>
+struct chrono_duration_type<time_unit::years> {
+    using type = std::chrono::years;
+};
+
+/**
  * @brief returns the unit enum as a string
  *
  * @param unit
@@ -65,12 +114,30 @@ format(std::chrono::zoned_time<std::chrono::duration<double>> time_point) noexce
  */
 [[nodiscard]] std::chrono::zoned_time<std::chrono::duration<double>> time_date() noexcept;
 
+/**
+ * @brief Get the Duration object
+ *
+ * @param duration
+ * @param unit
+ * @return Duration
+ */
 [[nodiscard]] Duration getDuration(const std::chrono::duration<double>& duration,
                                    time_unit unit) noexcept;
-
+/**
+ * @brief
+ *
+ * @param duration
+ * @param unit
+ * @return std::chrono::duration<double>
+ */
 [[nodiscard]] std::chrono::duration<double>
 durationCast(const std::chrono::duration<double>& duration, time_unit unit) noexcept;
 
+/**
+ * @brief
+ *
+ * @tparam T
+ */
 template <typename T>
     requires(std::is_same_v<T, float> || std::is_same_v<T, double>)
 [[nodiscard]] time_unit get_unit(std::chrono::duration<T> dur) {
@@ -112,12 +179,6 @@ struct Duration {
      * @param dur
      */
     explicit Duration(duration_t dur) noexcept : m_Duration(dur) {};
-
-    // explicit Duration(std::chrono::duration<double> chrono_dur,
-    //                   time_unit unit = time_unit::seconds) noexcept {
-    //     // TODO: idk
-    //     // m_Duration = durationCast(chrono_dur, time_unit::seconds);
-    // };
 
   public:
     /**

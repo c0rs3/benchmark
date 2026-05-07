@@ -1,7 +1,5 @@
 #pragma once
 
-#include <benchtools/Core/Time.hpp>
-
 #include <functional>
 
 namespace benchtools {

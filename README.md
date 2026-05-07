@@ -21,6 +21,7 @@
 - [x] A benchmarking system/task runner whatever
   - [x] Polish benchmarking module code
 - [ ] CSV Output of benchmark results
+- [ ] ImPlot of results??
 - [ ] More polishing
 - [ ] Proper documentation for each timer + README
 

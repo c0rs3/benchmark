@@ -1,22 +1,24 @@
-#include "benchtools/Benchmark/Task.hpp"
+
 #include <benchtools/Benchmark/Benchmark.hpp>
 
-#include "benchtools/Core/Time.hpp"
 #include <benchtools/Core/CSVStream.hpp>
 
 #include <benchtools/Loggers/FileLogger.hpp>
 
 #include <benchtools/Timers.hpp>
 
-#include <iostream>
-
 using namespace benchtools;
-using namespace std::string_literals;
-using namespace std::chrono_literals;
 using enum time_unit;
 
-void example() {
-    std::clog << "Test\n";
+#include <cstdint>
+#include <iostream>
+
+using namespace std::string_literals;
+using namespace std::chrono_literals;
+
+void example_callable() {
+    static uint32_t counter{0};
+    std::cout << "Test: " << ++counter << std::endl;
     std::cin.get();
 }
 
@@ -117,11 +119,8 @@ int main() {
         tim.stop();
     }
 #elif 1
-
-    Task<void()> task{example};
-    Benchmark<void(), Policies::CPU> bench{task};
-    bench.run(5);
-    std::clog << bench.avgDuration(time_unit::seconds).str();
+    std::clog << benchmark<Policy::Wall>(example_callable, 2);
 #elif 0
 #endif
+    return 0;
 }
