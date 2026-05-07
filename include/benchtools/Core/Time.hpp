@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <type_traits>
 #include <variant>
 
 namespace benchtools {
@@ -69,6 +70,22 @@ format(std::chrono::zoned_time<std::chrono::duration<double>> time_point) noexce
 
 [[nodiscard]] std::chrono::duration<double>
 durationCast(const std::chrono::duration<double>& duration, time_unit unit) noexcept;
+
+template <typename T>
+    requires(std::is_same_v<T, float> || std::is_same_v<T, double>)
+[[nodiscard]] time_unit get_unit(std::chrono::duration<T> dur) {
+    T abs_value = dur.count();
+
+    if (abs_value >= 1.0) {
+        return time_unit::seconds;
+    } else if (abs_value >= 1e-3) {
+        return time_unit::milliseconds;
+    } else if (abs_value >= 1e-6) {
+        return time_unit::microseconds;
+    } else {
+        return time_unit::nanoseconds;
+    }
+};
 
 /**
  * @brief Duration wrapper for the duration_t variant

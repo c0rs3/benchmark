@@ -41,6 +41,7 @@ class Benchmark {
             }
             m_AvgDuration += m_Timer->currentElapsed();
         }
+
         std::clog << "Total dur:\n";
         std::clog << Duration(getDuration(m_AvgDuration, time_unit::seconds)).str()
                   << std::endl;
@@ -51,9 +52,11 @@ class Benchmark {
         std::clog << m_AvgDuration << "\n";
     }
 
-    [[nodiscard]] float avgDuration(time_unit unit = time_unit::seconds) const noexcept {
+    [[nodiscard]] Duration
+    avgDuration(time_unit unit = time_unit::seconds) const noexcept {
         // TODO: somehow make out the time unit of this
-        return m_AvgDuration.count();
+        // std::clog << format(get_unit(m_AvgDuration));
+        return getDuration(m_AvgDuration, get_unit(m_AvgDuration));
     }
 
   private:
