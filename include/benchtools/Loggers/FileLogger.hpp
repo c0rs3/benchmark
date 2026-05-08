@@ -13,7 +13,7 @@ namespace benchtools {
 
 class FileLogger {
   public:
-    explicit FileLogger(std::string_view path) noexcept;
+    explicit FileLogger(std::string_view path, fmode fmode = fileopen::append) noexcept;
 
     void Log(std::string_view content, LogType type = LogType::INFO) noexcept;
 

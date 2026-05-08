@@ -11,7 +11,8 @@
 
 namespace benchtools {
 
-template <size_t N> class CSVStream {
+template <size_t N>
+class CSVStream {
 
   public:
     explicit CSVStream() noexcept = delete;
@@ -23,8 +24,9 @@ template <size_t N> class CSVStream {
      */
     template <typename... Args>
         requires(sizeof...(Args) == N) && (convertible_to_string<Args> && ...)
-    explicit CSVStream(std::string_view path, Args&&... args) noexcept
-        : m_Stream(path), m_Headers{std::forward<Args>(args)...} {
+    explicit CSVStream(std::string_view path, benchtools::fmode fmode = fileopen::append,
+                       Args&&... args) noexcept
+        : m_Stream(path, fmode), m_Headers{std::forward<Args>(args)...} {
         uint8_t l_counter{1};
         for (const auto& header : m_Headers) {
             m_Stream.append(std::string(header));
@@ -79,9 +81,9 @@ template <size_t N> class CSVStream {
      *
      * @tparam L must be equal to header size of CSV Handler
      */
-    template <size_t L>
-        requires(N == L)
-    void write(std::array<std::string_view, L> contents) noexcept {
+    template <typename str_t, size_t L>
+        requires(N == L) && (convertible_to_string<str_t>)
+    void write(std::array<str_t, L> contents) noexcept {
         uint8_t l_counter{1};
         for (const auto& content : contents) {
             m_Stream.append(std::string(content));

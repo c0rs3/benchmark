@@ -1,4 +1,3 @@
-
 #include <benchtools/Benchmark/Benchmark.hpp>
 
 #include <benchtools/Core/CSVStream.hpp>
