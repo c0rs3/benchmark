@@ -11,11 +11,11 @@ namespace benchtools {
  * @brief type for file open modes
  *
  */
-using fmode = std::_Ios_Openmode;
+using fmode = std::ios_base::openmode;
 
 namespace fileopen {
-    constexpr inline auto append = std::ios::app | std::ios::out;
-    constexpr inline auto clear = std::ios::trunc | std::ios::out;
+    constexpr inline fmode&& append = std::ios::app | std::ios::out;
+    constexpr inline fmode&& clear = std::ios::trunc | std::ios::out;
 };  // namespace fileopen
 
 /**

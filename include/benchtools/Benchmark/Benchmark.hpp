@@ -1,6 +1,5 @@
 #pragma once
 
-#include "benchtools/Core/FileStream.hpp"
 #include <benchtools/Benchmark/Policy.hpp>
 
 #include <benchtools/Timers/ClockTimer.hpp>
@@ -12,8 +11,6 @@
 #include <chrono>
 #include <cstdint>
 #include <functional>
-#include <ios>
-#include <iostream>
 #include <string>
 #include <string_view>
 #include <type_traits>
