@@ -10,7 +10,6 @@ FetchContent_MakeAvailable(spdlog)
 
 ######## CORE ######## 
 add_library(Core
-    Core/FileStream.cpp
     Core/Time.cpp
 )
 target_include_directories(Core
@@ -18,6 +17,16 @@ target_include_directories(Core
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
 target_compile_features(Core PUBLIC cxx_std_20)
+
+######## File ######## 
+add_library(File
+    File/FileStream.cpp
+)
+target_include_directories(File
+    PUBLIC
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+)
+target_compile_features(File PUBLIC cxx_std_20)
 
 ######## LOGGER ######## 
 add_library(Loggers
@@ -30,6 +39,7 @@ target_include_directories(Loggers
 target_compile_features(Loggers PUBLIC cxx_std_20)
 target_link_libraries(Loggers PUBLIC 
     Core
+    File
     spdlog::spdlog)
 
 ######## TIMER ######## 

@@ -5,7 +5,7 @@
 #include <benchtools/Timers/ClockTimer.hpp>
 #include <benchtools/Timers/WallTimer.hpp>
 
-#include <benchtools/Core/CSVStream.hpp>
+#include <benchtools/File/CSVStream.hpp>
 
 #include <array>
 #include <chrono>
@@ -29,7 +29,7 @@ namespace benchtools {
  */
 template <Policy P, typename Callable, typename... Args>
 [[nodiscard]] auto benchmark(Callable&& callable, int iterations, Args&&... args) {
-    CSVStream<3> CSVResults{"result.csv", fileopen::clear, "timerid", "type", "dur"};
+    CSVStream<3> CSVResults{"result.csv", fileopen::insert, "timerid", "type", "dur"};
 
     std::chrono::duration<double> total{default_duration};
 

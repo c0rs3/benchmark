@@ -1,6 +1,8 @@
+#if 1
 #include <benchtools/Benchmark/Benchmark.hpp>
 
-#include <benchtools/Core/CSVStream.hpp>
+#include <benchtools/File/CSVParser.hpp>
+#include <benchtools/File/CSVStream.hpp>
 
 #include <benchtools/Loggers/FileLogger.hpp>
 
@@ -117,9 +119,11 @@ int main() {
         std::cin.get();
         tim.stop();
     }
-#elif 1
+#elif 0
     std::clog << benchmark<Policy::Wall>(example_callable, 2);
 #elif 0
+    CSVParser<3> p{"result.csv"};
 #endif
     return 0;
 }
+#endif

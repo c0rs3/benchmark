@@ -1,7 +1,7 @@
 #pragma once
 
 #include <benchtools/Core/Concepts.hpp>
-#include <benchtools/Core/FileStream.hpp>
+#include <benchtools/File/FileStream.hpp>
 
 #include <array>
 #include <cstddef>

@@ -1,6 +1,6 @@
-#include <benchtools/Core/FileStream.hpp>
 #include <benchtools/Core/LogType.hpp>
 #include <benchtools/Core/Time.hpp>
+#include <benchtools/File/FileStream.hpp>
 #include <benchtools/Loggers/FileLogger.hpp>
 
 #include <sstream>
