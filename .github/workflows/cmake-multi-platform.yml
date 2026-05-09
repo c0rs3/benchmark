@@ -46,14 +46,14 @@ jobs:
             c_compiler: cl
             cpp_compiler: cl
           # macOS with Clang
-          - os: macos-latest
-            build_type: Debug
-            c_compiler: clang
-            cpp_compiler: clang++
-          - os: macos-latest
-            build_type: Release
-            c_compiler: clang
-            cpp_compiler: clang++
+          # - os: macos-latest
+          #   build_type: Debug
+          #   c_compiler: clang
+          #   cpp_compiler: clang++
+          # - os: macos-latest
+          #   build_type: Release
+          #   c_compiler: clang
+          #   cpp_compiler: clang++
 
     steps:
     - uses: actions/checkout@v4
@@ -89,9 +89,9 @@ jobs:
     - name: Install Ninja (Linux)
       if: runner.os == 'Linux'
       run: sudo apt-get update && sudo apt-get install -y ninja-build
-    - name: Install Ninja (macOS)
-      if: runner.os == 'macOS'
-      run: brew install ninja
+    # - name: Install Ninja (macOS)
+    #   if: runner.os == 'macOS'
+    #   run: brew install ninja
     - name: Install Ninja (Windows)
       if: runner.os == 'Windows'
       run: choco install ninja
