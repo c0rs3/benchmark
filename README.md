@@ -20,8 +20,12 @@
   - [x] A system to see which timer took what time, store the line it started at display the duration of the timer in which line it was started?
 - [x] A benchmarking system/task runner whatever
   - [x] Polish benchmarking module code
-- [ ] CSV Output of benchmark results
-- [ ] ImPlot of results??
+- [x] CSV Output of benchmark results
+- [x] CSV Parsing of benchmark results
+- [ ] ImPlot of results
+  - [ ] Base code
+  - [ ] Make the plotting into a global static method/singleton in a separate module
+  - [ ] Polish the code
 - [ ] More polishing
 - [ ] Proper documentation for each timer + README
 
