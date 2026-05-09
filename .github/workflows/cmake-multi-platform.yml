@@ -58,6 +58,27 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    # ---------- Windows: Set up MSVC environment ----------
+    - name: Setup MSVC environment (Windows)
+      if: runner.os == 'Windows'
+      uses: ilammy/msvc-dev-cmd@v1
+
+    # ---------- Linux: Install build dependencies ----------
+    - name: Install Linux dependencies
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libwayland-dev wayland-protocols \
+          libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
+          libgl1-mesa-dev
+
+    # ---------- macOS: Optionally install dependencies ----------
+    # (Add if you later fix macOS support)
+    # - name: Install macOS dependencies
+    #   if: runner.os == 'macOS'
+    #   run: brew install glfw wayland
+
     - name: Set reusable strings
       id: strings
       shell: bash
