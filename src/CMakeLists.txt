@@ -7,61 +7,66 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(spdlog)
 
-# Dear ImGui (required by ImPlot)
-FetchContent_Declare(
-    imgui
-    GIT_REPOSITORY https://github.com/ocornut/imgui.git
-    GIT_TAG        v1.91.0
-)
-FetchContent_MakeAvailable(imgui)
+option(APP "APP" OFF)
 
-# GLFW (for the ImGui GLFW backend) – must be fetched before imgui uses it
-FetchContent_Declare(
-    glfw
-    GIT_REPOSITORY https://github.com/glfw/glfw.git
-    GIT_TAG        3.4
-)
-FetchContent_MakeAvailable(glfw)
+if (APP)
+    # Dear ImGui (required by ImPlot)
+    FetchContent_Declare(
+        imgui
+        GIT_REPOSITORY https://github.com/ocornut/imgui.git
+        GIT_TAG        v1.91.0
+    )
+    FetchContent_MakeAvailable(imgui)
 
-add_library(imgui STATIC
-    ${imgui_SOURCE_DIR}/imgui.cpp
-    ${imgui_SOURCE_DIR}/imgui_draw.cpp
-    ${imgui_SOURCE_DIR}/imgui_tables.cpp
-    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
-    ${imgui_SOURCE_DIR}/imgui_demo.cpp
-    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
-    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
-)
-target_include_directories(imgui PUBLIC
-    ${imgui_SOURCE_DIR}
-    ${imgui_SOURCE_DIR}/backends
-)
-target_link_libraries(imgui PUBLIC glfw)
+    # GLFW (for the ImGui GLFW backend) – must be fetched before imgui uses it
+    FetchContent_Declare(
+        glfw
+        GIT_REPOSITORY https://github.com/glfw/glfw.git
+        GIT_TAG        3.4
+    )
+    FetchContent_MakeAvailable(glfw)
 
-# ImPlot v1.0
-FetchContent_Declare(
-    implot
-    GIT_REPOSITORY https://github.com/epezent/implot.git
-    GIT_TAG        v1.0
-)
-FetchContent_MakeAvailable(implot)
+    add_library(imgui STATIC
+        ${imgui_SOURCE_DIR}/imgui.cpp
+        ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
+        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        ${imgui_SOURCE_DIR}/imgui_demo.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+    )
+    target_include_directories(imgui PUBLIC
+        ${imgui_SOURCE_DIR}
+        ${imgui_SOURCE_DIR}/backends
+    )
+    target_link_libraries(imgui PUBLIC glfw)
 
-add_library(implot STATIC
-    ${implot_SOURCE_DIR}/implot.cpp
-    ${implot_SOURCE_DIR}/implot_items.cpp
-)
-target_include_directories(implot PUBLIC ${implot_SOURCE_DIR})
-target_link_libraries(implot PUBLIC imgui)
 
-# Platform OpenGL linkage (required by the OpenGL3 backend)
-if(UNIX AND NOT APPLE)
-    find_package(OpenGL REQUIRED)
-    target_link_libraries(imgui PUBLIC OpenGL::GL)
-elseif(APPLE)
-    find_library(OPENGL_LIBRARY OpenGL)
-    target_link_libraries(imgui PUBLIC ${OPENGL_LIBRARY})
-elseif(WIN32)
-    target_link_libraries(imgui PUBLIC opengl32)
+    # ImPlot v1.0
+    FetchContent_Declare(
+        implot
+        GIT_REPOSITORY https://github.com/epezent/implot.git
+        GIT_TAG        v1.0
+    )
+    FetchContent_MakeAvailable(implot)
+
+    add_library(implot STATIC
+        ${implot_SOURCE_DIR}/implot.cpp
+        ${implot_SOURCE_DIR}/implot_items.cpp
+    )
+    target_include_directories(implot PUBLIC ${implot_SOURCE_DIR})
+    target_link_libraries(implot PUBLIC imgui)
+
+    # Platform OpenGL linkage (required by the OpenGL3 backend)
+    if(UNIX AND NOT APPLE)
+        find_package(OpenGL REQUIRED)
+        target_link_libraries(imgui PUBLIC OpenGL::GL)
+    elseif(APPLE)
+        find_library(OPENGL_LIBRARY OpenGL)
+        target_link_libraries(imgui PUBLIC ${OPENGL_LIBRARY})
+    elseif(WIN32)
+        target_link_libraries(imgui PUBLIC opengl32)
+    endif()
 endif()
 
 ######## CORE ######## 
@@ -125,7 +130,7 @@ target_link_libraries(benchtools_testing PRIVATE Timers)
 target_compile_features(benchtools_testing PRIVATE cxx_std_20)
 endif()
 
-option(APP "APP" OFF)
+
 if(APP)
 add_subdirectory(App)
 endif()
