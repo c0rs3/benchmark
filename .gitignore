@@ -2,7 +2,6 @@
 *.json
 build
 /.cache/
-/.cache/
 
 # VSCode
 .vscode
