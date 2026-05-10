@@ -1,6 +1,7 @@
 
 #include "benchtools/Benchmark/Policy.hpp"
 #include "benchtools/Core/Time.hpp"
+#include "benchtools/File/File.hpp"
 #include "benchtools/Loggers/Logger.hpp"
 #include <benchtools/Benchmark/Benchmark.hpp>
 
@@ -109,13 +110,9 @@ int main() {
     CSVStream<3> stream{"text.csv", "id", "name", "email"};
     // stream.write("1", "tuna", "example@gmail.com");
     stream.write(a);
-#elif 0
-    WallTimer timer;
-    /**
-     * @brief Retarded time unit setting does not work at all
-     *
-     */
-    FileTimer<WallTimer> tim{timer, "ig.txt", time_unit::seconds};
+#elif 1
+    ClockTimer timer;
+    FileTimer<ClockTimer> tim{timer, "log.txt", time_unit::nanoseconds, fileopen::append};
     {
         tim.start();
         std::cin.get();

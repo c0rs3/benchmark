@@ -1,8 +1,8 @@
 #pragma once
 
 #include <benchtools/Core/Concepts.hpp>
-#include <benchtools/File/FileStream.hpp>
 #include <benchtools/File/File.hpp>
+#include <benchtools/File/FileStream.hpp>
 
 #include <array>
 #include <cstddef>
@@ -14,8 +14,8 @@ namespace benchtools {
 
 /**
  * @brief Creates a csv file and a stream to it
- * 
- * @tparam N 
+ *
+ * @tparam N
  */
 template <size_t N>
 class CSVStream {
