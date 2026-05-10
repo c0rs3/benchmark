@@ -23,11 +23,25 @@ class FileTimer {
   public:
     explicit FileTimer() = delete;
 
+    /**
+     * @brief Construct a new FileTimer object
+     *
+     * @param timer
+     * @param path
+     * @param unit
+     * @param filemode
+     */
     explicit FileTimer(timer_t& timer, std::string_view path,
                        time_unit unit = time_unit::seconds,
                        fmode filemode = fileopen::insert) noexcept
         : m_Timer(&timer), m_Logger(path), m_Unit(unit) {}
 
+    /**
+     * @brief Logs the timer started with the current time and date and at which line it
+     * started
+     *
+     * @param loc
+     */
     void start(std::source_location loc = std::source_location::current()) noexcept {
         m_ID = loc;
 
@@ -41,6 +55,12 @@ class FileTimer {
         m_Logger.Log(ss.str(), LogType::TIMER);
     }
 
+    /**
+     * @brief Logs the timer finished with the current time and date and at which line it
+     * was started
+     *
+     * @param loc
+     */
     void stop(std::source_location loc = std::source_location::current()) noexcept {
         m_Timer->stop();
 
@@ -52,6 +72,11 @@ class FileTimer {
         m_Logger.Log(ss.str(), LogType::TIMER);
     }
 
+    /**
+     * @brief Sets the time unit
+     *
+     * @param unit
+     */
     void setUnit(time_unit unit) noexcept { m_Unit = unit; }
 
   private:

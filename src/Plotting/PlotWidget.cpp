@@ -1,6 +1,7 @@
-#include <benchtools/Plotting/DataLoader.hpp>
-#include <benchtools/Plotting/PlotWidget.hpp>
+#include <benchtools/Plotting/Data/DataLoader.hpp>
+#include <benchtools/Plotting/Widgets/PlotWidget.hpp>
 
+#include <execution>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -9,6 +10,7 @@
 #include <algorithm>
 #include <iostream>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 namespace benchtools {
@@ -26,11 +28,12 @@ namespace plotter {
     }
 
     void PlotWidget::SetData(std::string_view path) {
-        // TODO: Fix this expensive retarded copies
-        auto [axes, labels] = benchtools::plotter::DataLoader::LoadFromCSV(path);
-        m_xData = axes.first;
-        m_yData = axes.second;
-        m_Labels = labels;
+        auto&& [inner, labels] = benchtools::plotter::DataLoader::LoadFromCSV(path);
+        auto&& [xData, yData] = inner;
+
+        m_xData = std::move(xData);
+        m_yData = std::move(yData);
+        m_Labels = std::move(labels);
     }
 
     int PlotWidget::Run(int arg_count, char** arg_values) noexcept {
@@ -60,9 +63,8 @@ namespace plotter {
         std::vector<const char*> label_view;
         label_view.reserve(m_Labels.size());
 
-        for (const auto& s : m_Labels) {
-            label_view.push_back(s.c_str());
-        }
+        std::transform(std::execution::par_unseq, m_Labels.begin(), m_Labels.end(),
+                       label_view.begin(), [](std::string& a) { return a.c_str(); });
 
         while (!glfwWindowShouldClose(m_Window)) {
             glfwPollEvents();

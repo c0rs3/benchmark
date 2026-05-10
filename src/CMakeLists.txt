@@ -131,16 +131,20 @@ target_compile_features(Benchmark PUBLIC cxx_std_20)
 target_link_libraries(Benchmark PUBLIC Timers Core File)
 
 ######## PLOTTING ######## 
+
+find_package(TBB REQUIRED COMPONENTS tbb)
+
 add_library(Plotter
-Plotting/PlotWidget.cpp
-Plotting/DataLoader.cpp
+    Plotting/PlotWidget.cpp
+    Plotting/DataLoader.cpp
 )
-target_include_directories(Plotter
-PUBLIC
-$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+
+target_include_directories(Plotter PUBLIC
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
+
 target_compile_features(Plotter PUBLIC cxx_std_20)
-target_link_libraries(Plotter PUBLIC File Core implot imgui glfw)
+target_link_libraries(Plotter PUBLIC File Core implot imgui glfw TBB::tbb)
 
 
 ######## TESTING ######## 

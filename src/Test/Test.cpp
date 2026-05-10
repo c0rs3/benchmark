@@ -1,8 +1,6 @@
 
-#include "benchtools/Benchmark/Policy.hpp"
 #include "benchtools/Core/Time.hpp"
 #include "benchtools/File/File.hpp"
-#include "benchtools/Loggers/Logger.hpp"
 #include <benchtools/Benchmark/Benchmark.hpp>
 
 #include <benchtools/File/CSVParser.hpp>
@@ -26,9 +24,6 @@
 std::mt19937 engine{};
 std::uniform_int_distribution<int> a{1, 100};
 
-using namespace std::string_literals;
-using namespace std::chrono_literals;
-
 void example_callable() {
     static uint32_t counter{0};
     std::cout << "Test: " << ++counter << std::endl;
@@ -40,6 +35,8 @@ void example_callable2() {
 }
 
 int main() {
+    using namespace std::string_literals;
+    using namespace std::chrono_literals;
     using namespace benchtools;
     using enum time_unit;
 #if 0
@@ -110,7 +107,7 @@ int main() {
     CSVStream<3> stream{"text.csv", "id", "name", "email"};
     // stream.write("1", "tuna", "example@gmail.com");
     stream.write(a);
-#elif 1
+#elif 0
     ClockTimer timer;
     FileTimer<ClockTimer> tim{timer, "log.txt", time_unit::nanoseconds, fileopen::append};
     {

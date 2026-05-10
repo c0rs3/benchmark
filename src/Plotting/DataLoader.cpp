@@ -1,4 +1,4 @@
-#include <benchtools/Plotting/DataLoader.hpp>
+#include <benchtools/Plotting/Data/DataLoader.hpp>
 
 #include <algorithm>
 
@@ -14,9 +14,9 @@ namespace plotter {
 
         unitPart.erase(unitPart.begin(),
                        std::find_if(unitPart.begin(), unitPart.end(),
-                                    [](unsigned char ch) { return !std::isspace(ch); }));
+                                    [](char ch) { return !std::isspace(ch); }));
         std::transform(unitPart.begin(), unitPart.end(), unitPart.begin(),
-                       [](unsigned char c) { return std::tolower(c); });
+                       [](char c) { return std::tolower(c); });
 
         double value = std::stod(numberPart);
 
@@ -36,7 +36,7 @@ namespace plotter {
                             std::vector<std::string>>
     DataLoader::LoadFromCSV(std::string_view path) noexcept {
         // CSV rows
-        std::vector<std::array<std::string, 3>> rows = CSVParser<3>().getRows(path);
+        std::vector<std::array<std::string, 3>> rows = CSVParser<3>::getRows(path);
 
         // Graph data
         std::vector<double> x_data{}, y_data{};

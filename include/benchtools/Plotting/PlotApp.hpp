@@ -1,4 +1,4 @@
-#include <benchtools/Plotting/PlotWidget.hpp>
+#include <benchtools/Plotting/Widgets/PlotWidget.hpp>
 
 class PlotApp {
   public:

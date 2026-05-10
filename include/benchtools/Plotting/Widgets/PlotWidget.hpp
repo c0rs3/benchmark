@@ -18,7 +18,7 @@ namespace plotter {
         int Run(int arg_count, char** arg_values) noexcept;
 
         /**
-         * @brief Read CSV file
+         * @brief Reads CSV file and loads the data to member variables
          *
          * @param path
          */
