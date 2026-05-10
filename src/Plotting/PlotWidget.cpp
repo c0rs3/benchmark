@@ -1,8 +1,6 @@
 #include <benchtools/Plotting/DataLoader.hpp>
 #include <benchtools/Plotting/PlotWidget.hpp>
 
-#include <benchtools/Loggers/Logger.hpp>
-
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -61,10 +59,6 @@ namespace plotter {
 
         std::vector<const char*> label_view;
         label_view.reserve(m_Labels.size());
-
-        for (const auto& x : m_Labels) {
-            TRACE(x);
-        }
 
         for (const auto& s : m_Labels) {
             label_view.push_back(s.c_str());

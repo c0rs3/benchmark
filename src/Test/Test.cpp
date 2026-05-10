@@ -16,11 +16,7 @@
 #include <benchtools/Timers/WallTimer.hpp>
 #include <chrono>
 #include <random>
-#include <string>
 #include <thread>
-
-using namespace benchtools;
-using enum time_unit;
 
 #include <cstdint>
 #include <iostream>
@@ -43,6 +39,8 @@ void example_callable2() {
 }
 
 int main() {
+    using namespace benchtools;
+    using enum time_unit;
 #if 0
     WallTimer timer{};
     {
@@ -146,5 +144,6 @@ int main() {
 #elif 1
     std::clog << benchmark<Policy::Wall>(example_callable2, 1000, time_unit::nanoseconds);
 #endif
+    std::clog << std::endl;
     return 0;
 }

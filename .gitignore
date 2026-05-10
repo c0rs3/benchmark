@@ -10,6 +10,7 @@ build
 .clangd
 
 # Files generated during testing
+results
 *.csv
 *.json
 

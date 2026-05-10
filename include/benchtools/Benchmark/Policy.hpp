@@ -21,11 +21,11 @@ enum class Policy : uint8_t {
     case CPU:
         return "CPU";
     case Wall:
-        return "Wall (aka System)";
+        return "Wall";
     case System:
-        return "System (aka Wall)";
+        return "System";
     default:
-        return "Unknown policy type!";
+        return "[Unknown policy type]";
     }
     return "";
 }

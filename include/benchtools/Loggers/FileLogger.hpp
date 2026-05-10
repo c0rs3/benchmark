@@ -22,7 +22,7 @@ class FileLogger {
         requires(convertible_to_string<Args> && ...)
     void Log(Args&&... args, LogType type) {
         std::stringstream ss;
-        ss << format(time_date()) << format(type);
+        ss << format(time_date()) << " " << format(type);
 
         std::array<std::string_view, sizeof...(args)> contents;
         for (const auto& content : contents) {
