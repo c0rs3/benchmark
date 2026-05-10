@@ -13,9 +13,7 @@ build
 results
 *.csv
 *.json
-
-inst.txt
-ig.txt
+log.txt
 
 # imgui
 *.ini
