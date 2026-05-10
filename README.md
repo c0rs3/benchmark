@@ -22,10 +22,12 @@
   - [x] Polish benchmarking module code
 - [x] CSV Output of benchmark results
 - [x] CSV Parsing of benchmark results
-- [ ] ImPlot of results
-  - [ ] Base code
-  - [ ] Make the plotting into a global static method/singleton in a separate module
+- [x] ImPlot of results
+  - [x] Base code
+  - [x] Make the plotting into a global static method/singleton in a separate module
   - [ ] Polish the code
+    - [ ] Graph should display the time unit of timers
+    - [ ] Graph should display the timer type
 - [ ] More polishing
 - [ ] Proper documentation for each timer + README
 
