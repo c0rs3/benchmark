@@ -147,7 +147,7 @@ time_date() noexcept {
 [[nodiscard]] std::string
 format(std::chrono::zoned_time<std::chrono::duration<double>> time_point) noexcept {
     std::ostringstream oss;
-    oss << "[" << std::format("{:%F %T}", time_point) << "]" << "  " << std::flush;
+    oss << "[" << std::format("{:%F %T}", time_point) << "]" << "" << std::flush;
     return oss.str();
 }
 }  // namespace benchtools

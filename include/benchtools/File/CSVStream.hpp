@@ -2,6 +2,7 @@
 
 #include <benchtools/Core/Concepts.hpp>
 #include <benchtools/File/FileStream.hpp>
+#include <benchtools/File/File.hpp>
 
 #include <array>
 #include <cstddef>
@@ -11,6 +12,11 @@
 
 namespace benchtools {
 
+/**
+ * @brief Creates a csv file and a stream to it
+ * 
+ * @tparam N 
+ */
 template <size_t N>
 class CSVStream {
 
@@ -95,7 +101,7 @@ class CSVStream {
     };
 
   private:
-    FileStream m_Stream{};
+    FileOStream m_Stream{};
     std::array<std::string, N> m_Headers{};
 };
 };  // namespace benchtools

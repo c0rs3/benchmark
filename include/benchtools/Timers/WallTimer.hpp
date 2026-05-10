@@ -1,6 +1,7 @@
 #pragma once
 
 #include <benchtools/Core/Time.hpp>
+
 #include <benchtools/Timers/BaseTimer.hpp>
 
 #include <atomic>

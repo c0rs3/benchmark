@@ -37,6 +37,6 @@ class FileLogger {
     ~FileLogger() noexcept;
 
   private:
-    FileStream m_Stream{};
+    FileOStream m_Stream{};
 };
 };  // namespace benchtools

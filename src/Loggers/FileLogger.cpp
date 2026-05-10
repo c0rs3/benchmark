@@ -11,7 +11,7 @@ namespace benchtools {
 FileLogger::FileLogger(std::string_view path, fmode fmode) noexcept {
     static const char* s_start_message = "LOGGING SESSION STARTED";
 
-    m_Stream = FileStream{path};
+    m_Stream = FileOStream{path};
 
     std::stringstream ss;
     ss << format(time_date()) << format(LogType::INFO) << s_start_message << "\n";

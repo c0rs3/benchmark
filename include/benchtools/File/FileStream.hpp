@@ -1,6 +1,6 @@
 #pragma once
 
-#include <benchtools/Core/File.hpp>
+#include <benchtools/File/File.hpp>
 
 #include <cstdint>
 #include <fstream>
@@ -9,23 +9,28 @@
 #include <vector>
 
 namespace benchtools {
+
 /**
- * @brief
+ * @brief File output stream
  *
  */
-class FileStream {
+class FileOStream {
   public:
-    explicit FileStream() noexcept = default;
+    explicit FileOStream() noexcept = default;
 
-    explicit FileStream(std::string_view path, fmode mode = fileopen::append);
+    explicit FileOStream(std::string_view path, fmode mode = fileopen::append);
 
     void append(std::string_view content);
 
   private:
-    std::fstream m_Stream;
+    std::ofstream m_Stream;
     File m_File;
 };
 
+/**
+ * @brief File input stream
+ * 
+ */
 class FileIStream {
   public:
     explicit FileIStream() noexcept = delete;

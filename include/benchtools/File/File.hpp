@@ -7,6 +7,7 @@
 #include <iostream>
 
 namespace benchtools {
+
 /**
  * @brief type for file open modes
  *
@@ -24,6 +25,14 @@ namespace fileopen {
  *
  */
 using File = std::filesystem::path;
+
+/**
+ * @brief Parses a CSV file headers/rows
+ *
+ * @tparam N
+ * @param header_line
+ * @return std::array<std::string, N>
+ */
 template <size_t N>
 [[nodiscard]] std::array<std::string, N>
 parseHeaders(const std::string& header_line) noexcept {

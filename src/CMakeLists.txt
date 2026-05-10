@@ -97,7 +97,9 @@ target_include_directories(Loggers
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
+
 target_compile_features(Loggers PUBLIC cxx_std_20)
+
 target_link_libraries(Loggers PUBLIC 
     Core
     File
@@ -118,19 +120,44 @@ target_include_directories(Timers
 target_compile_features(Timers PUBLIC cxx_std_20)
 target_link_libraries(Timers PUBLIC Loggers)
 
+######## Benchmark ######## 
+add_library(Benchmark
+    Benchmark/Benchmark.cpp
+)
+target_include_directories(Benchmark
+    PUBLIC
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+)
+target_compile_features(Benchmark PUBLIC cxx_std_20)
+target_link_libraries(Benchmark PUBLIC Timers Core File)
+
+if(APP)
+    ######## PLOTTING ######## 
+    add_library(Plotter
+    Plotting/PlotWidget.cpp
+    Plotting/DataLoader.cpp
+    )
+    target_include_directories(Plotter
+    PUBLIC
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    )
+    target_compile_features(Plotter PUBLIC cxx_std_20)
+    target_link_libraries(Plotter PUBLIC File Core implot imgui glfw spdlog::spdlog)
+endif()
+
 
 ######## TESTING ######## 
 option(TESTING "Build test programs" OFF)
 
 if(TESTING)
-add_executable(benchtools_testing
-Test/Test.cpp
-)
-target_link_libraries(benchtools_testing PRIVATE Timers)
-target_compile_features(benchtools_testing PRIVATE cxx_std_20)
+    add_executable(benchtools_testing
+    Test/Test.cpp
+    )
+    target_link_libraries(benchtools_testing PRIVATE Timers)
+    target_compile_features(benchtools_testing PRIVATE cxx_std_20)
 endif()
 
 
 if(APP)
-add_subdirectory(App)
+    add_subdirectory(App)
 endif()

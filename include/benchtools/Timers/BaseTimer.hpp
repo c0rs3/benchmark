@@ -16,19 +16,21 @@ class BaseTimer {
     virtual ~BaseTimer();
 
     /**
-     * @brief Pure virtual function that will define how Timer should act on start()
+     * @brief Pure virtual function that will define how a Timer should act on start()
      */
     virtual void start() = 0;
 
     /**
-     * @brief Pure virtual function that will define how Timer should act on stop()
+     * @brief Pure virtual function that will define how a Timer should act on stop()
      */
     virtual void stop() = 0;
 
     /**
-     * @brief Resets the timer duration
+     * @brief
+     *
+     * @param condition whether it should reset (for WallTimer)
      */
-    virtual void reset(bool val = true) = 0;
+    virtual void reset(bool condition = true) = 0;
 
     /**
      * @brief Gets the duration in the respective timeunit

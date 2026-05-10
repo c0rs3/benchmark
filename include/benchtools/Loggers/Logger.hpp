@@ -14,6 +14,10 @@ namespace benchtools {
 #define ERR(...) benchtools::Logger::getInstance().getLogger()->error(__VA_ARGS__)
 #define CRITICAL(...) benchtools::Logger::getInstance().getLogger()->critical(__VA_ARGS__)
 
+/**
+ * @brief A singleton logger object
+ * 
+ */
 class Logger {
   public:
     Logger(const Logger&) = delete;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <benchtools/Core/CSVStream.hpp>
+#include <benchtools/File/CSVStream.hpp>
 
 namespace benchtools {
 /**
