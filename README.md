@@ -25,9 +25,9 @@
 - [x] ImPlot of results
   - [x] Base code
   - [x] Make the plotting into a global static method/singleton in a separate module
-  - [ ] Polish the code
+  - [x] Polish the code
     - [x] Graph should display the time unit of timers
-    - [ ] Graph should display the timer type
+    - [x] Graph should display the timer type
 - [ ] More polishing
 - [ ] Proper documentation for each timer + README
 

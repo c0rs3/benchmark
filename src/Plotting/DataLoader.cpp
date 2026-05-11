@@ -34,9 +34,7 @@ namespace plotter {
         return unitPart;
     }
 
-    [[nodiscard]] std::pair<std::pair<std::vector<double>, std::vector<double>>,
-                            std::pair<std::vector<std::string>, std::string>>
-    DataLoader::LoadFromCSV(std::string_view path) noexcept {
+    [[nodiscard]] BenchmarkData DataLoader::LoadFromCSV(std::string_view path) noexcept {
         // CSV rows
         std::vector<std::array<std::string, 3>> rows = CSVParser<3>::getRows(path);
 
@@ -45,6 +43,7 @@ namespace plotter {
         std::vector<std::string> labels{};
 
         std::string unit = extract_unit(rows[0][2]);
+        std::string timer_t = extract_unit(rows[0][1]);
 
         for (const auto& row : rows) {
 
@@ -58,7 +57,7 @@ namespace plotter {
             label_strings.push_back(row[0]);
             labels.push_back(label_strings.back());
         }
-        return {{x_data, y_data}, {labels, unit}};
+        return {x_data, y_data, labels, unit, timer_t};
     }
 
 }  // namespace plotter

@@ -29,8 +29,8 @@ namespace benchtools {
  * @return auto
  */
 template <Policy P, typename Callable, typename... Args>
-[[nodiscard]] auto benchmark(Callable&& callable, int iterations,
-                             time_unit unit = time_unit::seconds, Args&&... args) {
+auto benchmark(Callable&& callable, int iterations, time_unit unit = time_unit::seconds,
+               Args&&... args) {
 
     std::filesystem::path path_to_save =
         std::filesystem::path("results") / (format(time_date()) + "_results.csv");

@@ -28,14 +28,14 @@ namespace plotter {
     }
 
     void PlotWidget::SetData(std::string_view path) {
-        auto&& [inner, outer] = benchtools::plotter::DataLoader::LoadFromCSV(path);
-        auto&& [xData, yData] = inner;
-        auto&& [labels, unit] = outer;
+        auto&& [xData, yData, labels, unit, timer_t] =
+            benchtools::plotter::DataLoader::LoadFromCSV(path);
 
         m_xData = std::move(xData);
         m_yData = std::move(yData);
         m_Labels = std::move(labels);
         m_Unit = std::move(unit);
+        m_TimerType = std::move(timer_t);
     }
 
     int PlotWidget::Run(int arg_count, char** arg_values) noexcept {
@@ -89,8 +89,10 @@ namespace plotter {
                          ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                              ImGuiWindowFlags_NoMove);
 
+            std::string&& title = "Time Durations (" + m_TimerType + ")";
+
             // Plotting
-            if (ImPlot::BeginPlot("Timer Durations")) {
+            if (ImPlot::BeginPlot(title.c_str())) {
                 // Lock axes to first quadrant
                 ImPlot::SetupAxis(ImAxis_X1, "Timer ID", ImPlotAxisFlags_LockMin);
                 std::string&& yLabel = "Duration (" + m_Unit + ")";

@@ -30,6 +30,7 @@ namespace plotter {
         std::vector<double> m_xData, m_yData;
         std::vector<std::string> m_Labels;
         std::string m_Unit;
+        std::string m_TimerType;
     };
 
 }  // namespace plotter

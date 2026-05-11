@@ -22,7 +22,7 @@
 #include <random>
 
 std::mt19937 engine{};
-std::uniform_int_distribution<int> a{1, 100};
+std::uniform_int_distribution<int> dist{1, 100};
 
 void example_callable() {
     static uint32_t counter{0};
@@ -31,7 +31,7 @@ void example_callable() {
 }
 
 void example_callable2() {
-    std::this_thread::sleep_for(std::chrono::microseconds(a(engine)));
+    std::this_thread::sleep_for(std::chrono::microseconds(dist(engine)));
 }
 
 int main() {
@@ -131,12 +131,9 @@ int main() {
         tim.stop();
     }
 #elif 0
-    std::clog << benchmark<Policy::Wall>(example_callable, 2);
-    TRACE(std::to_string(benchmark<Policy::CPU>(example_callable, 2)));
-#elif 0
     CSVParser<3> p{"result.csv"};
 #elif 1
-    std::clog << benchmark<Policy::Wall>(example_callable2, 1000, time_unit::nanoseconds);
+    benchmark<Policy::Wall>(example_callable2, 1000, time_unit::nanoseconds);
 #endif
     std::clog << std::endl;
     return 0;
