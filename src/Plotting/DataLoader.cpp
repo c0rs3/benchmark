@@ -1,5 +1,7 @@
 #include <benchtools/Plotting/Data/DataLoader.hpp>
 
+#include <benchtools/Core/Time.hpp>
+
 #include <algorithm>
 
 namespace benchtools {
@@ -10,26 +12,25 @@ namespace plotter {
         while (i < raw.size() && (std::isdigit(raw[i]) || raw[i] == '.' || raw[i] == '-'))
             ++i;
         std::string numberPart = raw.substr(0, i);
+
+        double value = std::stod(numberPart);
+
+        return value;
+    }
+
+    [[nodiscard]] std::string extract_unit(const std::string& raw) noexcept {
+        size_t i{};
+        while (i < raw.size() && (std::isdigit(raw[i]) || raw[i] == '.' || raw[i] == '-'))
+            ++i;
         std::string unitPart = raw.substr(i);
 
         unitPart.erase(unitPart.begin(),
                        std::find_if(unitPart.begin(), unitPart.end(),
                                     [](char ch) { return !std::isspace(ch); }));
-        std::transform(unitPart.begin(), unitPart.end(), unitPart.begin(),
-                       [](char c) { return std::tolower(c); });
+        // std::transform(unitPart.begin(), unitPart.end(), unitPart.begin(),
+        //                [](char c) { return std::tolower(c); });
 
-        double value = std::stod(numberPart);
-
-        if (unitPart == "s" || unitPart.empty())
-            return value;
-        else if (unitPart == "ms")
-            return value / 1'000.0;
-        else if (unitPart == "us")
-            return value / 1'000'000.0;
-        else if (unitPart == "ns")
-            return value / 1'000'000'000.0;
-        else
-            return value;
+        return unitPart;
     }
 
     [[nodiscard]] std::pair<std::pair<std::vector<double>, std::vector<double>>,
@@ -46,8 +47,8 @@ namespace plotter {
             int id = std::stoi(row[0]);
             x_data.push_back(static_cast<double>(id));
 
-            double ms = extract_duration(row[2]);
-            y_data.push_back(ms);
+            double dur = extract_duration(row[2]);
+            y_data.push_back(dur);
 
             static std::vector<std::string> label_strings;
             label_strings.push_back(row[0]);

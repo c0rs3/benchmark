@@ -1,3 +1,4 @@
+#include "benchtools/File/CSVParser.hpp"
 #include <benchtools/Plotting/Data/DataLoader.hpp>
 #include <benchtools/Plotting/Widgets/PlotWidget.hpp>
 

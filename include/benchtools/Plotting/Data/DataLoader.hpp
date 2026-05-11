@@ -13,6 +13,8 @@ namespace plotter {
 
     [[nodiscard]] double extract_duration(const std::string& raw) noexcept;
 
+    [[nodiscard]] std::string extract_unit(const std::string& raw) noexcept;
+
     struct DataLoader {
         [[nodiscard]] static std::pair<
             std::pair<std::vector<double>, std::vector<double>>, std::vector<std::string>>

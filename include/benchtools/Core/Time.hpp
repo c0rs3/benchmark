@@ -32,6 +32,10 @@ enum class time_unit : uint8_t {
     nanoseconds
 };
 
+#ifndef UNIT_MICROS
+    #define UNIT_MICROS "µs"
+#endif
+
 /**
  * @brief type interface for time_unit -> chrono
  *
