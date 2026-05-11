@@ -17,7 +17,8 @@ namespace plotter {
 
     struct DataLoader {
         [[nodiscard]] static std::pair<
-            std::pair<std::vector<double>, std::vector<double>>, std::vector<std::string>>
+            std::pair<std::vector<double>, std::vector<double>>,
+            std::pair<std::vector<std::string>, std::string>>
         LoadFromCSV(std::string_view path) noexcept;
     };
 

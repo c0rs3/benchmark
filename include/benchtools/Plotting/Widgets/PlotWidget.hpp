@@ -1,5 +1,6 @@
 #include <GLFW/glfw3.h>
 
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -28,6 +29,7 @@ namespace plotter {
         GLFWwindow* m_Window;
         std::vector<double> m_xData, m_yData;
         std::vector<std::string> m_Labels;
+        std::string m_Unit;
     };
 
 }  // namespace plotter

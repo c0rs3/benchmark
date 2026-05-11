@@ -1,14 +1,13 @@
-#include "benchtools/File/CSVParser.hpp"
 #include <benchtools/Plotting/Data/DataLoader.hpp>
 #include <benchtools/Plotting/Widgets/PlotWidget.hpp>
 
-#include <execution>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <implot.h>
 
 #include <algorithm>
+#include <execution>
 #include <iostream>
 #include <string_view>
 #include <utility>
@@ -29,12 +28,14 @@ namespace plotter {
     }
 
     void PlotWidget::SetData(std::string_view path) {
-        auto&& [inner, labels] = benchtools::plotter::DataLoader::LoadFromCSV(path);
+        auto&& [inner, outer] = benchtools::plotter::DataLoader::LoadFromCSV(path);
         auto&& [xData, yData] = inner;
+        auto&& [labels, unit] = outer;
 
         m_xData = std::move(xData);
         m_yData = std::move(yData);
         m_Labels = std::move(labels);
+        m_Unit = std::move(unit);
     }
 
     int PlotWidget::Run(int arg_count, char** arg_values) noexcept {
@@ -92,8 +93,8 @@ namespace plotter {
             if (ImPlot::BeginPlot("Timer Durations")) {
                 // Lock axes to first quadrant
                 ImPlot::SetupAxis(ImAxis_X1, "Timer ID", ImPlotAxisFlags_LockMin);
-                // TODO: somehow extract duration from the csv as well
-                ImPlot::SetupAxis(ImAxis_Y1, "Duration", ImPlotAxisFlags_LockMin);
+                std::string&& yLabel = "Duration (" + m_Unit + ")";
+                ImPlot::SetupAxis(ImAxis_Y1, yLabel.c_str(), ImPlotAxisFlags_LockMin);
 
                 // Explicit tick positions and labels for discrete X axis
                 ImPlot::SetupAxisTicks(ImAxis_X1, m_xData.data(), (int)m_yData.size(),

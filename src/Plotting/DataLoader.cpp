@@ -3,6 +3,7 @@
 #include <benchtools/Core/Time.hpp>
 
 #include <algorithm>
+#include <string>
 
 namespace benchtools {
 namespace plotter {
@@ -34,7 +35,7 @@ namespace plotter {
     }
 
     [[nodiscard]] std::pair<std::pair<std::vector<double>, std::vector<double>>,
-                            std::vector<std::string>>
+                            std::pair<std::vector<std::string>, std::string>>
     DataLoader::LoadFromCSV(std::string_view path) noexcept {
         // CSV rows
         std::vector<std::array<std::string, 3>> rows = CSVParser<3>::getRows(path);
@@ -43,7 +44,10 @@ namespace plotter {
         std::vector<double> x_data{}, y_data{};
         std::vector<std::string> labels{};
 
+        std::string unit = extract_unit(rows[0][2]);
+
         for (const auto& row : rows) {
+
             int id = std::stoi(row[0]);
             x_data.push_back(static_cast<double>(id));
 
@@ -54,7 +58,7 @@ namespace plotter {
             label_strings.push_back(row[0]);
             labels.push_back(label_strings.back());
         }
-        return {{x_data, y_data}, labels};
+        return {{x_data, y_data}, {labels, unit}};
     }
 
 }  // namespace plotter

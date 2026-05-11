@@ -26,7 +26,7 @@
   - [x] Base code
   - [x] Make the plotting into a global static method/singleton in a separate module
   - [ ] Polish the code
-    - [ ] Graph should display the time unit of timers
+    - [x] Graph should display the time unit of timers
     - [ ] Graph should display the timer type
 - [ ] More polishing
 - [ ] Proper documentation for each timer + README
