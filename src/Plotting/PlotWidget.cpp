@@ -1,13 +1,14 @@
 #include <benchtools/Plotting/Data/DataLoader.hpp>
 #include <benchtools/Plotting/Widgets/PlotWidget.hpp>
 
+#include <GLFW/glfw3.h>
+
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <implot.h>
 
 #include <algorithm>
-#include <execution>
 #include <iostream>
 #include <string_view>
 #include <utility>
@@ -45,6 +46,7 @@ namespace plotter {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        // TODO: add window height adjustment and all that
         m_Window = glfwCreateWindow(1280, 720, arg_values[1], nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
 
@@ -56,7 +58,7 @@ namespace plotter {
 
         glfwMakeContextCurrent(m_Window);
         if (arg_count < 2) {
-            std::cerr << "Usage" << arg_values[0] << "<csv_file\n";
+            std::cerr << "Usage" << arg_values[0] << "<csv_file>\n";
             return 1;
         }
 
@@ -65,8 +67,8 @@ namespace plotter {
         std::vector<const char*> label_view;
         label_view.reserve(m_Labels.size());
 
-        std::transform(std::execution::par_unseq, m_Labels.begin(), m_Labels.end(),
-                       label_view.begin(), [](std::string& a) { return a.c_str(); });
+        std::transform(m_Labels.begin(), m_Labels.end(), label_view.begin(),
+                       [](std::string& a) { return a.c_str(); });
 
         while (!glfwWindowShouldClose(m_Window)) {
             glfwPollEvents();

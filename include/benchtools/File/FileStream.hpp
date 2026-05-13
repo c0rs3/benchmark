@@ -29,14 +29,13 @@ class FileOStream {
 
 /**
  * @brief File input stream
- * 
+ *
  */
 class FileIStream {
   public:
     explicit FileIStream() noexcept = delete;
 
-    FileIStream(std::string_view path)
-        : m_Stream(std::filesystem::path(path.data())), m_File(path) {}
+    FileIStream(std::string_view path) : m_Stream(File(path.data())), m_File(path) {}
 
     [[nodiscard]] std::vector<std::string> read(uint32_t lines = 0);
 

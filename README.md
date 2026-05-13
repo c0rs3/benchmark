@@ -4,10 +4,29 @@
 
 ## Menu
 
-- [TODO](#todo)
 - [Features](#features)
 - [How to Setup](#how-to-setup)
 - [Usage](#how-to-use)
+- [TODO](#todo)
+
+---
+
+## Features
+
+- 2 base timer types `WallTimer` for system time, `ClockTimer` for CPU time.
+- Wrappers for base timer types `ScopedTimer`, `LoggingTimer` etc.
+- For logging a `spdlog` wrapper `Logger` and `FileLogger` for file logging
+- For `.csv` file handling `CSVStream` and `CSVParser`
+- benchmarking functionality with CPU or System time policies
+- Plotting benchmarking results with **ImPlot**
+
+---
+
+## How to Setup
+
+---
+
+## How to Use
 
 ---
 
@@ -29,18 +48,7 @@
     - [x] Graph should display the time unit of timers
     - [x] Graph should display the timer type
 - [ ] More polishing
+- [ ] Flame graph functionality?
+  - [ ] Timers saved to a global thing
+  - [ ] that writes out shit to csv when destroyed
 - [ ] Proper documentation for each timer + README
-
----
-
-## Features
-
----
-
-## How to Setup
-
----
-
-## How to Use
-
----

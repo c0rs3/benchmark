@@ -15,8 +15,8 @@ namespace benchtools {
 using fmode = std::ios_base::openmode;
 
 namespace fileopen {
-    constexpr inline fmode&& append = std::ios::app | std::ios::out;
-    constexpr inline fmode&& insert = std::ios::trunc | std::ios::out;
+    constexpr inline fmode append = std::ios::app | std::ios::out;
+    constexpr inline fmode insert = std::ios::trunc | std::ios::out;
     constexpr inline fmode input = std::ios::in;
 };  // namespace fileopen
 
@@ -28,26 +28,25 @@ using File = std::filesystem::path;
 
 /**
  * @brief Parses a CSV file headers/rows
- *
- * @tparam N
- * @param header_line
- * @return std::array<std::string, N>
  */
 template <size_t N>
 [[nodiscard]] std::array<std::string, N>
-parseHeaders(const std::string& header_line) noexcept {
-    std::array<std::string, N> res{};
-    std::string header_col{};
+parseCSVLine(const std::string& header_line) noexcept {
+    std::array<std::string, N> line{};
+    std::string line_column{};
+
     for (uint16_t counter{}; char x : header_line) {
         if (x == ',') {
-            res[counter++] = header_col;
-            header_col.clear();
+            line[counter++] = line_column;
+            line_column.clear();
             continue;
         }
-        header_col += x;
+
+        line_column += x;
     }
-    res[N - 1] = header_col;
-    return res;
+
+    line[N - 1] = line_column;
+    return line;
 }
 
 }  // namespace benchtools

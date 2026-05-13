@@ -33,13 +33,14 @@ class CSVStream {
     explicit CSVStream(std::string_view path, benchtools::fmode fmode = fileopen::append,
                        Args&&... args) noexcept
         : m_Stream(path, fmode), m_Headers{std::forward<Args>(args)...} {
-        uint8_t l_counter{1};
-        for (const auto& header : m_Headers) {
+        for (uint8_t l_counter{1}; const auto& header : m_Headers) {
             m_Stream.append(std::string(header));
+
             if (l_counter++ < N) {
                 m_Stream.append(",");
             }
         }
+
         m_Stream.append("\n");
     };
 
@@ -53,13 +54,15 @@ class CSVStream {
     explicit CSVStream(std::string_view path,
                        std::array<std::string_view, L> headers) noexcept
         : m_Stream(path), m_Headers(headers) {
-        uint8_t l_counter{1};
-        for (const auto& header : m_Headers) {
+
+        for (uint8_t l_counter{1}; const auto& header : m_Headers) {
             m_Stream.append(std::string(header));
+
             if (l_counter++ < N) {
                 m_Stream.append(",");
             }
         }
+
         m_Stream.append("\n");
     };
 
@@ -72,13 +75,15 @@ class CSVStream {
         requires(sizeof...(Args) == N) && (convertible_to_string<Args> && ...)
     void write(Args&&... args) noexcept {
         std::array<std::string, N> temp = {(args)...};
-        uint8_t l_counter{1};
-        for (const auto& content : temp) {
+
+        for (uint8_t l_counter{1}; const auto& content : temp) {
             m_Stream.append(std::string(content));
+
             if (l_counter++ < N) {
                 m_Stream.append(",");
             }
         }
+
         m_Stream.append("\n");
     };
 
@@ -90,13 +95,15 @@ class CSVStream {
     template <typename str_t, size_t L>
         requires(N == L) && (convertible_to_string<str_t>)
     void write(std::array<str_t, L> contents) noexcept {
-        uint8_t l_counter{1};
-        for (const auto& content : contents) {
+
+        for (uint8_t l_counter{1}; const auto& content : contents) {
             m_Stream.append(std::string(content));
+
             if (l_counter++ < N) {
                 m_Stream.append(",");
             }
         }
+
         m_Stream.append("\n");
     };
 

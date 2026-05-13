@@ -132,7 +132,7 @@ target_link_libraries(Benchmark PUBLIC Timers Core File)
 
 ######## PLOTTING ######## 
 
-find_package(TBB REQUIRED COMPONENTS tbb)
+# find_package(TBB REQUIRED COMPONENTS tbb)
 
 add_library(Plotter
     Plotting/PlotWidget.cpp
@@ -144,7 +144,8 @@ target_include_directories(Plotter PUBLIC
 )
 
 target_compile_features(Plotter PUBLIC cxx_std_20)
-target_link_libraries(Plotter PUBLIC File Core implot imgui glfw TBB::tbb)
+target_link_libraries(Plotter PUBLIC File Core implot imgui glfw)
+# removed TBB::tbb
 
 
 ######## TESTING ######## 
@@ -152,7 +153,7 @@ option(TESTING "Build test programs" OFF)
 
 if(TESTING)
     add_executable(benchtools_testing
-    Test/Test.cpp
+        Test/Test.cpp
     )
     target_link_libraries(benchtools_testing PRIVATE Timers)
     target_compile_features(benchtools_testing PRIVATE cxx_std_20)

@@ -25,6 +25,8 @@ class BaseTimer {
      */
     virtual void stop() = 0;
 
+    // TODO: remove param from reset
+    // add reset if to WallTimer
     /**
      * @brief
      *

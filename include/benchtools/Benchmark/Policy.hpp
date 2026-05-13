@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include <cstdint>
 #include <string>
 
@@ -25,33 +26,10 @@ enum class Policy : uint8_t {
     case System:
         return "System";
     default:
-        return "[Unknown policy type]";
+        assert(false && "Unknown Policy!\n");
+        // C++23...
+        // std::unreachable();
     }
-    return "";
 }
 
-#if 0
-
-class ClockTimer;
-
-class WallTimer;
-
-namespace Policies {
-    /**
-     * @brief Policy for benchmarking CPU Time
-     *
-     */
-    using CPU = benchtools::ClockTimer;
-    /**
-     * @brief Policy for benchmarking system (wall) time
-     *
-     */
-    using System = benchtools::WallTimer;
-    /**
-     * @brief Policy for benchmarking system (wall) time
-     *
-     */
-    using Wall = benchtools::WallTimer;
-}  // namespace Policies
-#endif
 };  // namespace benchtools

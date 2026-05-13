@@ -8,6 +8,8 @@
 
 namespace benchtools {
 
+
+// TODO rename these
 #define TRACE(...) benchtools::Logger::getInstance().getLogger()->trace(__VA_ARGS__)
 #define INFO(...) benchtools::Logger::getInstance().getLogger()->info(__VA_ARGS__)
 #define WARN(...) benchtools::Logger::getInstance().getLogger()->warn(__VA_ARGS__)
@@ -16,7 +18,7 @@ namespace benchtools {
 
 /**
  * @brief A singleton logger object
- * 
+ *
  */
 class Logger {
   public:

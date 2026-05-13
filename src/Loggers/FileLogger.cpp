@@ -9,7 +9,7 @@
 namespace benchtools {
 
 FileLogger::FileLogger(std::string_view path, fmode fmode) noexcept {
-    static const char* s_start_message = "LOGGING SESSION STARTED";
+    static constexpr auto s_start_message = "LOGGING SESSION STARTED";
 
     m_Stream = FileOStream{path};
 
@@ -29,7 +29,7 @@ void FileLogger::Log(std::string_view content, LogType type) noexcept {
 }
 
 FileLogger::~FileLogger() noexcept {
-    static const char* s_end_message = "LOGGING SESSION ENDED";
+    static constexpr auto s_end_message = "LOGGING SESSION ENDED";
 
     std::stringstream ss;
     ss << format(time_date()) << format(LogType::INFO) << s_end_message << "\n";

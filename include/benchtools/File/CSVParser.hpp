@@ -24,10 +24,11 @@ struct CSVParser {
      */
     [[nodiscard]] static std::array<std::string, N> getHeaders(std::string_view path) {
         FileIStream m_Stream{path};
+
         auto&& lines = m_Stream.read();
 
         std::array<std::string, N> m_Headers{};
-        m_Headers = parseHeaders<3>(lines[0]);
+        m_Headers = parseCSVLine<3>(lines[0]);
 
         return m_Headers;
     }
@@ -45,7 +46,7 @@ struct CSVParser {
 
         std::vector<std::array<std::string, N>> m_Content{};
         for (size_t i{1}; i < lines.size(); i++) {
-            m_Content.emplace_back(parseHeaders<3>(lines[i]));
+            m_Content.emplace_back(parseCSVLine<3>(lines[i]));
         }
 
         return m_Content;

@@ -207,27 +207,6 @@ struct Duration {
     [[nodiscard]] explicit operator std::string() const noexcept { return format(*this); }
 
     /**
-     * @brief
-     *
-     * @param other
-     * @return Duration
-     */
-    [[nodiscard]] Duration operator+(const Duration& other) const noexcept {
-        return Duration{getDuration(this->get_chrono_t() + other.get_chrono_t(),
-                                    time_unit::nanoseconds)};
-    }
-
-    /**
-     * @brief
-     *
-     * @param val
-     * @return Duration
-     */
-    [[nodiscard]] Duration operator/(int val) const noexcept {
-        return Duration{getDuration(this->get_chrono_t() / val, time_unit::nanoseconds)};
-    }
-
-    /**
      * @brief Get the chrono t object
      *
      * @return std::chrono::duration<double>

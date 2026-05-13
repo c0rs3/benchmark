@@ -11,7 +11,7 @@
 namespace benchtools {
 
 FileOStream::FileOStream(std::string_view path, fmode mode) 
-    : m_Stream(std::filesystem::path(path.data()), mode), m_File(path) {}
+    : m_Stream(File(path.data()), mode), m_File(path) {}
 
 void FileOStream::append(std::string_view content)  {
     if (!m_Stream) {

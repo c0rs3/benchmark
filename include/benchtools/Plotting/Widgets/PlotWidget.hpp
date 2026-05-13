@@ -1,8 +1,8 @@
-#include <GLFW/glfw3.h>
-
 #include <string>
 #include <string_view>
 #include <vector>
+
+class GLFWwindow;
 
 namespace benchtools {
 namespace plotter {
@@ -13,8 +13,9 @@ namespace plotter {
         ~PlotWidget() noexcept;
 
         PlotWidget(const PlotWidget&) = delete;
-
         PlotWidget& operator=(const PlotWidget&) = delete;
+        PlotWidget(PlotWidget&&) = delete;
+        PlotWidget& operator=(PlotWidget&&) = delete;
 
         int Run(int arg_count, char** arg_values) noexcept;
 
