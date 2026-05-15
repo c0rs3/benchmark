@@ -25,14 +25,11 @@ class BaseTimer {
      */
     virtual void stop() = 0;
 
-    // TODO: remove param from reset
-    // add reset if to WallTimer
     /**
-     * @brief
+     * @brief resets the timer
      *
-     * @param condition whether it should reset (for WallTimer)
      */
-    virtual void reset(bool condition = true) = 0;
+    virtual void reset() = 0;
 
     /**
      * @brief Gets the duration in the respective timeunit

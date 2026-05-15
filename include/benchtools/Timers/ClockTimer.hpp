@@ -30,7 +30,7 @@ class ClockTimer : public BaseTimer {
      * @brief
      *
      */
-    void reset(bool) noexcept override;
+    void reset() noexcept override;
 
     /**
      * @brief

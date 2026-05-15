@@ -17,7 +17,7 @@ namespace benchtools {
  *
  * @tparam timer_t
  */
-template <typename timer_t>
+template <class timer_t>
     requires(clock_or_wall_timer<timer_t>)
 class FileTimer {
   public:
@@ -45,7 +45,7 @@ class FileTimer {
     void start(std::source_location loc = std::source_location::current()) noexcept {
         m_ID = loc;
 
-        m_Timer->reset(true);
+        m_Timer->reset();
         m_Timer->start();
 
         std::stringstream ss;

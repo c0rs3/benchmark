@@ -49,7 +49,14 @@ class WallTimer : public BaseTimer {
      *
      * @param reset
      */
-    virtual void reset(bool reset = 0) noexcept override;
+    virtual void reset() noexcept override;
+
+    /**
+     * @brief resets the timer if condition is true
+     *
+     * @param condition
+     */
+    void reset_if(bool condition = 1) noexcept;
 
     /**
      * @brief
@@ -62,6 +69,7 @@ class WallTimer : public BaseTimer {
 
     [[nodiscard]] virtual std::chrono::duration<double>
     currentElapsed() const noexcept override;
+
   private:
     time_point m_Start;
     std::chrono::duration<double> m_ElapsedTime{default_duration};
