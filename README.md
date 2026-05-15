@@ -47,8 +47,9 @@
   - [x] Polish the code
     - [x] Graph should display the time unit of timers
     - [x] Graph should display the timer type
-- [ ] More polishing
+- [x] More polishing
 - [ ] Flame graph functionality?
   - [ ] Timers saved to a global thing
-  - [ ] that writes out shit to csv when destroyed
-- [ ] Proper documentation for each timer + README
+  - [ ] that writes out the timer info to csv when destroyed
+  - [ ] <https://github.com/bwrsandman/imgui-flame-graph> use this library
+- [ ] Proper documentation + README
