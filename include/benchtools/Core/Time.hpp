@@ -138,12 +138,12 @@ format(std::chrono::zoned_time<std::chrono::duration<double>> time_point) noexce
 durationCast(const std::chrono::duration<double>& duration, time_unit unit) noexcept;
 
 /**
- * @brief
- *
+ * @brief Attempts to get the time unit out of a chrono::duration
+ * @warning this only works if std::chrono::duration
  * @tparam T
  */
-template <typename T>
-    requires(std::is_same_v<T, float> || std::is_same_v<T, double>)
+template <class T>
+    requires(std::is_floating_point_v<T>)
 [[nodiscard]] time_unit get_unit(std::chrono::duration<T> dur) {
     T abs_value = dur.count();
 

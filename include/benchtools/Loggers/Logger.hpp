@@ -8,13 +8,16 @@
 
 namespace benchtools {
 
-
-// TODO rename these
-#define TRACE(...) benchtools::Logger::getInstance().getLogger()->trace(__VA_ARGS__)
-#define INFO(...) benchtools::Logger::getInstance().getLogger()->info(__VA_ARGS__)
-#define WARN(...) benchtools::Logger::getInstance().getLogger()->warn(__VA_ARGS__)
-#define ERR(...) benchtools::Logger::getInstance().getLogger()->error(__VA_ARGS__)
-#define CRITICAL(...) benchtools::Logger::getInstance().getLogger()->critical(__VA_ARGS__)
+#define BENCHTOOLS_TRACE(...) \
+    benchtools::Logger::getInstance().getLogger()->trace(__VA_ARGS__)
+#define BENCHTOOLS_INFO(...) \
+    benchtools::Logger::getInstance().getLogger()->info(__VA_ARGS__)
+#define BENCHTOOLS_WARN(...) \
+    benchtools::Logger::getInstance().getLogger()->warn(__VA_ARGS__)
+#define BENCHTOOLS_ERR(...) \
+    benchtools::Logger::getInstance().getLogger()->error(__VA_ARGS__)
+#define BENCHTOOLS_CRITICAL(...) \
+    benchtools::Logger::getInstance().getLogger()->critical(__VA_ARGS__)
 
 /**
  * @brief A singleton logger object

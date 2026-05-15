@@ -28,7 +28,7 @@ class CSVStream {
      *
      * @tparam Args the headers of the CSV file
      */
-    template <typename... Args>
+    template <class... Args>
         requires(sizeof...(Args) == N) && (convertible_to_string<Args> && ...)
     explicit CSVStream(std::string_view path, benchtools::fmode fmode = fileopen::append,
                        Args&&... args) noexcept
@@ -71,7 +71,7 @@ class CSVStream {
      *
      * @tparam Args
      */
-    template <typename... Args>
+    template <class... Args>
         requires(sizeof...(Args) == N) && (convertible_to_string<Args> && ...)
     void write(Args&&... args) noexcept {
         std::array<std::string, N> temp = {(args)...};
@@ -92,7 +92,7 @@ class CSVStream {
      *
      * @tparam L must be equal to header size of CSV Handler
      */
-    template <typename str_t, size_t L>
+    template <class str_t, size_t L>
         requires(N == L) && (convertible_to_string<str_t>)
     void write(std::array<str_t, L> contents) noexcept {
 

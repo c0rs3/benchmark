@@ -15,8 +15,13 @@ void WallTimer::stop() noexcept {
     }
 }
 
-void WallTimer::reset(bool reset) noexcept {
-    if (reset) m_ElapsedTime = default_duration;
+void WallTimer::reset() noexcept {
+    m_ElapsedTime = default_duration;
+    m_Running = false;
+}
+
+void WallTimer::reset_if(bool cond) noexcept {
+    if (cond) m_ElapsedTime = default_duration;
     m_Running = false;
 }
 

@@ -12,7 +12,7 @@ void ClockTimer::stop() noexcept {
     mRunning = false;
 }
 
-void ClockTimer::reset(bool) noexcept {
+void ClockTimer::reset() noexcept {
     mStart = 0;
     mEnd = 0;
 }

@@ -18,7 +18,7 @@ class FileLogger {
 
     void Log(std::string_view content, LogType type = LogType::INFO) noexcept;
 
-    template <typename... Args>
+    template <class... Args>
         requires(convertible_to_string<Args> && ...)
     void Log(Args&&... args, LogType type) {
         std::stringstream ss;

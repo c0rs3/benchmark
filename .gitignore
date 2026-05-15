@@ -11,6 +11,7 @@ build
 
 # Files generated during testing
 results
+benchtools_results
 *.csv
 *.json
 log.txt

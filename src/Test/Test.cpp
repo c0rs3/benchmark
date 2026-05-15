@@ -7,10 +7,11 @@
 #include <benchtools/Loggers/FileLogger.hpp>
 
 #include <benchtools/Timers/ClockTimer.hpp>
-#include <benchtools/Timers/FileTimer.hpp>
-#include <benchtools/Timers/LoggingTimer.hpp>
-#include <benchtools/Timers/ScopedTimer.hpp>
 #include <benchtools/Timers/WallTimer.hpp>
+#include <benchtools/Timers/Wrappers/FileTimer.hpp>
+#include <benchtools/Timers/Wrappers/LoggingTimer.hpp>
+#include <benchtools/Timers/Wrappers/ScopedTimer.hpp>
+
 #include <chrono>
 #include <random>
 #include <thread>
@@ -131,7 +132,7 @@ int main() {
 #elif 0
     CSVParser<3> p{"result.csv"};
 #elif 1
-    benchmark<Policy::Wall>(example_callable2, 1000, time_unit::nanoseconds);
+    benchmark<Policy::Wall>(10, time_unit::microseconds, example_callable2);
 #endif
     std::clog << std::endl;
     return 0;

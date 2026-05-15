@@ -18,7 +18,7 @@ namespace plotter {
 
     [[nodiscard]] double extract_duration(const std::string& raw) noexcept;
 
-    [[nodiscard]] std::string extract_unit(const std::string& raw) noexcept;
+    [[nodiscard]] std::string extract_col(const std::string& raw) noexcept;
 
     struct DataLoader {
         [[nodiscard]] static BenchmarkData LoadFromCSV(std::string_view path) noexcept;

@@ -2,13 +2,10 @@
 
 #include <benchtools/Core/Time.hpp>
 
-#include <algorithm>
 #include <string>
 
 namespace benchtools {
 namespace plotter {
-
-    // TODO: refactor these two functions
     [[nodiscard]] double extract_duration(const std::string& raw) noexcept {
         size_t i{};
         while (i < raw.size() && (std::isdigit(raw[i]) || raw[i] == '.' || raw[i] == '-'))
@@ -20,34 +17,34 @@ namespace plotter {
         return value;
     }
 
-    [[nodiscard]] std::string extract_unit(const std::string& raw) noexcept {
+    [[nodiscard]] std::string extract_col(const std::string& raw) noexcept {
         size_t i{};
         while (i < raw.size() && (std::isdigit(raw[i]) || raw[i] == '.' || raw[i] == '-'))
             ++i;
-        std::string unitPart = raw.substr(i);
 
-        unitPart.erase(unitPart.begin(),
-                       std::find_if(unitPart.begin(), unitPart.end(),
-                                    [](char ch) { return !std::isspace(ch); }));
-        return unitPart;
+        return raw.substr(i);
     }
 
+    /**
+     * @brief Loads the benchmark data from CSV
+     *
+     * @param path
+     * @return BenchmarkData
+     */
     [[nodiscard]] BenchmarkData DataLoader::LoadFromCSV(std::string_view path) noexcept {
         // CSV rows
-        // TODO: add a "naming"
         static constexpr auto csv_header_length = 3;
         static constexpr auto unit_col = 2;
         static constexpr auto timer_type_col = 1;
-        std::vector<std::array<std::string, 3>> rows = CSVParser<3>::getRows(path);
+        auto rows = CSVParser<csv_header_length>::getRows(path);
 
         // Graph data
         std::vector<double> x_data{}, y_data{};
         std::vector<std::string> labels{};
 
         // Extract the unit type and timer type from the first (value) row
-        std::string unit = extract_unit(rows[0][unit_col]);
-        // TODO: srename this function add an alias
-        std::string timer_t = extract_unit(rows[0][timer_type_col]);
+        std::string unit = extract_col(rows[0][unit_col]);
+        std::string timer_t = extract_col(rows[0][timer_type_col]);
 
         for (const auto& row : rows) {
 

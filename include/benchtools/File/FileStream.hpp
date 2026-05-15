@@ -16,7 +16,7 @@ namespace benchtools {
  */
 class FileOStream {
   public:
-    explicit FileOStream() noexcept = default;
+    FileOStream() noexcept = default;
 
     explicit FileOStream(std::string_view path, fmode mode = fileopen::append);
 

@@ -21,12 +21,13 @@ namespace benchtools {
  * @brief
  *
  */
-template <Policy P, typename Callable, typename... Args>
-auto benchmark(Callable&& callable, uint32_t iterations,
-               time_unit unit = time_unit::seconds, Args&&... args) {
+template <Policy P, class Callable, class... Args>
+    requires(std::is_invocable_v<Callable, Args...>)
+auto benchmark(uint32_t iterations, time_unit unit, Callable&& callable, Args&&... args) {
     static constexpr auto csv_header_length = 3;
 
-    File path_to_save = File("results") / (format(time_date()) + "_results.csv");
+    File path_to_save =
+        File("benchtools_results") / (format(time_date()) + "_results.csv");
 
     std::filesystem::create_directories(path_to_save.parent_path());
 
@@ -48,7 +49,7 @@ auto benchmark(Callable&& callable, uint32_t iterations,
         CSVResults.write(std::array<std::string, csv_header_length>{
             std::to_string(i), format(P), timer.duration(unit).str()});
 
-        timer.reset(true);
+        timer.reset(    );
     }
     return std::to_string((total / iterations).count()) + format(unit);
 }

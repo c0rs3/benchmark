@@ -27,6 +27,7 @@ enum class Policy : uint8_t {
         return "System";
     default:
         assert(false && "Unknown Policy!\n");
+        return "";
         // C++23...
         // std::unreachable();
     }
