@@ -3,7 +3,7 @@ include(FetchContent)
 FetchContent_Declare(
     spdlog
     GIT_REPOSITORY https://github.com/gabime/spdlog.git
-    GIT_TAG        v1.14.1
+    GIT_TAG        v1.17.0
 )
 FetchContent_MakeAvailable(spdlog)
 
@@ -161,7 +161,7 @@ if(BENCHTOOLS_TESTING)
     target_compile_features(benchtools_testing PRIVATE cxx_std_20)
 endif()
 
-option(BENCHTOOLS_PLOT "Plotting app" OFF)
+option(BENCHTOOLS_PLOT "Plotting app" ON)
 
 if(BENCHTOOLS_PLOT)
     add_subdirectory(App)

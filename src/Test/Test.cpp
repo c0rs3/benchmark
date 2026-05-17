@@ -1,6 +1,4 @@
 #include "Test.h"
-#include "benchtools/File/File.hpp"
-#include "benchtools/Loggers/Logger.hpp"
 
 int main() {
 
@@ -153,5 +151,6 @@ int main() {
             benchmark<Policy::System>(10, time_unit::microseconds, example_callable2);
     }
 #endif
+    BENCHTOOLS_CRITICAL("{}", 1);
     return 0;
 }

@@ -3,6 +3,7 @@
 #include <benchtools/File/CSVStream.hpp>
 
 #include <benchtools/Loggers/FileLogger.hpp>
+#include <benchtools/Loggers/Logger.hpp>
 
 #include <benchtools/Timers/ClockTimer.hpp>
 #include <benchtools/Timers/WallTimer.hpp>

@@ -20,7 +20,7 @@ namespace plotter {
 
     PlotWidget::~PlotWidget() noexcept {
         glfwMakeContextCurrent(m_Window);
-        ImGui_ImplOpenGL3_Shutdown();
+        // ImGui_ImplOpenGL3_Shutdown();  // Fixed? this was giving a fucking segfault
         ImGui_ImplGlfw_Shutdown();
         ImPlot::DestroyContext();
         ImGui::DestroyContext();
@@ -67,16 +67,14 @@ namespace plotter {
         std::vector<const char*> label_view;
         label_view.reserve(m_Labels.size());
 
-        std::transform(m_Labels.begin(), m_Labels.end(), label_view.begin(),
-                       [](std::string& a) { return a.c_str(); });
+        for (const auto& str : m_Labels)
+            label_view.push_back(str.c_str());
 
         std::string plotTitle = "Time Durations (" + m_TimerType + ")";
 
-        ImVec2 lastWindowSize(0, 0);
         while (!glfwWindowShouldClose(m_Window)) {
             glfwPollEvents();
 
-            int display_w, display_h;
             glfwGetFramebufferSize(m_Window, &display_w, &display_h);
             glViewport(0, 0, display_w, display_h);
             glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
@@ -86,12 +84,19 @@ namespace plotter {
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
-            ImGui::Begin(arg_values[1], nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+            // Make the ImGui window cover the whole GLFW client area
+            ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+            ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
 
-            if (ImPlot::BeginPlot(
-                    plotTitle.c_str(),
-                    ImVec2(m_xData.size() * 8 > 1920 ? 1920 : m_xData.size() * 8 > 1920,
-                           0))) {
+            // Begin with no flags (or add NoMove | NoResize if you want to lock it)
+            ImGui::Begin(arg_values[1], nullptr,
+                         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+
+            // Plot fills all available space after the title bar
+            ImVec2 plotSize = ImGui::GetContentRegionAvail();
+
+            if (ImPlot::BeginPlot(plotTitle.c_str(), plotSize, ImPlotFlags_None)) {
+
                 ImPlot::SetupAxis(ImAxis_X1, "Timer ID", ImPlotAxisFlags_LockMin);
                 std::string yLabel = "Duration (" + m_Unit + ")";
                 ImPlot::SetupAxis(ImAxis_Y1, yLabel.c_str(), ImPlotAxisFlags_LockMin);
@@ -108,17 +113,7 @@ namespace plotter {
                 ImPlot::EndPlot();
             }
 
-            ImVec2 windowSize = ImGui::GetWindowSize();
             ImGui::End();
-
-            const float decorationPadding = 10.0f;
-            int newWidth = static_cast<int>(windowSize.x + decorationPadding);
-            int newHeight = static_cast<int>(windowSize.y + decorationPadding);
-
-            if (newWidth != lastWindowSize.x || newHeight != lastWindowSize.y) {
-                glfwSetWindowSize(m_Window, newWidth, newHeight);
-                lastWindowSize = ImVec2((float)newWidth, (float)newHeight);
-            }
 
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
