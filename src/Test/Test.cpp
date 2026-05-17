@@ -1,139 +1,157 @@
-
-#include <benchtools/Benchmark/Benchmark.hpp>
-
-#include <benchtools/File/CSVParser.hpp>
-#include <benchtools/File/CSVStream.hpp>
-
-#include <benchtools/Loggers/FileLogger.hpp>
-
-#include <benchtools/Timers/ClockTimer.hpp>
-#include <benchtools/Timers/WallTimer.hpp>
-#include <benchtools/Timers/Wrappers/FileTimer.hpp>
-#include <benchtools/Timers/Wrappers/LoggingTimer.hpp>
-#include <benchtools/Timers/Wrappers/ScopedTimer.hpp>
-
-#include <chrono>
-#include <random>
-#include <thread>
-
-#include <cstdint>
-#include <iostream>
-#include <random>
-
-std::mt19937 engine{};
-std::uniform_int_distribution<int> dist{1, 100};
-
-void example_callable() {
-    static uint32_t counter{0};
-    std::cout << "Test: " << ++counter << std::endl;
-    std::cin.get();
-}
-
-void example_callable2() {
-    std::this_thread::sleep_for(std::chrono::microseconds(dist(engine)));
-}
+#include "Test.h"
+#include "benchtools/File/File.hpp"
+#include "benchtools/Loggers/Logger.hpp"
 
 int main() {
-    using namespace std::string_literals;
-    using namespace std::chrono_literals;
-    using namespace benchtools;
-    using enum time_unit;
-#if 0
-    WallTimer timer{};
-    {
-        ScopedTimer scop(timer);
-        std::cin.get();
-    }
-    std::clog << timer.duration(nanoseconds).str() << std::endl;
-    std::clog << timer.duration(microseconds).str() << std::endl;
-    std::clog << timer.duration(milliseconds).str() << std::endl;
-    std::clog << timer.duration(seconds).str() << std::endl;
-    std::clog << timer.duration(minutes).str() << std::endl;
-    std::clog << timer.duration(hours).str() << std::endl;
-    std::clog << timer.duration(days).str() << std::endl;
-    std::clog << timer.duration(weeks).str() << std::endl;
-    std::clog << timer.duration(months).str() << std::endl;
-    std::clog << timer.duration(years).str() << std::endl;
-    {
-        ScopedTimer scop(timer);
-        std::cin.get();
-    }
-    std::clog << timer.duration(seconds).str() << std::endl;
-    {
-        ScopedTimer scop(timer);
-        std::cin.get();
-    }
-    std::clog << timer.duration(seconds).str() << std::endl;
-#elif 0
-    ClockTimer timer{};
-    {
-        ScopedTimer tim{timer};
-        std::cin.get();
-    }
-    std::clog << timer.duration(nanoseconds).str() << std::endl;
-    std::clog << timer.duration(microseconds).str() << std::endl;
-    std::clog << timer.duration(milliseconds).str() << std::endl;
-    std::clog << timer.duration(seconds).str() << std::endl;
-    std::clog << timer.duration(minutes).str() << std::endl;
-    std::clog << timer.duration(hours).str() << std::endl;
-    std::clog << timer.duration(days).str() << std::endl;
-    std::clog << timer.duration(weeks).str() << std::endl;
-    std::clog << timer.duration(months).str() << std::endl;
-    std::clog << timer.duration(years).str() << std::endl;
-    {
-        ScopedTimer tim{timer};
-        std::cin.get();
-    }
-    std::clog << timer.duration(nanoseconds).str() << std::endl;
-    std::clog << timer.duration(microseconds).str() << std::endl;
-    std::clog << timer.duration(milliseconds).str() << std::endl;
-    std::clog << timer.duration(seconds).str() << std::endl;
-    std::clog << timer.duration(minutes).str() << std::endl;
-    std::clog << timer.duration(hours).str() << std::endl;
-    std::clog << timer.duration(days).str() << std::endl;
-    std::clog << timer.duration(weeks).str() << std::endl;
-    std::clog << timer.duration(months).str() << std::endl;
-    std::clog << timer.duration(years).str() << std::endl;
-#elif 0
 
-    FileLogger a{"ig.txt"};
-    for (auto x{0}; x < 25; x++) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        a.Log("Something", LogType(x % 5));
-    }
-#elif 0
-    std::array<std::string_view, 3> a = {"1", "tuna", "example@gmail.com"};
-    CSVStream<3> stream{"text.csv", "id", "name", "email"};
-    // stream.write("1", "tuna", "example@gmail.com");
-    stream.write(a);
-#elif 0
-    ClockTimer timer;
-    FileTimer<ClockTimer> tim{timer, "log.txt", time_unit::nanoseconds, fileopen::append};
+#if ENABLE_TEST_WALL_TIMER
     {
-        tim.start();
-        std::cin.get();
-        tim.stop();
+        WallTimer timer{};
+        {
+            ScopedTimer scop(timer);
+            std::cin.get();
+        }
+        std::clog << timer.duration(nanoseconds).str() << std::endl;
+        std::clog << timer.duration(microseconds).str() << std::endl;
+        std::clog << timer.duration(milliseconds).str() << std::endl;
+        std::clog << timer.duration(seconds).str() << std::endl;
+        std::clog << timer.duration(minutes).str() << std::endl;
+        std::clog << timer.duration(hours).str() << std::endl;
+        std::clog << timer.duration(days).str() << std::endl;
+        std::clog << timer.duration(weeks).str() << std::endl;
+        std::clog << timer.duration(months).str() << std::endl;
+        std::clog << timer.duration(years).str() << std::endl;
+        {
+            ScopedTimer scop(timer);
+            std::cin.get();
+        }
+        std::clog << timer.duration(seconds).str() << std::endl;
+        {
+            ScopedTimer scop(timer);
+            std::cin.get();
+        }
+        std::clog << timer.duration(seconds).str() << std::endl;
     }
-    {
-        tim.start();
-        std::cin.get();
-        tim.stop();
-    }
-    {
-        tim.start();
-        std::cin.get();
-        tim.stop();
-    }
-    {
-        tim.start();
-        std::cin.get();
-        tim.stop();
-    }
-#elif 0
-    CSVParser<3> p{"result.csv"};
-#elif 1
-    benchmark<Policy::Wall>(10, time_unit::microseconds, example_callable2);
 #endif
-    std::clog << std::endl;
+
+#if ENABLE_TEST_CLOCK_TIMER
+    {
+        ClockTimer timer{};
+        {
+            ScopedTimer tim{timer};
+            std::cin.get();
+        }
+        std::clog << timer.duration(nanoseconds).str() << std::endl;
+        std::clog << timer.duration(microseconds).str() << std::endl;
+        std::clog << timer.duration(milliseconds).str() << std::endl;
+        std::clog << timer.duration(seconds).str() << std::endl;
+        std::clog << timer.duration(minutes).str() << std::endl;
+        std::clog << timer.duration(hours).str() << std::endl;
+        std::clog << timer.duration(days).str() << std::endl;
+        std::clog << timer.duration(weeks).str() << std::endl;
+        std::clog << timer.duration(months).str() << std::endl;
+        std::clog << timer.duration(years).str() << std::endl;
+        {
+            ScopedTimer tim{timer};
+            std::cin.get();
+        }
+        std::clog << timer.duration(nanoseconds).str() << std::endl;
+        std::clog << timer.duration(microseconds).str() << std::endl;
+        std::clog << timer.duration(milliseconds).str() << std::endl;
+        std::clog << timer.duration(seconds).str() << std::endl;
+        std::clog << timer.duration(minutes).str() << std::endl;
+        std::clog << timer.duration(hours).str() << std::endl;
+        std::clog << timer.duration(days).str() << std::endl;
+        std::clog << timer.duration(weeks).str() << std::endl;
+        std::clog << timer.duration(months).str() << std::endl;
+        std::clog << timer.duration(years).str() << std::endl;
+    }
+#endif
+
+#if ENABLE_TEST_FILE_LOGGER
+    {
+        FileLogger a{"filelog.txt"};
+        for (auto x{0}; x < 25; x++) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            a.Log("Something", LogType(x % 5));
+        }
+    }
+#endif
+
+#if ENABLE_TEST_CSV_STREAM
+    {
+        std::array<std::string_view, 3> a = {"1", "tuna", "example@gmail.com"};
+        CSVStream<3> stream{"text.csv", fileopen::append, "id", "name", "email"};
+        stream.write(a);
+    }
+#endif
+
+#if ENABLE_TEST_CSV_PARSING
+    {
+        auto headers = CSVParser<3>::getHeaders("text.csv");
+        auto rows = CSVParser<3>::getRows("text.csv");
+    }
+#endif
+
+#if ENABLE_TEST_FILE_TIMER
+    {
+        ClockTimer timer;
+        FileTimer tim{timer, "log.txt", fileopen::append, time_unit::nanoseconds};
+        {
+            tim.start();
+            std::cin.get();
+            tim.stop();
+        }
+        {
+            tim.start();
+            std::cin.get();
+            tim.stop();
+        }
+        {
+            tim.start();
+            std::cin.get();
+            tim.stop();
+        }
+        {
+            tim.start();
+            std::cin.get();
+            tim.stop();
+        }
+    }
+#endif
+
+#if ENABLE_TEST_LOGGING_TIMER
+    {
+        WallTimer timer;
+        LoggingTimer tim{timer, time_unit::nanoseconds};
+        {
+            tim.start();
+            // std::cin.get();
+            tim.stop();
+        }
+        {
+            tim.start();
+            // std::cin.get();
+            tim.stop();
+        }
+        {
+            tim.start();
+            // std::cin.get();
+            tim.stop();
+        }
+        {
+            tim.start();
+            // std::cin.get();
+            tim.stop();
+        }
+    }
+#endif
+
+#if ENABLE_TEST_BENCHMARK
+    {
+        auto average_dur =
+            benchmark<Policy::System>(10, time_unit::microseconds, example_callable2);
+    }
+#endif
     return 0;
 }

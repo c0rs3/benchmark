@@ -21,13 +21,13 @@ enum class LogType : uint8_t {
     case INFO:
         return "[INFO] ";
     case TRACE:
-        return "[TRCE] ";
+        return "[TRACE] ";
     case WARNING:
         return "[WARN] ";
     case ERROR:
-        return "[ERRO] ";
+        return "[ERROR] ";
     default:
-        return "[UNKN] ";
+        return "[UNKNOWN] ";
     }
 }
 };  // namespace benchtools

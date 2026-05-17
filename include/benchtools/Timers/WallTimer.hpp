@@ -56,7 +56,7 @@ class WallTimer : public BaseTimer {
      *
      * @param condition
      */
-    void reset_if(bool condition = 1) noexcept;
+    void reset_if(bool condition = 1) noexcept override;
 
     /**
      * @brief
@@ -75,5 +75,7 @@ class WallTimer : public BaseTimer {
     std::chrono::duration<double> m_ElapsedTime{default_duration};
     std::atomic<bool> m_Running{0};
 };
+
+using SystemTimer = WallTimer;
 
 }  // namespace benchtools

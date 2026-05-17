@@ -12,6 +12,7 @@ namespace benchtools {
  */
 enum class Policy : uint8_t {
     CPU,
+    Clock,
     Wall,
     System,
 };
@@ -21,10 +22,12 @@ enum class Policy : uint8_t {
         using enum Policy;
     case CPU:
         return "CPU";
+    case Clock:
+        return "CPU";  // aka clock
     case Wall:
         return "Wall";
     case System:
-        return "System";
+        return "Wall";  // aka system
     default:
         assert(false && "Unknown Policy!\n");
         return "";

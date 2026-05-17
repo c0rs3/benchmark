@@ -5,6 +5,7 @@
 #include <benchtools/Timers/WallTimer.hpp>
 
 #include <atomic>
+#include <source_location>
 
 namespace benchtools {
 
@@ -23,9 +24,7 @@ class LoggingTimer {
      * @param unit
      */
     explicit LoggingTimer(BaseTimer& timer, time_unit unit = time_unit::seconds) noexcept
-        : m_Timer(&timer), m_Unit(unit) {
-        m_Timer->start();
-    };
+        : m_Timer(&timer), m_Unit(unit) {};
 
     /**
      * @brief Destroy the Logging Timer object
@@ -37,13 +36,14 @@ class LoggingTimer {
      * @brief
      *
      */
-    void start() noexcept;
+    void start(bool cond = true,
+               std::source_location loc = std::source_location::current()) noexcept;
 
     /**
      * @brief
      *
      */
-    void stop() noexcept;
+    void stop(std::source_location loc = std::source_location::current()) noexcept;
 
     void setUnit(time_unit unit) noexcept;
 
@@ -51,5 +51,6 @@ class LoggingTimer {
     BaseTimer* m_Timer{};
     time_unit m_Unit{time_unit::seconds};
     std::atomic<bool> m_IsStopped{0};
+    std::source_location m_ID;
 };
 }  // namespace benchtools

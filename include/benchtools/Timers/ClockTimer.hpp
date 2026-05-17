@@ -33,6 +33,13 @@ class ClockTimer : public BaseTimer {
     void reset() noexcept override;
 
     /**
+     * @brief resets the timer if condition is true
+     *
+     * @param condition
+     */
+    void reset_if(bool condition = 1) noexcept override;
+
+    /**
      * @brief
      *
      * @param durationType
@@ -53,5 +60,7 @@ class ClockTimer : public BaseTimer {
     std::clock_t mEnd{0};
     std::atomic<bool> mRunning{false};
 };
+
+using CPUTimer = ClockTimer;
 
 }  // namespace benchtools

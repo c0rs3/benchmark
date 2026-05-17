@@ -17,8 +17,6 @@ namespace benchtools {
  *
  * @tparam timer_t
  */
-template <class timer_t>
-    requires(clock_or_wall_timer<timer_t>)
 class FileTimer {
   public:
     explicit FileTimer() = delete;
@@ -31,9 +29,9 @@ class FileTimer {
      * @param unit
      * @param filemode
      */
-    explicit FileTimer(timer_t& timer, std::string_view path,
-                       time_unit unit = time_unit::seconds,
-                       fmode filemode = fileopen::insert) noexcept
+    explicit FileTimer(BaseTimer& timer, std::string_view path,
+                       fmode filemode = fileopen::insert,
+                       time_unit unit = time_unit::seconds) noexcept
         : m_Timer(&timer), m_Logger(path), m_Unit(unit) {}
 
     /**
@@ -49,8 +47,8 @@ class FileTimer {
         m_Timer->start();
 
         std::stringstream ss;
-        ss << m_ID.file_name() << ":" << m_ID.line() << ":" << m_ID.column()
-           << " Started timer";
+        ss << m_ID.file_name() << ":" << m_ID.line() << ":" << m_ID.column() << " "
+           << m_ID.function_name() << " Started timer";
 
         m_Logger.Log(ss.str(), LogType::TIMER);
     }
@@ -61,13 +59,16 @@ class FileTimer {
      *
      * @param loc
      */
-    void stop(std::source_location loc = std::source_location::current()) noexcept {
+    void stop(bool cond = true,
+              std::source_location loc = std::source_location::current()) noexcept {
         m_Timer->stop();
+        m_Timer->reset_if(cond);
 
         std::stringstream ss;
         ss << loc.file_name() << ":" << loc.line() << " "
-           << "Timer started at: " << m_ID.line() << ":" << m_ID.column()
-           << ", resulted with:" << " " << m_Timer->duration(m_Unit).str();
+           << "Timer started at: " << m_ID.line() << ":" << m_ID.column() << " "
+           << m_ID.function_name() << ", resulted with:" << " "
+           << m_Timer->duration(m_Unit).str();
 
         m_Logger.Log(ss.str(), LogType::TIMER);
     }

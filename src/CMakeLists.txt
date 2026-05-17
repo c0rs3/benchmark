@@ -7,8 +7,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(spdlog)
 
-option(APP "APP" OFF)
-
 # Dear ImGui (required by ImPlot)
 FetchContent_Declare(
     imgui
@@ -77,6 +75,7 @@ target_include_directories(Core
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
 target_compile_features(Core PUBLIC cxx_std_20)
+add_library(Benchtools::Core ALIAS Core)
 
 ######## File ######## 
 add_library(File
@@ -87,6 +86,7 @@ target_include_directories(File
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
 target_compile_features(File PUBLIC cxx_std_20)
+add_library(Benchtools::File ALIAS File)
 
 ######## LOGGER ######## 
 add_library(Loggers
@@ -100,9 +100,10 @@ target_include_directories(Loggers
 target_compile_features(Loggers PUBLIC cxx_std_20)
 
 target_link_libraries(Loggers PUBLIC 
-    Core
-    File
+    Benchtools::Core
+    Benchtools::File
     spdlog::spdlog)
+add_library(Benchtools::Loggers ALIAS Loggers)
 
 ######## TIMER ######## 
 add_library(Timers
@@ -117,7 +118,8 @@ target_include_directories(Timers
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
 target_compile_features(Timers PUBLIC cxx_std_20)
-target_link_libraries(Timers PUBLIC Loggers)
+target_link_libraries(Timers PUBLIC Benchtools::Loggers)
+add_library(Benchtools::Timers ALIAS Timers)
 
 ######## Benchmark ######## 
 add_library(Benchmark
@@ -128,7 +130,8 @@ target_include_directories(Benchmark
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
 )
 target_compile_features(Benchmark PUBLIC cxx_std_20)
-target_link_libraries(Benchmark PUBLIC Timers Core File)
+target_link_libraries(Benchmark PUBLIC Benchtools::Timers Benchtools::Core Benchtools::File)
+add_library(Benchtools::Benchmark ALIAS Benchmark)
 
 ######## PLOTTING ######## 
 
@@ -144,22 +147,22 @@ target_include_directories(Plotter PUBLIC
 )
 
 target_compile_features(Plotter PUBLIC cxx_std_20)
-target_link_libraries(Plotter PUBLIC File Core implot imgui glfw)
-# removed TBB::tbb
-
+target_link_libraries(Plotter PUBLIC Benchtools::File Benchtools::Core implot imgui glfw)
+add_library(Benchtools::Plotter ALIAS Plotter)
 
 ######## TESTING ######## 
-option(TESTING "Build test programs" OFF)
+option(BENCHTOOLS_TESTING "Dev testing" OFF)
 
-if(TESTING)
+if(BENCHTOOLS_TESTING)
     add_executable(benchtools_testing
         Test/Test.cpp
     )
-    target_link_libraries(benchtools_testing PRIVATE Timers)
+    target_link_libraries(benchtools_testing PRIVATE Benchtools::Timers)
     target_compile_features(benchtools_testing PRIVATE cxx_std_20)
 endif()
 
+option(BENCHTOOLS_PLOT "Plotting app" OFF)
 
-if(APP)
+if(BENCHTOOLS_PLOT)
     add_subdirectory(App)
 endif()

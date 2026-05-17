@@ -17,6 +17,14 @@ void ClockTimer::reset() noexcept {
     mEnd = 0;
 }
 
+void ClockTimer::reset_if(bool cond) noexcept {
+    if (!cond) {
+        return;
+    }
+    mStart = 0;
+    mEnd = 0;
+}
+
 [[nodiscard]] Duration ClockTimer::duration(time_unit durationType) const noexcept {
     clock_t end = mRunning ? std::clock() : mEnd;
     return getDuration(this->currentElapsed(), durationType);

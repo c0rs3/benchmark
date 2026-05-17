@@ -32,6 +32,12 @@ class BaseTimer {
     virtual void reset() = 0;
 
     /**
+     * @brief resets the timer
+     *
+     */
+    virtual void reset_if(bool cond = true) = 0;
+
+    /**
      * @brief Gets the duration in the respective timeunit
      *
      * @param durationType
