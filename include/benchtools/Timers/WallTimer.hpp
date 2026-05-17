@@ -1,6 +1,7 @@
 #pragma once
 
 #include <benchtools/Core/Time.hpp>
+
 #include <benchtools/Timers/BaseTimer.hpp>
 
 #include <atomic>
@@ -23,32 +24,39 @@ class WallTimer : public BaseTimer {
      * @brief Construct a new Wall Timer object
      *
      */
-    WallTimer() = default;
+    explicit WallTimer() noexcept = default;
 
     /**
      * @brief Destroy the Wall Timer object
      *
      */
-    virtual ~WallTimer() override;
+    virtual ~WallTimer() noexcept override = default;
 
     /**
      * @brief
      *
      */
 
-    virtual void start() override;
+    virtual void start() noexcept override;
     /**
      * @brief
      *
      */
-    virtual void stop() override;
+    virtual void stop() noexcept override;
 
     /**
      * @brief
      *
      * @param reset
      */
-    virtual void reset(bool reset = 0) override;
+    virtual void reset() noexcept override;
+
+    /**
+     * @brief resets the timer if condition is true
+     *
+     * @param condition
+     */
+    void reset_if(bool condition = 1) noexcept override;
 
     /**
      * @brief
@@ -56,15 +64,18 @@ class WallTimer : public BaseTimer {
      * @param durationType
      * @return Duration
      */
-    [[nodiscard]] virtual Duration duration(time_unit durationType) noexcept override;
+    [[nodiscard]] virtual Duration
+    duration(time_unit durationType = time_unit::seconds) const noexcept override;
 
-  private:
-    [[nodiscard]] virtual std::chrono::duration<double> currentElapsed() noexcept override;
+    [[nodiscard]] virtual std::chrono::duration<double>
+    currentElapsed() const noexcept override;
 
   private:
     time_point m_Start;
     std::chrono::duration<double> m_ElapsedTime{default_duration};
     std::atomic<bool> m_Running{0};
 };
+
+using SystemTimer = WallTimer;
 
 }  // namespace benchtools

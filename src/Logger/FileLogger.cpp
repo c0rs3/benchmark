@@ -1,1 +1,0 @@
-#include <benchtools/Loggers/FileLogger.hpp>

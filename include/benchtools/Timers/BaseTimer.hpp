@@ -16,19 +16,26 @@ class BaseTimer {
     virtual ~BaseTimer();
 
     /**
-     * @brief Pure virtual function that will define how Timer should act on start()
+     * @brief Pure virtual function that will define how a Timer should act on start()
      */
     virtual void start() = 0;
 
     /**
-     * @brief Pure virtual function that will define how Timer should act on stop()
+     * @brief Pure virtual function that will define how a Timer should act on stop()
      */
     virtual void stop() = 0;
 
     /**
-     * @brief Resets the timer duration
+     * @brief resets the timer
+     *
      */
-    virtual void reset(bool) = 0;
+    virtual void reset() = 0;
+
+    /**
+     * @brief resets the timer
+     *
+     */
+    virtual void reset_if(bool cond = true) = 0;
 
     /**
      * @brief Gets the duration in the respective timeunit
@@ -36,8 +43,9 @@ class BaseTimer {
      * @param durationType
      * @return Duration
      */
-    [[nodiscard]] virtual Duration duration(time_unit durationType = time_unit::seconds) noexcept {
-        return durationCast(default_duration, time_unit::seconds);
+    [[nodiscard]] virtual Duration
+    duration(time_unit durationType = time_unit::seconds) const noexcept {
+        return getDuration(default_duration, durationType);
     };
 
   private:
@@ -46,7 +54,7 @@ class BaseTimer {
      *
      * @return std::chrono::duration<double>
      */
-    virtual std::chrono::duration<double> currentElapsed() noexcept = 0;
+    virtual std::chrono::duration<double> currentElapsed() const noexcept = 0;
 };
 
 }  // namespace benchtools

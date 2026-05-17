@@ -1,9 +1,42 @@
 #pragma once
 
-// TODO
-/*
- * A File logger that uses filestream to first:
- * append the log start date and time
- * and consequent logs
- * and at dtor append the end date and time
- */
+#include <benchtools/File/FileStream.hpp>
+
+#include <benchtools/Core/Concepts.hpp>
+#include <benchtools/Core/LogType.hpp>
+#include <benchtools/Core/Time.hpp>
+
+#include <array>
+#include <sstream>
+#include <string_view>
+
+namespace benchtools {
+
+class FileLogger {
+  public:
+    explicit FileLogger(std::string_view path, fmode fmode = fileopen::append) noexcept;
+
+    void Log(std::string_view content, LogType type = LogType::INFO) noexcept;
+
+    template <class... Args>
+        requires(convertible_to_string<Args> && ...)
+    void Log(Args&&... args, LogType type) {
+        std::stringstream ss;
+        ss << format(time_date()) << " " << format(type);
+
+        std::array<std::string_view, sizeof...(args)> contents;
+        for (const auto& content : contents) {
+            ss << contents;
+        }
+        ss << "\n";
+
+        m_Stream.append(ss.str());
+        ss.flush();
+    }
+
+    ~FileLogger() noexcept;
+
+  private:
+    FileOStream m_Stream{};
+};
+};  // namespace benchtools

@@ -1,10 +1,15 @@
 #include <benchtools/Core/Time.hpp>
+
 #include <chrono>
+#include <format>
+#include <ostream>
+#include <sstream>
 #include <string>
 
 namespace benchtools {
 
-Duration durationCast(const std::chrono::duration<double>& duration, time_unit unit) {
+Duration getDuration(const std::chrono::duration<double>& duration,
+                     time_unit unit) noexcept {
     switch (unit) {
     case time_unit::nanoseconds:
         return Duration{std::chrono::duration_cast<std::chrono::nanoseconds>(duration)};
@@ -30,6 +35,34 @@ Duration durationCast(const std::chrono::duration<double>& duration, time_unit u
         return Duration{std::chrono::duration_cast<std::chrono::seconds>(duration)};
     }
 }
+
+std::chrono::duration<double> durationCast(const std::chrono::duration<double>& duration,
+                                           time_unit unit) noexcept {
+    switch (unit) {
+    case time_unit::nanoseconds:
+        return std::chrono::duration_cast<std::chrono::nanoseconds>(duration);
+    case time_unit::microseconds:
+        return std::chrono::duration_cast<std::chrono::microseconds>(duration);
+    case time_unit::milliseconds:
+        return std::chrono::duration_cast<std::chrono::milliseconds>(duration);
+    case time_unit::seconds:
+        return std::chrono::duration_cast<std::chrono::seconds>(duration);
+    case time_unit::minutes:
+        return std::chrono::duration_cast<std::chrono::minutes>(duration);
+    case time_unit::hours:
+        return std::chrono::duration_cast<std::chrono::hours>(duration);
+    case time_unit::days:
+        return std::chrono::duration_cast<std::chrono::days>(duration);
+    case time_unit::weeks:
+        return std::chrono::duration_cast<std::chrono::weeks>(duration);
+    case time_unit::months:
+        return std::chrono::duration_cast<std::chrono::months>(duration);
+    case time_unit::years:
+        return std::chrono::duration_cast<std::chrono::years>(duration);
+    default:
+        return std::chrono::duration_cast<std::chrono::seconds>(duration);
+    }
+};
 
 std::string format(benchtools::time_unit unit) {
     switch (unit) {
@@ -98,5 +131,23 @@ std::string format(Duration dur) {
             return "";
         },
         dur.duration());
+}
+
+[[nodiscard]] std::chrono::zoned_time<std::chrono::duration<double>>
+time_date() noexcept {
+    std::chrono::zoned_time zoned_time{std::chrono::current_zone(),
+                                       std::chrono::system_clock::now()};
+
+    zoned_time = {std::chrono::current_zone(),
+                  floor<std::chrono::seconds>(zoned_time.get_local_time())};
+
+    return zoned_time;
+};
+
+[[nodiscard]] std::string
+format(std::chrono::zoned_time<std::chrono::duration<double>> time_point) noexcept {
+    std::ostringstream oss;
+    oss << "[" << std::format("{:%F %T}", time_point) << "]" << "" << std::flush;
+    return oss.str();
 }
 }  // namespace benchtools

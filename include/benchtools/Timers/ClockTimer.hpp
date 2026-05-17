@@ -18,19 +18,26 @@ class ClockTimer : public BaseTimer {
      * @brief
      *
      */
-    void start() override;
+    void start() noexcept override;
 
     /**
      * @brief
      *
      */
-    void stop() override;
+    void stop() noexcept override;
 
     /**
      * @brief
      *
      */
-    void reset(bool) override;
+    void reset() noexcept override;
+
+    /**
+     * @brief resets the timer if condition is true
+     *
+     * @param condition
+     */
+    void reset_if(bool condition = 1) noexcept override;
 
     /**
      * @brief
@@ -38,20 +45,22 @@ class ClockTimer : public BaseTimer {
      * @param durationType
      * @return Duration
      */
-    [[nodiscard]] Duration duration(time_unit durationType = time_unit::seconds) noexcept override;
+    [[nodiscard]] Duration
+    duration(time_unit durationType = time_unit::seconds) const noexcept override;
 
-  private:
     /**
      * @brief
      *
      * @return std::chrono::duration<double>
      */
-    [[nodiscard]] std::chrono::duration<double> currentElapsed() noexcept override;
+    [[nodiscard]] std::chrono::duration<double> currentElapsed() const noexcept override;
 
   private:
     std::clock_t mStart{0};
     std::clock_t mEnd{0};
     std::atomic<bool> mRunning{false};
 };
+
+using CPUTimer = ClockTimer;
 
 }  // namespace benchtools

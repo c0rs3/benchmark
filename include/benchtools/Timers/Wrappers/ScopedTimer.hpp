@@ -15,14 +15,14 @@ class ScopedTimer {
      * @brief ScopedTimer must take in a BaseTimer
      *
      */
-    explicit ScopedTimer() = delete;
+    explicit ScopedTimer() noexcept = delete;
 
     /**
      * @brief Construct a new Scoped Timer object
      *
      * @param BaseTimer
      */
-    explicit ScopedTimer(BaseTimer& timer);
+    explicit ScopedTimer(BaseTimer& timer) noexcept;
 
     /**
      * @brief Destroy the Scoped Timer object
@@ -53,6 +53,6 @@ class ScopedTimer {
     [[nodiscard]] std::chrono::duration<double> currentElapsed() noexcept;
 
   private:
-    BaseTimer* m_Timer;
+    BaseTimer* m_Timer{};
 };
 };  // namespace benchtools

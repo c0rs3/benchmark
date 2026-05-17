@@ -3,26 +3,34 @@
 
 namespace benchtools {
 
-void ClockTimer::start() {
+void ClockTimer::start() noexcept {
     mStart = std::clock();
     mRunning = true;
 }
-void ClockTimer::stop() {
+void ClockTimer::stop() noexcept {
     mEnd = std::clock();
     mRunning = false;
 }
 
-void ClockTimer::reset(bool) {
+void ClockTimer::reset() noexcept {
     mStart = 0;
     mEnd = 0;
 }
 
-[[nodiscard]] Duration ClockTimer::duration(time_unit durationType) noexcept {
-    clock_t end = mRunning ? std::clock() : mEnd;
-    return durationCast(this->currentElapsed(), durationType);
+void ClockTimer::reset_if(bool cond) noexcept {
+    if (!cond) {
+        return;
+    }
+    mStart = 0;
+    mEnd = 0;
 }
 
-[[nodiscard]] std::chrono::duration<double> ClockTimer::currentElapsed() noexcept {
+[[nodiscard]] Duration ClockTimer::duration(time_unit durationType) const noexcept {
+    clock_t end = mRunning ? std::clock() : mEnd;
+    return getDuration(this->currentElapsed(), durationType);
+}
+
+[[nodiscard]] std::chrono::duration<double> ClockTimer::currentElapsed() const noexcept {
     return std::chrono::duration<double>(static_cast<double>(std::clock() - mStart) /
                                          CLOCKS_PER_SEC);
 };

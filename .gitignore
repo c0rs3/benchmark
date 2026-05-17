@@ -2,7 +2,6 @@
 *.json
 build
 /.cache/
-/.cache/
 
 # VSCode
 .vscode
@@ -11,7 +10,12 @@ build
 .clangd
 
 # Files generated during testing
+results
+benchtools_results
 *.csv
 *.json
+log.txt
+filelog.txt
 
-inst.txt
+# imgui
+*.ini

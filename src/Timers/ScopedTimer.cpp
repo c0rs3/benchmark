@@ -1,13 +1,13 @@
 #include <benchtools/Core/Time.hpp>
 #include <benchtools/Timers/BaseTimer.hpp>
-#include <benchtools/Timers/ScopedTimer.hpp>
+#include <benchtools/Timers/Wrappers/ScopedTimer.hpp>
 
 #include <chrono>
 
 namespace benchtools {
 
-ScopedTimer::ScopedTimer(BaseTimer& timer) : m_Timer(&timer) {
-    this->getTimer().reset(true);
+ScopedTimer::ScopedTimer(BaseTimer& timer) noexcept : m_Timer(&timer) {
+    this->getTimer().reset();
     this->getTimer().start();
 }
 
