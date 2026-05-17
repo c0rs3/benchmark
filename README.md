@@ -295,11 +295,13 @@ int main(int argc, char** argv) {
 }
 ```
 
-- Then:
+- or use the "prebuilt" plot app under the bin directory under your build directory:
 
 ```bash
-❯ ./build/src/App/my_plot_app "benchtools_results/\[2026-05-15\ 03:22:15\]_results.csv"
+❯ ./build/bin/my_plot_app "benchtools_results/\[2026-05-15\ 03:22:15\]_results.csv"
 ```
+
+#### Example
 
 ![plotting](.github/image.png)
 
@@ -325,7 +327,12 @@ int main(int argc, char** argv) {
 - [x] More polishing
 - [x] Release
   - [x] Proper documentation + README
-  - [ ] See how it works on cudavec
+  - [x] See how it works on cudavec
+  - [x] The plot UI is fucked
+  - [x] The plot app is seg-faulting, fix
+  - [x] The plotting app is deep in the _deps dir figure out a way to get it out
+  - [x] fmt issue in cudavec
+  - [ ] refactor cudavec a bit
 - [ ] Flame graph functionality?
   - [ ] FlameTimer that stores functional call using std::source_location
   - [ ] Timers saved to a global thing
