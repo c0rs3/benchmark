@@ -15,6 +15,7 @@ benchtools_results
 *.csv
 *.json
 log.txt
+filelog.txt
 
 # imgui
 *.ini
