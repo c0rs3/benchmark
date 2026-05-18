@@ -328,11 +328,10 @@ int main(int argc, char** argv) {
 - [x] Release
   - [x] Proper documentation + README
   - [x] See how it works on cudavec
-  - [x] The plot UI is fucked
-  - [x] The plot app is seg-faulting, fix
+  - [x] Fix the plotUI
+  - [x] The plot segfault
   - [x] The plotting app is deep in the _deps dir figure out a way to get it out
   - [x] fmt issue in cudavec
-  - [ ] refactor cudavec a bit
 - [ ] Flame graph functionality?
   - [ ] FlameTimer that stores functional call using std::source_location
   - [ ] Timers saved to a global thing
