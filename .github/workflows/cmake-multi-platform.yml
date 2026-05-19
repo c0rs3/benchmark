@@ -73,24 +73,6 @@ jobs:
           libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
           libgl1-mesa-dev libxkbcommon-dev   # ← changed from "xkbcommon"
 
-    # ---------- Install TBB (Threading Building Blocks) ----------
-    - name: Install TBB (Ubuntu)
-      if: runner.os == 'Linux'
-      run: sudo apt-get install -y libtbb-dev
-
-    - name: Install TBB (macOS)
-      if: runner.os == 'macOS'
-      run: brew install tbb
-
-    - name: Install TBB (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        # Option 1: using vcpkg (reliable, integrates with MSVC)
-        git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
-        C:\vcpkg\bootstrap-vcpkg.bat
-        C:\vcpkg\vcpkg install tbb:x64-windows
-        echo "CMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake" >> $env:GITHUB_ENV
-
     - name: Set reusable strings
       id: strings
       shell: bash
