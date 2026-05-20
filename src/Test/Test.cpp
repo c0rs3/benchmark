@@ -151,6 +151,5 @@ int main() {
             benchmark<Policy::System>(10, time_unit::microseconds, example_callable2);
     }
 #endif
-    BENCHTOOLS_CRITICAL("{}", 1);
     return 0;
 }

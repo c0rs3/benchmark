@@ -5,25 +5,27 @@
 #include <chrono>
 
 namespace benchtools {
+namespace timers {
 
-ScopedTimer::ScopedTimer(BaseTimer& timer) noexcept : m_Timer(&timer) {
-    this->getTimer().reset();
-    this->getTimer().start();
-}
+    ScopedTimer::ScopedTimer(BaseTimer& timer) noexcept : m_Timer(&timer) {
+        this->getTimer().reset();
+        this->getTimer().start();
+    }
 
-ScopedTimer::~ScopedTimer() noexcept {
-    this->getTimer().stop();
-}
+    ScopedTimer::~ScopedTimer() noexcept {
+        this->getTimer().stop();
+    }
 
-Duration ScopedTimer::duration(time_unit durationType) noexcept {
-    return this->getTimer().duration();
-}
+    Duration ScopedTimer::duration(time_unit durationType) noexcept {
+        return this->getTimer().duration();
+    }
 
-BaseTimer& ScopedTimer::getTimer() noexcept {
-    return *m_Timer;
-}
+    BaseTimer& ScopedTimer::getTimer() noexcept {
+        return *m_Timer;
+    }
 
-std::chrono::duration<double> ScopedTimer::currentElapsed() noexcept {
-    return default_duration;
-}
+    std::chrono::duration<double> ScopedTimer::currentElapsed() noexcept {
+        return default_duration;
+    }
+};  // namespace timers
 };  // namespace benchtools

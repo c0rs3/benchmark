@@ -1,5 +1,6 @@
 include(FetchContent)
 
+#spdlog
 FetchContent_Declare(
     spdlog
     GIT_REPOSITORY https://github.com/gabime/spdlog.git
@@ -7,7 +8,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(spdlog)
 
-# Dear ImGui (required by ImPlot)
+# Dear ImGui
 FetchContent_Declare(
     imgui
     GIT_REPOSITORY https://github.com/ocornut/imgui.git
@@ -15,7 +16,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui)
 
-# GLFW (for the ImGui GLFW backend) – must be fetched before imgui uses it
+# GLFW
 FetchContent_Declare(
     glfw
     GIT_REPOSITORY https://github.com/glfw/glfw.git
@@ -65,7 +66,6 @@ elseif(WIN32)
     target_link_libraries(imgui PUBLIC opengl32)
 endif()
 
-
 ######## CORE ######## 
 add_library(Core
     Core/Time.cpp
@@ -88,7 +88,7 @@ target_include_directories(File
 target_compile_features(File PUBLIC cxx_std_20)
 add_library(Benchtools::File ALIAS File)
 
-######## LOGGER ######## 
+######## Loggers ######## 
 add_library(Loggers
     Loggers/FileLogger.cpp
 )
@@ -105,13 +105,13 @@ target_link_libraries(Loggers PUBLIC
     spdlog::spdlog)
 add_library(Benchtools::Loggers ALIAS Loggers)
 
-######## TIMER ######## 
+######## Timers ####### 
 add_library(Timers
     Timers/BaseTimer.cpp
     Timers/ClockTimer.cpp
+    Timers/WallTimer.cpp
     Timers/LoggingTimer.cpp
     Timers/ScopedTimer.cpp
-    Timers/WallTimer.cpp
 )
 target_include_directories(Timers
     PUBLIC
@@ -133,9 +133,7 @@ target_compile_features(Benchmark PUBLIC cxx_std_20)
 target_link_libraries(Benchmark PUBLIC Benchtools::Timers Benchtools::Core Benchtools::File)
 add_library(Benchtools::Benchmark ALIAS Benchmark)
 
-######## PLOTTING ######## 
-
-# find_package(TBB REQUIRED COMPONENTS tbb)
+######## Plotting ######## 
 
 add_library(Plotter
     Plotting/PlotWidget.cpp
@@ -144,6 +142,7 @@ add_library(Plotter
 
 target_include_directories(Plotter PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    ${imgui_flame_graph_SOURCE_DIR}
 )
 
 target_compile_features(Plotter PUBLIC cxx_std_20)

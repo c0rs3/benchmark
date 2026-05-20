@@ -20,8 +20,8 @@ namespace plotter {
 
     [[nodiscard]] std::string extract_col(const std::string& raw) noexcept;
 
-    struct DataLoader {
-        [[nodiscard]] static BenchmarkData LoadFromCSV(std::string_view path) noexcept;
+    struct PlotDataLoader {
+        [[nodiscard]] static BenchmarkData LoadFromCSV(std::string_view path);
     };
 
 }  // namespace plotter

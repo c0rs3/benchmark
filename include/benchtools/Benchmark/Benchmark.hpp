@@ -24,19 +24,20 @@ namespace benchtools {
 template <Policy P, class Callable, class... Args>
     requires(std::is_invocable_v<Callable, Args...>)
 auto benchmark(uint32_t iterations, time_unit unit, Callable&& callable, Args&&... args) {
-    static constexpr auto csv_header_length = 3;
+    static constexpr auto benchmarkCSVHeaderLength = 3;
 
     File path_to_save =
-        File("benchtools_results") / (format(time_date()) + "_results.csv");
+        File("benchtools_results") / (format(time_date()) + "_benchmarkresults.csv");
 
     std::filesystem::create_directories(path_to_save.parent_path());
 
-    CSVStream<csv_header_length> CSVResults{path_to_save.c_str(), fileopen::insert,
-                                            "timerid", "type", "dur"};
+    CSVStream<benchmarkCSVHeaderLength> CSVResults{path_to_save.c_str(), fileopen::insert,
+                                                   "timerid", "type", "dur"};
 
     std::chrono::duration<double> total{default_duration};
 
-    using Timer_t = std::conditional_t<P == Policy::Wall, WallTimer, ClockTimer>;
+    using Timer_t = std::conditional_t<P == Policy::Wall, benchtools::timers::WallTimer,
+                                       benchtools::timers::ClockTimer>;
     Timer_t timer;
 
     for (uint32_t i{0}; i < iterations; i++) {
@@ -46,10 +47,10 @@ auto benchmark(uint32_t iterations, time_unit unit, Callable&& callable, Args&&.
 
         total += timer.currentElapsed();
 
-        CSVResults.write(std::array<std::string, csv_header_length>{
+        CSVResults.write(std::array<std::string, benchmarkCSVHeaderLength>{
             std::to_string(i), format(P), timer.duration(unit).str()});
 
-        timer.reset(    );
+        timer.reset();
     }
     return std::to_string((total / iterations).count()) + format(unit);
 }

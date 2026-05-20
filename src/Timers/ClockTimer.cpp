@@ -2,37 +2,40 @@
 #include <benchtools/Timers/ClockTimer.hpp>
 
 namespace benchtools {
+namespace timers {
 
-void ClockTimer::start() noexcept {
-    mStart = std::clock();
-    mRunning = true;
-}
-void ClockTimer::stop() noexcept {
-    mEnd = std::clock();
-    mRunning = false;
-}
-
-void ClockTimer::reset() noexcept {
-    mStart = 0;
-    mEnd = 0;
-}
-
-void ClockTimer::reset_if(bool cond) noexcept {
-    if (!cond) {
-        return;
+    void ClockTimer::start() noexcept {
+        mStart = std::clock();
+        mRunning = true;
     }
-    mStart = 0;
-    mEnd = 0;
-}
+    void ClockTimer::stop() noexcept {
+        mEnd = std::clock();
+        mRunning = false;
+    }
 
-[[nodiscard]] Duration ClockTimer::duration(time_unit durationType) const noexcept {
-    clock_t end = mRunning ? std::clock() : mEnd;
-    return getDuration(this->currentElapsed(), durationType);
-}
+    void ClockTimer::reset() noexcept {
+        mStart = 0;
+        mEnd = 0;
+    }
 
-[[nodiscard]] std::chrono::duration<double> ClockTimer::currentElapsed() const noexcept {
-    return std::chrono::duration<double>(static_cast<double>(std::clock() - mStart) /
-                                         CLOCKS_PER_SEC);
-};
+    void ClockTimer::reset_if(bool cond) noexcept {
+        if (!cond) {
+            return;
+        }
+        mStart = 0;
+        mEnd = 0;
+    }
 
+    [[nodiscard]] Duration ClockTimer::duration(time_unit durationType) const noexcept {
+        clock_t end = mRunning ? std::clock() : mEnd;
+        return getDuration(this->currentElapsed(), durationType);
+    }
+
+    [[nodiscard]] std::chrono::duration<double>
+    ClockTimer::currentElapsed() const noexcept {
+        return std::chrono::duration<double>(static_cast<double>(std::clock() - mStart) /
+                                             CLOCKS_PER_SEC);
+    };
+
+}  // namespace timers
 }  // namespace benchtools

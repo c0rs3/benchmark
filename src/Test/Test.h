@@ -5,14 +5,15 @@
 #include <benchtools/Loggers/FileLogger.hpp>
 #include <benchtools/Loggers/Logger.hpp>
 
+#include <benchtools/Core/Concepts.hpp>
 #include <benchtools/Timers/ClockTimer.hpp>
 #include <benchtools/Timers/WallTimer.hpp>
 #include <benchtools/Timers/Wrappers/FileTimer.hpp>
 #include <benchtools/Timers/Wrappers/LoggingTimer.hpp>
 #include <benchtools/Timers/Wrappers/ScopedTimer.hpp>
 
-#include "benchtools/Benchmark/Benchmark.hpp"
-#include "benchtools/Benchmark/Policy.hpp"
+#include <benchtools/Benchmark/Benchmark.hpp>
+#include <benchtools/Benchmark/Policy.hpp>
 
 #include <chrono>
 #include <random>
@@ -37,6 +38,8 @@ using namespace std::chrono_literals;
 using namespace benchtools;
 using enum time_unit;
 
+namespace testing {
+
 /**
  * For RNG during testing
  *
@@ -57,3 +60,4 @@ inline void example_callable() {
 inline void example_callable2() {
     std::this_thread::sleep_for(std::chrono::microseconds(dist(engine)));
 }
+}  // namespace testing

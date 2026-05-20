@@ -9,7 +9,7 @@ target_link_libraries(plot_app PRIVATE
     Timers 
     Plotter
     imgui
-    glfw   
+    glfw
 )
 
 target_compile_features(plot_app PRIVATE cxx_std_20)

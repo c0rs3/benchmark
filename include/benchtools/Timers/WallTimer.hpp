@@ -4,78 +4,81 @@
 
 #include <benchtools/Timers/BaseTimer.hpp>
 
-#include <atomic>
-
 namespace benchtools {
-
-/**
- * @brief Fundamental timer used for tracking wall time
- *
- */
-class WallTimer : public BaseTimer {
-    using clock = std::chrono::high_resolution_clock;
-    using time_point = clock::time_point;
-
-    friend class LoggingTimer;
-    friend class ScopedTimer;
-
-  public:
+namespace timers {
     /**
-     * @brief Construct a new Wall Timer object
+     * @brief Fundamental timer used for tracking wall time
      *
      */
-    explicit WallTimer() noexcept = default;
+    class WallTimer : public BaseTimer {
+        using clock = std::chrono::high_resolution_clock;
+        using time_point = clock::time_point;
 
-    /**
-     * @brief Destroy the Wall Timer object
-     *
-     */
-    virtual ~WallTimer() noexcept override = default;
+        friend class LoggingTimer;
+        friend class ScopedTimer;
 
-    /**
-     * @brief
-     *
-     */
+      public:
+        // WallTimer(const WallTimer&) = delete;
+        // WallTimer& operator=(const WallTimer&) = delete;
 
-    virtual void start() noexcept override;
-    /**
-     * @brief
-     *
-     */
-    virtual void stop() noexcept override;
+      public:
+        /**
+         * @brief Construct a new Wall Timer object
+         *
+         */
+        explicit WallTimer() noexcept = default;
 
-    /**
-     * @brief
-     *
-     * @param reset
-     */
-    virtual void reset() noexcept override;
+        /**
+         * @brief Destroy the Wall Timer object
+         *
+         */
+        virtual ~WallTimer() noexcept override = default;
 
-    /**
-     * @brief resets the timer if condition is true
-     *
-     * @param condition
-     */
-    void reset_if(bool condition = 1) noexcept override;
+        /**
+         * @brief
+         *
+         */
 
-    /**
-     * @brief
-     *
-     * @param durationType
-     * @return Duration
-     */
-    [[nodiscard]] virtual Duration
-    duration(time_unit durationType = time_unit::seconds) const noexcept override;
+        virtual void start() noexcept override;
+        /**
+         * @brief
+         *
+         */
+        virtual void stop() noexcept override;
 
-    [[nodiscard]] virtual std::chrono::duration<double>
-    currentElapsed() const noexcept override;
+        /**
+         * @brief
+         *
+         * @param reset
+         */
+        virtual void reset() noexcept override;
 
-  private:
-    time_point m_Start;
-    std::chrono::duration<double> m_ElapsedTime{default_duration};
-    std::atomic<bool> m_Running{0};
-};
+        /**
+         * @brief resets the timer if condition is true
+         *
+         * @param condition
+         */
+        void reset_if(bool condition = 1) noexcept override;
 
-using SystemTimer = WallTimer;
+        /**
+         * @brief Gets the duration
+         *
+         * @param durationType
+         * @return Duration
+         */
+        [[nodiscard]] virtual Duration
+        duration(time_unit durationType = time_unit::seconds) const noexcept override;
 
+        [[nodiscard]] virtual std::chrono::duration<double>
+        currentElapsed() const noexcept override;
+
+      private:
+        time_point m_Start;
+        std::chrono::duration<double> m_ElapsedTime{default_duration};
+        bool m_Running{0};
+    };
+
+    using SystemTimer = WallTimer;
+
+}  // namespace timers
 }  // namespace benchtools

@@ -1,17 +1,13 @@
 #pragma once
 
+#include <benchtools/Timers/ClockTimer.hpp>
+#include <benchtools/Timers/WallTimer.hpp>
+
 #include <concepts>
-#include <cstddef>
 #include <string>
 #include <type_traits>
 
 namespace benchtools {
-
-class ClockTimer;
-class WallTimer;
-class FileLogger;
-template <size_t N>
-class CSVStream;
 
 template <class T>
 concept convertible_to_string =
@@ -19,5 +15,5 @@ concept convertible_to_string =
 
 template <class T>
 concept clock_or_wall_timer =
-    std::is_same_v<T, ClockTimer> || std::is_same_v<T, WallTimer>;
+    std::is_same_v<T, timers::ClockTimer> || std::is_same_v<T, timers::WallTimer>;
 };  // namespace benchtools

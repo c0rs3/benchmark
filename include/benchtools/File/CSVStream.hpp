@@ -30,7 +30,7 @@ class CSVStream {
      */
     template <class... Args>
         requires(sizeof...(Args) == N) && (convertible_to_string<Args> && ...)
-    explicit CSVStream(std::string_view path, benchtools::fmode fmode = fileopen::append,
+    explicit CSVStream(std::string_view path, benchtools::fmode fmode,
                        Args&&... args) noexcept
         : m_Stream(path, fmode), m_Headers{std::forward<Args>(args)...} {
         for (uint8_t l_counter{1}; const auto& header : m_Headers) {

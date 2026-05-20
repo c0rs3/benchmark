@@ -17,14 +17,14 @@ namespace plotter {
         PlotWidget(PlotWidget&&) = delete;
         PlotWidget& operator=(PlotWidget&&) = delete;
 
-        int Run(int arg_count, char** arg_values) noexcept;
+        int run(int arg_count, char** arg_values) noexcept;
 
         /**
          * @brief Reads CSV file and loads the data to member variables
          *
          * @param path
          */
-        void SetData(std::string_view path);
+        void setData(std::string_view path);
 
       private:
         GLFWwindow* m_Window;

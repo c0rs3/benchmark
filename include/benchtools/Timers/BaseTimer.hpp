@@ -5,56 +5,57 @@
 #include <chrono>
 
 namespace benchtools {
-
-/**
- * @brief Base class for timers, used as a blueprint for what a timer should do
- */
-class BaseTimer {
-  public:
-    BaseTimer() = default;
-
-    virtual ~BaseTimer();
+namespace timers {
 
     /**
-     * @brief Pure virtual function that will define how a Timer should act on start()
+     * @brief Base class for timers, used as a blueprint for what a timer should do
      */
-    virtual void start() = 0;
+    class BaseTimer {
+      public:
+        BaseTimer() = default;
 
-    /**
-     * @brief Pure virtual function that will define how a Timer should act on stop()
-     */
-    virtual void stop() = 0;
+        virtual ~BaseTimer();
 
-    /**
-     * @brief resets the timer
-     *
-     */
-    virtual void reset() = 0;
+        /**
+         * @brief Pure virtual function that will define how a Timer should act on start()
+         */
+        virtual void start() noexcept;
 
-    /**
-     * @brief resets the timer
-     *
-     */
-    virtual void reset_if(bool cond = true) = 0;
+        /**
+         * @brief Pure virtual function that will define how a Timer should act on stop()
+         */
+        virtual void stop() noexcept;
 
-    /**
-     * @brief Gets the duration in the respective timeunit
-     *
-     * @param durationType
-     * @return Duration
-     */
-    [[nodiscard]] virtual Duration
-    duration(time_unit durationType = time_unit::seconds) const noexcept {
-        return getDuration(default_duration, durationType);
+        /**
+         * @brief resets the timer
+         *
+         */
+        virtual void reset() noexcept;
+
+        /**
+         * @brief resets the timer
+         *
+         */
+        virtual void reset_if(bool cond = true) noexcept;
+
+        /**
+         * @brief Gets the duration in the respective timeunit
+         *
+         * @param durationType
+         * @return Duration
+         */
+        [[nodiscard]] virtual Duration
+        duration(time_unit durationType = time_unit::seconds) const noexcept {
+            return getDuration(default_duration, durationType);
+        };
+
+      private:
+        /**
+         * @brief Pure virtual function for getting elapsed duration since at that moment
+         *
+         * @return std::chrono::duration<double>
+         */
+        virtual std::chrono::duration<double> currentElapsed() const noexcept;
     };
-
-  private:
-    /**
-     * @brief Pure virtual function for getting elapsed duration since at that moment
-     *
-     * @return std::chrono::duration<double>
-     */
-    virtual std::chrono::duration<double> currentElapsed() const noexcept = 0;
-};
-
+};  // namespace timers
 }  // namespace benchtools

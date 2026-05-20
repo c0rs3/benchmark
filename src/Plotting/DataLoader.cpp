@@ -3,6 +3,7 @@
 #include <benchtools/Core/Time.hpp>
 
 #include <string>
+#include <vector>
 
 namespace benchtools {
 namespace plotter {
@@ -31,7 +32,7 @@ namespace plotter {
      * @param path
      * @return BenchmarkData
      */
-    [[nodiscard]] BenchmarkData DataLoader::LoadFromCSV(std::string_view path) noexcept {
+    [[nodiscard]] BenchmarkData PlotDataLoader::LoadFromCSV(std::string_view path) {
         // CSV rows
         static constexpr auto csv_header_length = 3;
         static constexpr auto unit_col = 2;
