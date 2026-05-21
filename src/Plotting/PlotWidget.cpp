@@ -20,6 +20,7 @@ namespace plotter {
 
     PlotWidget::~PlotWidget() noexcept {
         glfwMakeContextCurrent(m_Window);
+        ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImPlot::DestroyContext();
         ImGui::DestroyContext();
