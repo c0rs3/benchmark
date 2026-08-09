@@ -4,17 +4,14 @@
 #include <cstdint>
 #include <string>
 
-namespace benchtools {
+namespace benchtools::benchmark {
 
 /**
  * @brief Policies for executing benchmarks
- *
  */
 enum class Policy : uint8_t {
-    CPU,
-    Clock,
-    Wall,
-    System,
+    CPU = 0x00,   // CPU time
+    Wall = 0x01,  // System  Time
 };
 
 [[nodiscard]] inline constexpr std::string format(Policy policy) {
@@ -22,18 +19,12 @@ enum class Policy : uint8_t {
         using enum Policy;
     case CPU:
         return "CPU";
-    case Clock:
-        return "CPU";  // aka clock
     case Wall:
         return "Wall";
-    case System:
-        return "Wall";  // aka system
     default:
         assert(false && "Unknown Policy!\n");
         return "";
-        // C++23...
-        // std::unreachable();
     }
 }
 
-};  // namespace benchtools
+};  // namespace benchtools::benchmark
