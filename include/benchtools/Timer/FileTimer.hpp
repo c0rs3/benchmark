@@ -10,7 +10,7 @@
 
 namespace benchtools::timer {
 
-template <ChronoClock ClockType>
+template <clock::ChronoClock ClockType>
 class FileTimer {
   public:
     FileTimer(std::string_view fileName) : m_Stream(fileName, file::fileopen::append) {};

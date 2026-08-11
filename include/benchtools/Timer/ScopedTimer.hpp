@@ -6,7 +6,7 @@
 
 namespace benchtools::timer {
 
-template <ChronoClock ClockType>
+template <clock::ChronoClock ClockType>
 class ScopedTimer {
   public:
     ScopedTimer() noexcept = delete;

@@ -13,12 +13,12 @@
 namespace benchtools {
 namespace clock {
 
-    enum class ClockType {
+    enum class CPU {
         Process,  // PROCESS CLOCK
         Thread    // THREAD CLOCK
     };
 
-    template <ClockType Type>
+    template <CPU Type = CPU::Process>
     class CPUClock {
       public:
         using duration = std::chrono::nanoseconds;
@@ -29,9 +29,9 @@ namespace clock {
         [[nodiscard]] static time_point now() noexcept {
 #if defined(BENCHTOOLS_LIN)
             struct timespec ts;
-            if constexpr (Type == ClockType::Process) {
+            if constexpr (Type == CPU::Process) {
                 if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts)) return {};
-            } else if (Type == ClockType::Thread) {
+            } else if (Type == CPU::Thread) {
                 if (clock_gettime(CLOCK_THREAD_CPUTIME_ID, &ts)) return {};
             }
 

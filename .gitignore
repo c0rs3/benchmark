@@ -14,7 +14,7 @@ results
 benchtools_results
 *.csv
 *.json
-huh.txt
+*.xml
 
 # imgui
 *.ini

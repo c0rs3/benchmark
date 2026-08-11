@@ -1,5 +1,6 @@
 #pragma once
 
+#include "benchtools/Core/Core.hpp"
 #include <cassert>
 #include <chrono>
 #include <cstdint>
@@ -66,8 +67,8 @@ namespace time {
         return {};
     }
 
-    [[nodiscard]] std::chrono::duration<double> inline durationCast(
-        const std::chrono::duration<double>& duration, const time::unit& unit) noexcept {
+    [[nodiscard]] Duration inline durationCast(const Duration& duration,
+                                               const time::unit& unit) noexcept {
         using enum time::unit;
         switch (unit) {
         case nanoseconds:

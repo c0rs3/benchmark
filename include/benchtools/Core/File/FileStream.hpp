@@ -1,9 +1,9 @@
 #pragma once
 
-#include <benchtools/Core/File.hpp>
+#include <benchtools/Core/File/File.hpp>
 
-#include <cstdint>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -16,7 +16,7 @@ namespace file {
       public:
         FileOStream() noexcept = default;
 
-        explicit FileOStream(std::string_view path, fmode mode = fileopen::append)
+        explicit FileOStream(std::string_view path, fmode_t mode = fileopen::insert)
             : m_Stream(File(path.data()), mode), m_File(path) {};
 
         void append(std::string_view content) {
@@ -26,6 +26,7 @@ namespace file {
             }
 
             m_Stream.write(content.data(), content.size());
+            m_Stream.flush();
         }
 
         [[nodiscard]] operator bool() const { return m_Stream ? 1 : 0; }
@@ -41,7 +42,7 @@ namespace file {
 
         FileIStream(std::string_view path) : m_Stream(File(path.data())), m_File(path) {}
 
-        [[nodiscard]] std::vector<std::string> read(uint32_t lines = 0) {
+        [[nodiscard]] std::vector<std::string> read() {
             if (!m_Stream) {
                 std::cerr << "Failed to open file\n";
                 return {};
@@ -51,6 +52,7 @@ namespace file {
 
             std::string line{};
             while (std::getline(m_Stream, line))
+
                 res.push_back(line);
 
             return res;

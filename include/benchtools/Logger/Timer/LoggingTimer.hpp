@@ -10,7 +10,7 @@
 
 namespace benchtools::timer {
 
-template <ChronoClock ClockType>
+template <clock::ChronoClock ClockType>
 class LoggingTimer {
   public:
     LoggingTimer() = default;

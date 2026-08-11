@@ -1,24 +1,23 @@
 #pragma once
 
 #include <cassert>
-#include <cstdint>
 #include <string>
 
 namespace benchtools::benchmark {
 
-/**
- * @brief Policies for executing benchmarks
- */
-enum class Policy : uint8_t {
-    CPU = 0x00,   // CPU time
-    Wall = 0x01,  // System  Time
+enum Policy : int {
+    CPU_Process = 0x00,  // CPU time
+    CPU_Thread = 0x01,   // CPU time
+    Wall = 0x02,         // System  Time
 };
 
 [[nodiscard]] inline constexpr std::string format(Policy policy) {
     switch (policy) {
         using enum Policy;
-    case CPU:
-        return "CPU";
+    case CPU_Process:
+        return "CPU (Process)";
+    case CPU_Thread:
+        return "CPU (Thread)";
     case Wall:
         return "Wall";
     default:

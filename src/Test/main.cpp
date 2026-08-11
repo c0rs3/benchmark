@@ -1,14 +1,6 @@
-#include "benchtools/Core/Clocks/CPUClock.hpp"
-#include "benchtools/Core/Clocks/WallClock.hpp"
-#include "benchtools/Core/Time.hpp"
-
-#include "benchtools/Logger/Timer/LoggingTimer.hpp"
-
-#include "benchtools/Timer/FileTimer.hpp"
-#include "benchtools/Timer/ScopedTimer.hpp"
-#include <benchtools/Timer/Timer.hpp>
-
 #include <benchtools/Benchmark/Benchmark.hpp>
+
+#include <benchtools/Plotter/PlotDataLoader.hpp>
 
 #include <iostream>
 #include <thread>
@@ -19,13 +11,13 @@ void foo() {
 }
 
 int main() {
+    using namespace benchtools;
 #if 0
-    auto cpuTimer = benchtools::timer::Timer<
-    benchtools::clock::CPUClock<benchtools::clock::ClockType::Process>>{};
+    auto cpuTimer = timer::Timer<clock::CPUClock<>>{};
 
-    auto wallTimer = benchtools::timer::Timer<benchtools::clock::WallClock>{};
+    auto wallTimer = timer::Timer<clock::WallClock>{};
     {
-        benchtools::timer::ScopedTimer scop{cpuTimer};
+        timer::ScopedTimer scop{cpuTimer};
         cpuTimer.start();
         wallTimer.start();
 
@@ -34,9 +26,13 @@ int main() {
         cpuTimer.stop();
         wallTimer.stop();
     }
+    std::clog << cpuTimer.duration() << std::endl;
+    std::clog << time::durationCast(cpuTimer.duration(), time::unit::microseconds)
+              << std::endl;
+    std::clog << wallTimer.duration();
 
     {
-        auto log = benchtools::timer::LoggingTimer<benchtools::clock::WallClock>{};
+        auto log = timer::LoggingTimer<clock::WallClock>{};
         log.start();
         std::cin.get();
         log.stop();
@@ -51,8 +47,7 @@ int main() {
     }
 
     {
-        auto file =
-        benchtools::timer::FileTimer<benchtools::clock::WallClock>{"huh`.txt"};
+        auto file = timer::FileTimer<clock::WallClock>{"huh.txt"};
         file.start();
         std::cin.get();
         file.stop();
@@ -66,14 +61,15 @@ int main() {
         file.stop();
     }
 
-    std::clog << cpuTimer.duration() << std::endl;
-    std::clog << benchtools::time::durationCast(cpuTimer.duration(),
-    benchtools::time::unit::microseconds)
-    << std::endl;
-    std::clog << wallTimer.duration();
-#endif
-    benchtools::benchmark::Profile profile{};
-    benchtools::benchmark::benchmarkFunc(profile, foo);
+#elif 1
+    benchmark::Profile profile{};
+    benchmark::runBenchmark(profile, foo);
+
     std::clog << std::endl;
     return 0;
+#elif 0
+    std::filesystem::path path =
+        "benchtools_results/[2026-08-11 19:01:33]_benchmarkresults.xml";
+    std::clog << Plotter::PlotData::loadData(path.c_str());
+#endif
 }
