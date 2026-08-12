@@ -1,6 +1,3 @@
-
-#include "benchtools/Core/Core.hpp"
-#include "benchtools/Core/Time.hpp"
 #include <benchtools/Benchmark/Benchmark.hpp>
 
 #include <benchtools/Core/Benchmark/Policy.hpp>
@@ -20,44 +17,9 @@ void foo() {
     std::this_thread::sleep_for(10ms);
 }
 
+using namespace benchtools;
+
 int main() {
-    using namespace benchtools;
-    using namespace benchtools::clock;
-    using namespace benchtools::timer;
-    auto processTimer = Timer<CPUClock<>>{};
-    ScopedTimer tim{processTimer};    
-    {
-        auto log = timer::LoggingTimer<clock::WallClock>{};
-        log.start();
-        std::cin.get();
-        log.stop();
-
-        log.start();
-        std::cin.get();
-        log.stop();
-
-        log.start(1);
-        std::cin.get();
-        log.stop();
-    }
-
-    
-
-    {
-        auto file = timer::FileTimer<clock::WallClock>{"example.txt"};
-        file.start();
-        std::cin.get();
-        file.stop();
-
-        file.start();
-        std::cin.get();
-        file.stop();
-
-        file.start(1);
-        std::cin.get();
-        file.stop();
-    }
-
     benchmark::Profile profile{
         .warmupIterations = 2, .iterations = 20, .policy = benchmark::CPU_Process};
     benchmark::runBenchmark(profile, foo);
