@@ -1,4 +1,4 @@
-#include "benchtools/Core/Benchmark/Result.hpp"
+#include <benchtools/Core/Benchmark/Result.hpp>
 
 #include <benchtools/Plotter/PlotDataLoader.hpp>
 #include <benchtools/Plotter/PlotWidget.hpp>
@@ -45,22 +45,19 @@ namespace plotter {
         if (argCount > 1) {
             std::string_view firstArg{argValues[1]};
             if (firstArg == "--compare") {
-                if (argCount < 4) {
+                if (argCount < 4)
                     throw std::invalid_argument{
                         "--compare requires at least two file paths"};
-                }
+
                 compareMode = true;
-                for (int i{2}; i < argCount; ++i) {
+                for (int i{2}; i < argCount; ++i)
                     paths.emplace_back(argValues[i]);
-                }
-            } else {
+
+            } else
                 paths.emplace_back(argValues[1]);
-            }
         }
 
-        if (paths.empty()) {
-            throw std::invalid_argument{"No benchmark data file provided"};
-        }
+        if (paths.empty()) throw std::invalid_argument{"No benchmark data file provided"};
 
         setData(paths[0]);
 
@@ -83,15 +80,14 @@ namespace plotter {
 
             std::string unit{};
             for (auto it{str.rbegin()}; it != str.rend(); ++it) {
-                if (std::isalpha(static_cast<unsigned char>(*it))) {
+                if (std::isalpha(static_cast<unsigned char>(*it)))
                     unit.push_back(*it);
-                } else {
+                else
                     break;
-                }
             }
-            if (unit.empty()) {
+            if (unit.empty())
                 throw std::runtime_error{"Failed to extract unit from duration: " + str};
-            }
+
             std::ranges::reverse(unit);
             return unit;
         };
@@ -109,13 +105,13 @@ namespace plotter {
 
         auto buildDataset = [&](const benchmark::Result& result) -> Dataset {
             Dataset ds{};
-            const auto& durs{result.getDurations()};
-            ds.xs.reserve(durs.size());
-            ds.ys.reserve(durs.size());
+            const auto& durations{result.getDurations()};
+            ds.xs.reserve(durations.size());
+            ds.ys.reserve(durations.size());
 
-            for (std::size_t i{0}; i < durs.size(); ++i) {
+            for (std::size_t i{0}; i < durations.size(); ++i) {
                 ds.xs.push_back(static_cast<double>(i));
-                ds.ys.push_back(static_cast<double>(durs[i].count()));
+                ds.ys.push_back(static_cast<double>(durations[i].count()));
             }
 
             ds.sortedYs = ds.ys;
@@ -155,8 +151,9 @@ namespace plotter {
 #if defined(__APPLE__)
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-
-        m_Window = glfwCreateWindow(1280, 720, "Benchmark Plotter", nullptr, nullptr);
+        constexpr int windowWidth{1920}, windowHeight{1080};
+        m_Window = glfwCreateWindow(windowWidth, windowHeight, "Benchmark Plotter",
+                                    nullptr, nullptr);
         if (!m_Window) {
             glfwTerminate();
             throw std::runtime_error{"Failed to create GLFW window"};
@@ -243,6 +240,8 @@ namespace plotter {
             {1.0f, 0.6f, 0.2f, 1.0f},
         }};
 
+        bool logScaleY{false};
+
         while (!glfwWindowShouldClose(m_Window)) {
             glfwPollEvents();
 
@@ -267,8 +266,8 @@ namespace plotter {
                         if (ImGui::BeginTable("ProfileTable", 2,
                                               ImGuiTableFlags_Borders |
                                                   ImGuiTableFlags_RowBg)) {
-                            ImGui::TableSetupColumn("Property",
-                                                    ImGuiTableColumnFlags_WidthFixed, 140.0f);
+                            ImGui::TableSetupColumn(
+                                "Property", ImGuiTableColumnFlags_WidthFixed, 140.0f);
                             ImGui::TableSetupColumn("Value",
                                                     ImGuiTableColumnFlags_WidthStretch);
                             ImGui::TableHeadersRow();
@@ -295,8 +294,8 @@ namespace plotter {
                         if (ImGui::BeginTable("StatsTable", 2,
                                               ImGuiTableFlags_Borders |
                                                   ImGuiTableFlags_RowBg)) {
-                            ImGui::TableSetupColumn("Metric",
-                                                    ImGuiTableColumnFlags_WidthFixed, 140.0f);
+                            ImGui::TableSetupColumn(
+                                "Metric", ImGuiTableColumnFlags_WidthFixed, 140.0f);
                             ImGui::TableSetupColumn("Value",
                                                     ImGuiTableColumnFlags_WidthStretch);
                             ImGui::TableHeadersRow();
@@ -368,6 +367,7 @@ namespace plotter {
                 }
 
                 if (ImGui::BeginTabItem("Runs")) {
+                    ImGui::Checkbox("Log Scale Y", &logScaleY);
                     ImVec2 avail{ImGui::GetContentRegionAvail()};
                     const std::string yLabel{std::string{"Duration ("} + unit + ")"};
 
@@ -383,19 +383,22 @@ namespace plotter {
                         }
                         ImPlot::SetupAxis(ImAxis_Y1, yLabel.c_str(),
                                           ImPlotAxisFlags_AutoFit);
+                        if (logScaleY) {
+                            ImPlot::SetupAxisScale(ImAxis_Y1, ImPlotScale_Log10);
+                        }
 
                         if (primaryVisible && !primaryDS.ys.empty()) {
                             ImPlot::PlotLine("Primary", primaryDS.xs.data(),
                                              primaryDS.ys.data(),
                                              static_cast<int>(primaryDS.xs.size()));
 
-                            const std::array<double, 2> xlim{
+                            const std::array<double, 2> xLimit{
                                 -0.5, static_cast<double>(primaryDS.xs.size()) - 0.5};
-                            const std::array<double, 2> ylim{primaryDS.meanVal,
-                                                             primaryDS.meanVal};
+                            const std::array<double, 2> yLimit{primaryDS.meanVal,
+                                                               primaryDS.meanVal};
                             ImPlot::PushStyleColor(ImPlotCol_PlotBorder, primaryColor);
-                            ImPlot::PlotLine("Mean", xlim.data(), ylim.data(),
-                                             static_cast<int>(xlim.size()));
+                            ImPlot::PlotLine("Mean", xLimit.data(), yLimit.data(),
+                                             static_cast<int>(xLimit.size()));
                             ImPlot::PopStyleColor();
                         }
 
@@ -411,14 +414,14 @@ namespace plotter {
                                              static_cast<int>(compareDS[i].xs.size()));
                             ImPlot::PopStyleColor();
 
-                            const std::array<double, 2> xlim{
+                            const std::array<double, 2> xLimit{
                                 -0.5, static_cast<double>(compareDS[i].xs.size()) - 0.5};
-                            const std::array<double, 2> ylim{compareDS[i].meanVal,
-                                                             compareDS[i].meanVal};
+                            const std::array<double, 2> yLimit{compareDS[i].meanVal,
+                                                               compareDS[i].meanVal};
                             ImPlot::PushStyleColor(ImPlotCol_PlotBorder, col);
                             ImPlot::PlotLine(("Mean (" + compareLabels[i] + ")").c_str(),
-                                             xlim.data(), ylim.data(),
-                                             static_cast<int>(xlim.size()));
+                                             xLimit.data(), yLimit.data(),
+                                             static_cast<int>(xLimit.size()));
                             ImPlot::PopStyleColor();
                         }
 

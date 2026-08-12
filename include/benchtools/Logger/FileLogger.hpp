@@ -1,5 +1,6 @@
 #pragma once
 
+#include <benchtools/Core/File/File.hpp>
 #include <benchtools/Logger/LogType.hpp>
 
 #include <benchtools/Core/File/FileStream.hpp>
@@ -9,17 +10,18 @@
 #include <sstream>
 #include <string_view>
 
-namespace benchtools {
+namespace benchtools::file {
 
 class FileLogger {
   public:
-    explicit FileLogger(std::string_view path, fmode fmode = fileopen::append) noexcept {
+    explicit FileLogger(std::string_view path,
+                        file::fmode_t = file::fileopen::append) noexcept
+        : m_Stream(path) {
         static constexpr auto s_startMessage = "LOGGING SESSION STARTED";
 
-        m_Stream = FileOStream{path};
-
         std::stringstream ss;
-        ss << format(time_date()) << format(log::type::INFO) << s_startMessage << "\n";
+        ss << time::format(time::currTimeDate()) << format(log::type::INFO)
+           << s_startMessage << "\n";
 
         m_Stream.append(ss.str());
     };
@@ -28,7 +30,8 @@ class FileLogger {
         static constexpr auto s_endMessage = "LOGGING SESSION ENDED";
 
         std::stringstream ss;
-        ss << format(time_date()) << format(log::type::INFO) << s_endMessage << "\n";
+        ss << time::format(time::currTimeDate()) << format(log::type::INFO)
+           << s_endMessage << "\n";
 
         m_Stream.append(ss.str());
     };
@@ -36,7 +39,7 @@ class FileLogger {
     void Log(std::string_view content, log::type type = log::type::INFO) noexcept {
         std::stringstream ss;
 
-        ss << format(time_date()) << format(type) << content << "\n";
+        ss << time::format(time::currTimeDate()) << format(type) << content << "\n";
         m_Stream.append(ss.str());
 
         ss.flush();
@@ -45,7 +48,7 @@ class FileLogger {
     template <class... Args>
     void Log(Args&&... args, log::type type) {
         std::stringstream ss;
-        ss << format(time_date()) << " " << format(type);
+        ss << time::format(time::currTimeDate()) << " " << format(type);
 
         std::array<std::string_view, sizeof...(args)> contents;
         for (const auto& content : contents) {
@@ -58,6 +61,6 @@ class FileLogger {
     }
 
   private:
-    FileOStream m_Stream{};
+    file::FileOStream m_Stream{};
 };
-};  // namespace benchtools
+};  // namespace benchtools::file

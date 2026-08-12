@@ -1,8 +1,10 @@
 #pragma once
+
 #include <chrono>
 
 namespace benchtools {
 namespace clock {
+    /** @brief Basic chrono wrapper for Wall time */
     class WallClock {
       public:
         using duration = std::chrono::nanoseconds;

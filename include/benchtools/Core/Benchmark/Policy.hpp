@@ -6,11 +6,16 @@
 namespace benchtools::benchmark {
 
 enum Policy : int {
-    CPU_Process = 0x00,  // CPU time
-    CPU_Thread = 0x01,   // CPU time
+    CPU_Process = 0x00,  // CPU time (PROCESS)
+    CPU_Thread = 0x01,   // CPU time (THREAD)
     Wall = 0x02,         // System  Time
 };
 
+/**
+ * @brief returns a string translation of the policy
+ * @param policy policy
+ * @return constexpr std::string 
+ */
 [[nodiscard]] inline constexpr std::string format(Policy policy) {
     switch (policy) {
         using enum Policy;

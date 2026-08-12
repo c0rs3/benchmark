@@ -1,6 +1,16 @@
+
+#include "benchtools/Core/Core.hpp"
+#include "benchtools/Core/Time.hpp"
 #include <benchtools/Benchmark/Benchmark.hpp>
 
-#include <benchtools/Plotter/PlotDataLoader.hpp>
+#include <benchtools/Core/Benchmark/Policy.hpp>
+#include <benchtools/Core/Clocks/CPUClock.hpp>
+
+#include <benchtools/Logger/Timer/LoggingTimer.hpp>
+
+#include <benchtools/Timer/FileTimer.hpp>
+#include <benchtools/Timer/ScopedTimer.hpp>
+#include <benchtools/Timer/Timer.hpp>
 
 #include <iostream>
 #include <thread>
@@ -12,25 +22,10 @@ void foo() {
 
 int main() {
     using namespace benchtools;
-#if 0
-    auto cpuTimer = timer::Timer<clock::CPUClock<>>{};
-
-    auto wallTimer = timer::Timer<clock::WallClock>{};
-    {
-        timer::ScopedTimer scop{cpuTimer};
-        cpuTimer.start();
-        wallTimer.start();
-
-        std::cin.get();
-
-        cpuTimer.stop();
-        wallTimer.stop();
-    }
-    std::clog << cpuTimer.duration() << std::endl;
-    std::clog << time::durationCast(cpuTimer.duration(), time::unit::microseconds)
-              << std::endl;
-    std::clog << wallTimer.duration();
-
+    using namespace benchtools::clock;
+    using namespace benchtools::timer;
+    auto processTimer = Timer<CPUClock<>>{};
+    ScopedTimer tim{processTimer};    
     {
         auto log = timer::LoggingTimer<clock::WallClock>{};
         log.start();
@@ -46,8 +41,10 @@ int main() {
         log.stop();
     }
 
+    
+
     {
-        auto file = timer::FileTimer<clock::WallClock>{"huh.txt"};
+        auto file = timer::FileTimer<clock::WallClock>{"example.txt"};
         file.start();
         std::cin.get();
         file.stop();
@@ -61,15 +58,10 @@ int main() {
         file.stop();
     }
 
-#elif 1
-    benchmark::Profile profile{};
+    benchmark::Profile profile{
+        .warmupIterations = 2, .iterations = 20, .policy = benchmark::CPU_Process};
     benchmark::runBenchmark(profile, foo);
 
     std::clog << std::endl;
     return 0;
-#elif 0
-    std::filesystem::path path =
-        "benchtools_results/[2026-08-11 19:01:33]_benchmarkresults.xml";
-    std::clog << Plotter::PlotData::loadData(path.c_str());
-#endif
 }

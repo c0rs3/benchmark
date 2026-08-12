@@ -70,6 +70,7 @@ endif()
 # Core
 add_library(Core
     Core/Time.cpp
+    Core/Result.cpp
 )
 target_include_directories(Core
     PUBLIC
@@ -103,6 +104,18 @@ target_compile_features(Logger PUBLIC cxx_std_20)
 target_link_libraries(Logger PUBLIC Benchtools::Core Benchtools::Timer spdlog::spdlog)
 add_library(Benchtools::Logger ALIAS Logger)
 
+# Benchmark
+add_library(Benchmark
+    Benchmark/Benchmark.cpp
+)
+target_include_directories(Benchmark
+    PUBLIC
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+)
+target_compile_features(Benchmark PUBLIC cxx_std_20)
+target_link_libraries(Benchmark PUBLIC Benchtools::Core Benchtools::Timer)
+add_library(Benchtools::Benchmark ALIAS Benchmark)
+
 # Plotter
 add_library(Plotter
     Plotter/PlotWidget.cpp
@@ -115,8 +128,6 @@ target_compile_features(Plotter PUBLIC cxx_std_20)
 target_link_libraries(Plotter PUBLIC Benchtools::Core implot imgui glfw)
 add_library(Benchtools::Plotter ALIAS Plotter)
 
-# Testing
-# TODO: replace it with gtest or something idk
 option(TESTING OFF)
 
 if(TESTING)
@@ -127,8 +138,6 @@ if(TESTING)
     target_compile_features(benchtools_testing PRIVATE cxx_std_20)
 endif()
 
-option(PLOT "Plotting app" ON)
-
-if(PLOT)
+if(NOT(TESTING))
     add_subdirectory(App)
 endif()

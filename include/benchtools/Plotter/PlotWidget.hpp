@@ -8,6 +8,7 @@ class GLFWwindow;
 
 namespace benchtools::plotter {
 
+/** @brief Plotting App Singleton */
 class PlotWidget {
   public:
     ~PlotWidget() noexcept(0);

@@ -6,7 +6,6 @@
 namespace benchtools {
 
 namespace file {
-    // type for file open modes
     using fmode_t = std::ios_base::openmode;
 
     namespace fileopen {

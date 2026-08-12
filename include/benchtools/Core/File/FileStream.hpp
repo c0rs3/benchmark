@@ -11,7 +11,6 @@
 namespace benchtools {
 
 namespace file {
-
     class FileOStream {
       public:
         FileOStream() noexcept = default;

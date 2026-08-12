@@ -1,6 +1,7 @@
 #pragma once
 
-#include "benchtools/Core/Core.hpp"
+#include <benchtools/Core/Core.hpp>
+
 #include <cassert>
 #include <chrono>
 #include <cstdint>
@@ -11,9 +12,9 @@ namespace benchtools {
 namespace time {
 
     // default expression for default durations
-    inline constexpr auto DEFAULT_DUR = std::chrono::duration<double>::zero();
-    inline constexpr auto MAX_DUR = std::chrono::duration<double>::max();
-    inline constexpr auto MIN_DUR = std::chrono::duration<double>::min();
+    inline constexpr auto DEFAULT_DUR{Duration::zero()};
+    inline constexpr auto MAX_DUR{Duration::max()};
+    inline constexpr auto MIN_DUR{Duration::min()};
 
     enum class unit : uint8_t {
         months,
@@ -27,45 +28,6 @@ namespace time {
         microseconds,
         nanoseconds
     };
-
-    [[nodiscard]] inline std::string format(const unit& unit) {
-        switch (unit) {
-            using enum time::unit;
-        case nanoseconds:
-            return "ns";
-        case microseconds:
-            return "µs";
-            break;
-        case milliseconds:
-            return "ms";
-            break;
-        case seconds:
-            return "s";
-            break;
-        case minutes:
-            return "min";
-            break;
-        case hours:
-            return "h";
-            break;
-        case days:
-            return "d";
-            break;
-        case weeks:
-            return "wk";
-            break;
-        case months:
-            return "mo";
-            break;
-        case years:
-            return "y";
-            break;
-        default:
-            return "";
-        }
-        assert("Unknown timeunit!" && false);
-        return {};
-    }
 
     [[nodiscard]] Duration inline durationCast(const Duration& duration,
                                                const time::unit& unit) noexcept {
@@ -97,7 +59,7 @@ namespace time {
     }
 
     [[nodiscard]] inline std::chrono::zoned_time<std::chrono::duration<double>>
-    time_date() noexcept {
+    currTimeDate() noexcept {
         std::chrono::zoned_time zoned_time{std::chrono::current_zone(),
                                            std::chrono::system_clock::now()};
 

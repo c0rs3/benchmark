@@ -9,6 +9,7 @@ namespace benchtools {
 
 namespace clock {
 
+    /** @brief Contract for chrono compatible clocks */
     template <typename T>
     concept ChronoClock = requires {
         typename T::duration;
@@ -18,6 +19,9 @@ namespace clock {
 }  // namespace clock
 
 namespace timer {
+    /**
+     * @brief Simple timer for timing
+     */
     template <clock::ChronoClock ClockType>
     class Timer {
       public:

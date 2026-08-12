@@ -1,11 +1,12 @@
 #pragma once
 
-#include "benchtools/Core/Benchmark/Policy.hpp"
-#include "benchtools/Core/Benchmark/Profile.hpp"
-#include "benchtools/Core/Core.hpp"
-#include "benchtools/Core/Time.hpp"
+#include <benchtools/Core/Benchmark/Policy.hpp>
+#include <benchtools/Core/Benchmark/Profile.hpp>
 #include <benchtools/Core/Benchmark/Result.hpp>
+
+#include <benchtools/Core/Core.hpp>
 #include <benchtools/Core/File/XMLStream.hpp>
+#include <benchtools/Core/Time.hpp>
 
 #include <chrono>
 #include <stdexcept>
@@ -24,18 +25,19 @@ struct PlotData {
         if (headers.size() != 3)
             throw std::runtime_error("Header field size does not match!\n");
 
-        // TODO: verify headers
-        // static constexpr std::string expectedHeaders[3] = {"runid", "dur", "unit"};
-        // for (auto headerIndex{0}; const auto& field : headers)
-        //     if (field != expectedHeaders[headerIndex])
-        //         throw std::runtime_error("Header name does not match at header index: "
-        //         +
-        //                                  std::to_string(headerIndex));
+        // Make sure the headers match
+        static constexpr std::string expectedHeaders[3] = {"runid", "dur", "unit"};
+        for (auto headerIndex{0}; const auto& field : headers)
+            if (field != expectedHeaders[headerIndex++])
+                throw std::runtime_error("Header name does not match at header index: " +
+                                         std::to_string(headerIndex));
 
         auto metadata = file::XMLStream::getMetadata(path);
 
+        // iteration count
         const auto&& iterations = std::stoi(metadata[1].second);
 
+        // policy of the benchmark
         benchmark::Policy policy;
         if (metadata[2].second == "CPU (Process)")
             policy = benchmark::Policy::CPU_Process;
@@ -44,14 +46,16 @@ struct PlotData {
         else if (metadata[2].second == "Wall")
             policy = benchmark::Policy::Wall;
 
+        // warmup stuff
         const auto&& warmupEnabled = metadata[3].second == "true" ? true : false;
         const auto&& warmupIterations = std::stoi(metadata[4].second);
 
         parsedResults.getProfile() =
             benchmark::Profile{warmupIterations, iterations, policy, warmupEnabled};
 
-        auto data = file::XMLStream::getRows(path);
-
+        //
+        // Parsing the data
+        //
         struct ParsedDuration {
             std::chrono::nanoseconds nanos;
             time::unit unit;
@@ -84,6 +88,8 @@ struct PlotData {
         };
 
         std::vector<Duration> durations(parsedResults.getProfile().iterations);
+
+        auto data = file::XMLStream::getRows(path);
 
         for (const auto& entries : data) {
             auto runID = std::move(std::stoi(entries[0]));

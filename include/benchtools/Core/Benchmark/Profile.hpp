@@ -5,6 +5,7 @@
 #include <cstdint>
 
 namespace benchtools::benchmark {
+/** @brief Object used for setting up benchmarks */
 struct Profile {
     int64_t warmupIterations{2};
     int64_t iterations{10};

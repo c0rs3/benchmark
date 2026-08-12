@@ -18,6 +18,10 @@ namespace clock {
         Thread    // THREAD CLOCK
     };
 
+    /**
+     * @brief CPUClock for chrono
+     * @tparam Type either thread or process clock
+     */
     template <CPU Type = CPU::Process>
     class CPUClock {
       public:
@@ -26,6 +30,11 @@ namespace clock {
         using period = duration::period;
         using time_point = std::chrono::time_point<CPUClock>;
 
+        /**
+         * @brief Returns the current time_point
+         * @note Only for WIN and Linux systems
+         * @return time_point
+         */
         [[nodiscard]] static time_point now() noexcept {
 #if defined(BENCHTOOLS_LIN)
             struct timespec ts;
@@ -53,7 +62,7 @@ namespace clock {
                 ULARGE_INTEGER u;
                 u.LowPart = ft.dwLowDateTime;
                 u.HighPart = ft.dwHighDateTime;
-                return static_cast<long long>(u.QuadPart) * 100LL;  // 100ns → ns
+                return static_cast<long long>(u.QuadPart) * 100LL;  // 100ns -> ns
             };
 
             long long total_ns = filetime_to_ns(kernel) + filetime_to_ns(user);

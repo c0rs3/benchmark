@@ -6,10 +6,14 @@
 
 namespace benchtools::timer {
 
+/**
+ * @brief Binds a Timer to start on construction and stop on destruction
+ * @tparam ClockType clock type
+ */
 template <clock::ChronoClock ClockType>
 class ScopedTimer {
   public:
-    ScopedTimer() noexcept = delete;
+    ScopedTimer() = delete;
 
     explicit ScopedTimer(Timer<ClockType>& clock) noexcept : m_Clock(clock) {
         m_Clock.start();

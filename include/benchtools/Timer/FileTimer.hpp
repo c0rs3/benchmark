@@ -1,15 +1,18 @@
 #pragma once
 
-#include "benchtools/Core/Core.hpp"
-#include "benchtools/Core/File.hpp"
-#include "benchtools/Core/File/FileStream.hpp"
-#include "benchtools/Timer/Timer.hpp"
+#include <benchtools/Core/File/FileStream.hpp>
+#include <benchtools/Logger/FileLogger.hpp>
+#include <benchtools/Timer/Timer.hpp>
 
 #include <source_location>
 #include <string_view>
 
 namespace benchtools::timer {
 
+/**
+ * @brief Logs start() stop() actions with the location it was done as well as the time
+ * and duration it took between starting and stopping
+ */
 template <clock::ChronoClock ClockType>
 class FileTimer {
   public:
@@ -30,8 +33,8 @@ class FileTimer {
     FileTimer& operator=(FileTimer&&) noexcept = delete;
 
   public:
-    benchtoolStatus start(bool shouldReset = 0,
-                          std::source_location loc = std::source_location::current()) {
+    void start(bool shouldReset = 0,
+               std::source_location loc = std::source_location::current()) {
         m_Clock.start();
         m_Clock.reset_if(shouldReset);
 
@@ -42,12 +45,10 @@ class FileTimer {
         oss << m_ID.file_name() << ":" << m_ID.line() << ":" << m_ID.column() << " "
             << m_ID.function_name() << " Started timer" << std::endl;
 
-        m_Stream.append(oss.str());
-
-        return 0;
+        m_Stream.Log(oss.str());
     }
 
-    benchtoolStatus stop(std::source_location loc = std::source_location::current()) {
+    void stop(std::source_location loc = std::source_location::current()) {
         m_Clock.stop();
 
         std::ostringstream oss;
@@ -56,14 +57,14 @@ class FileTimer {
             << m_ID.function_name() << ", resulted with:" << " " << m_Clock.duration()
             << std::endl;
 
-        m_Stream.append(oss.str());
-
-        return 0;
+        m_Stream.Log(oss.str());
     }
+
+    void reset() { m_Clock.reset(); }
 
   private:
     Timer<ClockType> m_Clock{};
-    file::FileOStream m_Stream;
+    file::FileLogger m_Stream;
     std::source_location m_ID;
 };
 

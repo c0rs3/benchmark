@@ -1,6 +1,5 @@
 #pragma once
 
-#include "benchtools/Core/Core.hpp"
 #include <benchtools/Timer/Timer.hpp>
 
 #include <benchtools/Logger/Logger.hpp>
@@ -32,8 +31,8 @@ class LoggingTimer {
     LoggingTimer& operator=(LoggingTimer&&) = delete;
 
   public:
-    benchtoolStatus start(bool shouldReset = 0,
-                          std::source_location loc = std::source_location::current()) {
+    void start(bool shouldReset = 0,
+               std::source_location loc = std::source_location::current()) {
         m_Clock.start();
         m_Clock.reset_if(shouldReset);
 
@@ -44,10 +43,9 @@ class LoggingTimer {
         ss << m_ID.file_name() << ":" << m_ID.line() << ":" << m_ID.column() << " "
            << m_ID.function_name() << " Started timer";
         BENCHTOOLS_TRACE(ss.str());
-        return 0;
     }
 
-    benchtoolStatus stop(std::source_location loc = std::source_location::current()) {
+    void stop(std::source_location loc = std::source_location::current()) {
         m_Clock.stop();
 
         std::stringstream ss;
@@ -56,9 +54,9 @@ class LoggingTimer {
            << m_ID.function_name() << ", resulted with:" << " " << m_Clock.duration();
 
         BENCHTOOLS_TRACE(ss.str());
-
-        return 0;
     }
+
+    void reset() { m_Clock.reset(); }
 
   private:
     Timer<ClockType> m_Clock;

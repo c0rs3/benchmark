@@ -3,16 +3,18 @@
 #include <benchtools/Core/File/FileStream.hpp>
 
 #include <cstddef>
+#include <stdexcept>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 namespace benchtools::file {
 
 using CSVLine = std::vector<std::string>;
-
 using CSVContent = std::vector<CSVLine>;
 
+/** @brief Parses a CSV line into a vector of strings */
 [[nodiscard]] inline std::vector<std::string>
 parseCSVLine(const std::string& line) noexcept {
     std::vector<std::string> res;
@@ -28,7 +30,7 @@ parseCSVLine(const std::string& line) noexcept {
         line_column += x;
     }
 
-    // retarded way to insert the last value/header
+    // retarded way to insert the last column
     res.shrink_to_fit();
     res.resize(std::size(res) + 1);
     res[std::size(res) - 1] = line_column;
@@ -39,7 +41,7 @@ parseCSVLine(const std::string& line) noexcept {
 class CSVStream {
 
   public:
-    explicit CSVStream() noexcept = delete;
+    CSVStream() noexcept = delete;
 
     template <class... Args>
     explicit CSVStream(std::string_view path, Args&&... args)
@@ -66,32 +68,15 @@ class CSVStream {
     };
 
     template <class... Args>
-    void write(Args&&... args) {
-        if (!m_Stream) {
-            return;
-        }
-        CSVLine temp = {(args)...};
-        if (temp.size() != m_Headers.size()) {
-            return;
-        }
-
-        for (size_t l_counter{1}; const auto& content : temp) {
-            m_Stream.append(std::string(content));
-
-            if (l_counter++ < m_Headers.size()) m_Stream.append(",");
-        }
-
-        m_Stream.append("\n");
+    void write(Args&&... args) noexcept(0) {
+        write(std::vector<Args...>{std::forward<Args...>(args)...});
     };
 
-    void write(CSVLine contents) {
-        if (!m_Stream) {
-            return;
-        }
+    void write(CSVLine contents) noexcept(0) {
+        if (!m_Stream) throw std::runtime_error("Failed to open file!");
 
-        if (contents.size() != m_Headers.size()) {
-            return;
-        }
+        if (contents.size() != m_Headers.size())
+            throw std::runtime_error("Column size must match header size!");
 
         for (size_t l_counter{1}; const auto& content : contents) {
             m_Stream.append(std::string(content));
@@ -107,7 +92,7 @@ class CSVStream {
 
         auto&& lines = m_Stream.read();
 
-        if (lines.empty()) return {};  // or throw
+        if (lines.empty()) return {};
 
         return file::parseCSVLine(lines.front());
     }
@@ -116,7 +101,7 @@ class CSVStream {
         file::FileIStream m_Stream{path};
         auto&& lines = m_Stream.read();
 
-        if (lines.empty()) return {};  // or throw
+        if (lines.empty()) return {};
 
         file::CSVContent m_Content{};
         for (size_t i{1}; i < lines.size(); i++)
