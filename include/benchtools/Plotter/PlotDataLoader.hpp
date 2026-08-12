@@ -26,7 +26,7 @@ struct PlotData {
             throw std::runtime_error("Header field size does not match!\n");
 
         // Make sure the headers match
-        static constexpr std::string expectedHeaders[3] = {"runid", "dur", "unit"};
+        static std::string expectedHeaders[3] = {"runid", "dur", "unit"};
         for (auto headerIndex{0}; const auto& field : headers)
             if (field != expectedHeaders[headerIndex++])
                 throw std::runtime_error("Header name does not match at header index: " +
